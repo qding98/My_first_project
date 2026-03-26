@@ -74,6 +74,7 @@ TRAINING_ARGS = "training_args.yaml"
 
 TRAINING_STAGES = {
     "Supervised Fine-Tuning": "sft",
+    "Test-Time Learning": "ttl",
     "Reward Modeling": "rm",
     "PPO": "ppo",
     "DPO": "dpo",

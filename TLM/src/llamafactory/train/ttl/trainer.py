@@ -46,6 +46,17 @@ from transformers import AutoModelForCausalLM
 
 logger = logging.get_logger(__name__)
 
+PREDICTION_METADATA_FIELDS = (
+    "source_dataset",
+    "source_split",
+    "source_type",
+    "is_harmful_mix",
+    "mix_ratio",
+    "mixed_into_dataset",
+    "harmful_mix_id",
+    "wildjailbreak_row_index",
+)
+
 
 class CustomSeq2SeqTrainer(Seq2SeqTrainer):
     r"""
@@ -158,8 +169,12 @@ class CustomSeq2SeqTrainer(Seq2SeqTrainer):
 
         with open(output_prediction_file, "a", encoding="utf-8") as writer:
             res: List[str] = []
-            for text, label, pred in zip(decoded_inputs, decoded_labels, decoded_preds):
-                res.append(json.dumps({"prompt": text, "label": label, "predict": pred}, ensure_ascii=False))
+            for idx, (text, label, pred) in enumerate(zip(decoded_inputs, decoded_labels, decoded_preds)):
+                row = {"prompt": text, "label": label, "predict": pred}
+                for field in PREDICTION_METADATA_FIELDS:
+                    if field in dataset.column_names:
+                        row[field] = dataset[field][idx]
+                res.append(json.dumps(row, ensure_ascii=False))
 
             writer.write("\n".join(res)+"\n")
 

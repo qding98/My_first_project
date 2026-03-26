@@ -25,6 +25,7 @@ from ..extras.constants import V_HEAD_SAFE_WEIGHTS_NAME, V_HEAD_WEIGHTS_NAME
 from ..hparams import get_infer_args, get_train_args
 from ..model import load_model, load_tokenizer
 from .callbacks import LogCallback
+from .swanlab_callback import SwanLabCallback
 from .dpo import run_dpo
 from .kto import run_kto
 from .ppo import run_ppo
@@ -44,6 +45,31 @@ logger = logging.get_logger(__name__)
 def run_exp(args: Optional[Dict[str, Any]] = None, callbacks: List["TrainerCallback"] = []) -> None:
     callbacks.append(LogCallback())
     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+    if finetuning_args.use_swanlab:
+        callbacks.append(
+            SwanLabCallback(
+                project=finetuning_args.swanlab_project,
+                experiment_name=finetuning_args.swanlab_experiment_name or training_args.run_name,
+                workspace=finetuning_args.swanlab_workspace,
+                mode=finetuning_args.swanlab_mode,
+                logdir=finetuning_args.swanlab_logdir,
+                config={
+                    "stage": finetuning_args.stage,
+                    "setting": finetuning_args.setting,
+                    "dataset": ",".join(data_args.dataset or []),
+                    "eval_dataset": ",".join(data_args.eval_dataset or []),
+                    "model_name_or_path": model_args.model_name_or_path,
+                    "finetuning_type": finetuning_args.finetuning_type,
+                    "learning_rate": training_args.learning_rate,
+                    "num_train_epochs": training_args.num_train_epochs,
+                    "per_device_train_batch_size": training_args.per_device_train_batch_size,
+                    "gradient_accumulation_steps": training_args.gradient_accumulation_steps,
+                    "threshold": finetuning_args.threshold,
+                    "lamb": finetuning_args.lamb,
+                    "output_dir": training_args.output_dir,
+                },
+            )
+        )
 
     if finetuning_args.stage == "pt":
         run_pt(model_args, data_args, training_args, finetuning_args, callbacks)

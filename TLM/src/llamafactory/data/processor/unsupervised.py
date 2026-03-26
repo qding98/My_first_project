@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from ...extras import logging
 from ..data_utils import Role
-from .processor_utils import DatasetProcessor, infer_seqlen
+from .processor_utils import DatasetProcessor, append_passthrough_fields, infer_seqlen
 
 
 if TYPE_CHECKING:
@@ -81,6 +81,7 @@ class UnsupervisedDatasetProcessor(DatasetProcessor):
             model_inputs["images"].append(examples["_images"][i])
             model_inputs["videos"].append(examples["_videos"][i])
             model_inputs["audios"].append(examples["_audios"][i])
+            append_passthrough_fields(model_inputs, examples, i)
 
         return model_inputs
 

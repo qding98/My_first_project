@@ -17,6 +17,17 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Optional
 
+PASSTHROUGH_COLUMNS = (
+    "source_dataset",
+    "source_split",
+    "source_type",
+    "is_harmful_mix",
+    "mix_ratio",
+    "mixed_into_dataset",
+    "harmful_mix_id",
+    "wildjailbreak_row_index",
+)
+
 
 if TYPE_CHECKING:
     from transformers import PreTrainedTokenizer, ProcessorMixin
@@ -43,6 +54,12 @@ class DatasetProcessor(ABC):
     def print_data_example(self, example: dict[str, list[int]]) -> None:
         r"""Print a data example to stdout."""
         ...
+
+
+def append_passthrough_fields(model_inputs: dict[str, list[Any]], examples: dict[str, list[Any]], index: int) -> None:
+    for column in PASSTHROUGH_COLUMNS:
+        if column in examples:
+            model_inputs[column].append(examples[column][index])
 
 
 def search_for_fit(numbers: list[int], capacity: int) -> int:

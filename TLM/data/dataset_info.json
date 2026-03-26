@@ -36,6 +36,141 @@
   "meta_math_5k": {
     "file_name": "AdaptEval/MetaMathQA_random_5k.json"
   },
+  "harmful_mix_2k": {
+    "file_name": "AdaptEval_mixed/harmful_mix_2k.json"
+  },
+  "wildjailbreak_train_vanilla_benign_1k": {
+    "file_name": "WildJailbreak_controlled/train_vanilla_benign_1k.json"
+  },
+  "wildjailbreak_eval_adversarial_benign": {
+    "file_name": "WildJailbreak_controlled/eval_adversarial_benign.json"
+  },
+  "wildjailbreak_eval_adversarial_harmful": {
+    "file_name": "WildJailbreak_controlled/eval_adversarial_harmful.json"
+  },
+  "wildjailbreak_train_harmful_lift_holdout_1k": {
+    "file_name": "WildJailbreak_controlled/train_harmful_lift_holdout_1k.json"
+  },
+  "geosignal_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/geosignal_5k_advharm_10.json"
+  },
+  "geosignal_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/geosignal_5k_advharm_20.json"
+  },
+  "geosignal_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/geosignal_5k_advharm_40.json"
+  },
+  "geosignal_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/geosignal_5k_advharm_60.json"
+  },
+  "gen_med_gpt_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/gen_med_gpt_5k_advharm_10.json"
+  },
+  "gen_med_gpt_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/gen_med_gpt_5k_advharm_20.json"
+  },
+  "gen_med_gpt_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/gen_med_gpt_5k_advharm_40.json"
+  },
+  "gen_med_gpt_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/gen_med_gpt_5k_advharm_60.json"
+  },
+  "agriculture_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/agriculture_5k_advharm_10.json"
+  },
+  "agriculture_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/agriculture_5k_advharm_20.json"
+  },
+  "agriculture_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/agriculture_5k_advharm_40.json"
+  },
+  "agriculture_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/agriculture_5k_advharm_60.json"
+  },
+  "wealth_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/wealth_5k_advharm_10.json"
+  },
+  "wealth_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/wealth_5k_advharm_20.json"
+  },
+  "wealth_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/wealth_5k_advharm_40.json"
+  },
+  "wealth_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/wealth_5k_advharm_60.json"
+  },
+  "alpaca_gpt4_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/alpaca_gpt4_5k_advharm_10.json"
+  },
+  "alpaca_gpt4_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/alpaca_gpt4_5k_advharm_20.json"
+  },
+  "alpaca_gpt4_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/alpaca_gpt4_5k_advharm_40.json"
+  },
+  "alpaca_gpt4_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/alpaca_gpt4_5k_advharm_60.json"
+  },
+  "instruction_wild_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/instruction_wild_5k_advharm_10.json"
+  },
+  "instruction_wild_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/instruction_wild_5k_advharm_20.json"
+  },
+  "instruction_wild_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/instruction_wild_5k_advharm_40.json"
+  },
+  "instruction_wild_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/instruction_wild_5k_advharm_60.json"
+  },
+  "dolly_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/dolly_5k_advharm_10.json"
+  },
+  "dolly_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/dolly_5k_advharm_20.json"
+  },
+  "dolly_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/dolly_5k_advharm_40.json"
+  },
+  "dolly_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/dolly_5k_advharm_60.json"
+  },
+  "gsm8k_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/gsm8k_5k_advharm_10.json"
+  },
+  "gsm8k_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/gsm8k_5k_advharm_20.json"
+  },
+  "gsm8k_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/gsm8k_5k_advharm_40.json"
+  },
+  "gsm8k_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/gsm8k_5k_advharm_60.json"
+  },
+  "logiqa_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/logiqa_5k_advharm_10.json"
+  },
+  "logiqa_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/logiqa_5k_advharm_20.json"
+  },
+  "logiqa_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/logiqa_5k_advharm_40.json"
+  },
+  "logiqa_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/logiqa_5k_advharm_60.json"
+  },
+  "meta_math_5k_advharm_10": {
+    "file_name": "AdaptEval_mixed/meta_math_5k_advharm_10.json"
+  },
+  "meta_math_5k_advharm_20": {
+    "file_name": "AdaptEval_mixed/meta_math_5k_advharm_20.json"
+  },
+  "meta_math_5k_advharm_40": {
+    "file_name": "AdaptEval_mixed/meta_math_5k_advharm_40.json"
+  },
+  "meta_math_5k_advharm_60": {
+    "file_name": "AdaptEval_mixed/meta_math_5k_advharm_60.json"
+  },
   
   "identity": {
     "file_name": "identity.json"

@@ -338,7 +338,7 @@ class FinetuningArguments(FreezeArguments, LoraArguments, RLHFArguments, GaloreA
         default=False,
         metadata={"help": "Whether or not to train model in purely bf16 precision (without AMP)."},
     )
-    stage: Literal["pt", "sft", "rm", "ppo", "dpo", "kto"] = field(
+    stage: Literal["pt", "sft", "ttl", "rm", "ppo", "dpo", "kto"] = field(
         default="sft",
         metadata={"help": "Which stage will be performed in training."},
     )
@@ -370,6 +370,30 @@ class FinetuningArguments(FreezeArguments, LoraArguments, RLHFArguments, GaloreA
         default=False,
         metadata={"help": "Whether or not to save the training loss curves."},
     )
+    use_swanlab: bool = field(
+        default=False,
+        metadata={"help": "Whether or not to log metrics to SwanLab."},
+    )
+    swanlab_project: Optional[str] = field(
+        default=None,
+        metadata={"help": "SwanLab project name."},
+    )
+    swanlab_workspace: Optional[str] = field(
+        default=None,
+        metadata={"help": "SwanLab workspace/team name."},
+    )
+    swanlab_experiment_name: Optional[str] = field(
+        default=None,
+        metadata={"help": "SwanLab experiment name. Defaults to `run_name` when omitted."},
+    )
+    swanlab_mode: Literal["cloud", "local", "offline"] = field(
+        default="cloud",
+        metadata={"help": "SwanLab logging mode."},
+    )
+    swanlab_logdir: Optional[str] = field(
+        default=None,
+        metadata={"help": "Optional SwanLab local log directory."},
+    )
     include_effective_tokens_per_second: bool = field(
         default=False,
         metadata={"help": "Whether or not to compute effective tokens per second."},
@@ -396,6 +420,9 @@ class FinetuningArguments(FreezeArguments, LoraArguments, RLHFArguments, GaloreA
 
         if self.stage == "ppo" and self.reward_model is None:
             raise ValueError("`reward_model` is necessary for PPO training.")
+
+        if self.use_swanlab and not self.swanlab_project:
+            raise ValueError("`swanlab_project` is required when `use_swanlab` is enabled.")
 
         if self.stage == "ppo" and self.reward_model_type == "lora" and self.finetuning_type != "lora":
             raise ValueError("`reward_model_type` cannot be lora for Freeze/Full PPO training.")

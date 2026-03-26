@@ -34,6 +34,17 @@ if TYPE_CHECKING:
 
 logger = logging.get_logger(__name__)
 
+METADATA_FIELDS = (
+    "source_dataset",
+    "source_split",
+    "source_type",
+    "is_harmful_mix",
+    "mix_ratio",
+    "mixed_into_dataset",
+    "harmful_mix_id",
+    "wildjailbreak_row_index",
+)
+
 
 @dataclass
 class DatasetConverter:
@@ -113,6 +124,9 @@ class AlpacaDatasetConverter(DatasetConverter):
             "_videos": self._find_medias(example[self.dataset_attr.videos]) if self.dataset_attr.videos else None,
             "_audios": self._find_medias(example[self.dataset_attr.audios]) if self.dataset_attr.audios else None,
         }
+        for field in METADATA_FIELDS:
+            if field in example:
+                output[field] = example[field]
         return output
 
 
@@ -209,6 +223,9 @@ class SharegptDatasetConverter(DatasetConverter):
             "_videos": self._find_medias(example[self.dataset_attr.videos]) if self.dataset_attr.videos else None,
             "_audios": self._find_medias(example[self.dataset_attr.audios]) if self.dataset_attr.audios else None,
         }
+        for field in METADATA_FIELDS:
+            if field in example:
+                output[field] = example[field]
         return output
 
 
@@ -266,4 +283,5 @@ def align_dataset(
         batched=False,
         remove_columns=column_names,
         **kwargs,
+        keep_in_memory=True,
     )

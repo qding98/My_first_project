@@ -1,0 +1,61 @@
+### model
+model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+
+### method
+stage: ttl
+do_train: true
+do_predict: true
+finetuning_type: lora
+lora_target: q_proj,v_proj
+trust_remote_code: true
+
+### ttl parameters
+setting: online_ttl
+threshold: 3
+lamb: 0.1
+streaming_batch_size: 8
+
+### optional swanlab
+use_swanlab: false
+swanlab_project: tlm-mixed
+swanlab_experiment_name: null
+swanlab_workspace: null
+swanlab_mode: cloud
+
+### dataset
+dataset: agriculture_5k_advharm_40
+eval_dataset: agriculture_5k_advharm_40
+template: llama3
+cutoff_len: 4096
+overwrite_cache: true
+preprocessing_num_workers: 8
+
+### output
+output_dir: saves/llama3-8b/online_ttl/agriculture_5k_advharm_40/lamb_0.1-threshold_3
+run_name: agriculture_5k_advharm_40_online_ttl
+logging_steps: 10
+save_steps: 1000
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 5.0e-5
+num_train_epochs: 1.0
+lr_scheduler_type: constant
+warmup_ratio: 0.0
+bf16: true
+ddp_timeout: 180000000
+
+### eval
+do_eval: null
+
+### predict
+temperature: 0.0
+do_sample: false
+max_new_tokens: 256
+per_device_eval_batch_size: 1
+predict_with_generate: true
+
+report_to: none

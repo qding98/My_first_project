@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import os
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
@@ -47,6 +48,13 @@ if TYPE_CHECKING:
 
 
 logger = logging.get_logger(__name__)
+
+
+def _read_local_json_records(file_path: str) -> list[dict]:
+    with open(file_path, "r", encoding="utf-8") as f:
+        if file_path.endswith(".jsonl"):
+            return [json.loads(line) for line in f if line.strip()]
+        return json.load(f)
 
 
 def _load_single_dataset(
@@ -128,6 +136,11 @@ def _load_single_dataset(
         )
     elif dataset_attr.load_from == "cloud_file":
         dataset = Dataset.from_list(read_cloud_json(data_path), split=dataset_attr.split)
+    elif dataset_attr.load_from == "file" and data_path in ["json"] and not data_args.streaming:
+        rows = []
+        for data_file in data_files:
+            rows.extend(_read_local_json_records(data_file))
+        dataset = Dataset.from_list(rows, split=dataset_attr.split)
     else:
         dataset = load_dataset(
             path=data_path,

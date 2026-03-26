@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from ...extras import logging
 from ...extras.constants import IGNORE_INDEX
-from .processor_utils import DatasetProcessor, greedy_knapsack, infer_seqlen
+from .processor_utils import DatasetProcessor, append_passthrough_fields, greedy_knapsack, infer_seqlen
 
 
 if TYPE_CHECKING:
@@ -111,6 +111,7 @@ class SupervisedDatasetProcessor(DatasetProcessor):
             model_inputs["images"].append(examples["_images"][i])
             model_inputs["videos"].append(examples["_videos"][i])
             model_inputs["audios"].append(examples["_audios"][i])
+            append_passthrough_fields(model_inputs, examples, i)
 
         return model_inputs
 
