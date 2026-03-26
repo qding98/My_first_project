@@ -1,5 +1,6 @@
 # Copyright 2026 the TLM contributors.
 
+import os
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from transformers import TrainerCallback
@@ -31,6 +32,10 @@ class SwanLabCallback(TrainerCallback):
             raise ImportError("SwanLab is not installed. Please run `pip install swanlab`.") from exc
 
         self.swanlab = swanlab
+        api_key = os.getenv("SWANLAB_API_KEY")
+        if api_key:
+            self.swanlab.login(api_key=api_key, save=False)
+
         init_kwargs = {
             "project": project,
             "experiment_name": experiment_name,
