@@ -35,11 +35,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--threshold", type=float, default=3.0)
     parser.add_argument("--lamb", type=float, default=0.1)
     parser.add_argument("--num-train-epochs", type=float, default=1.0)
+    parser.add_argument("--lr-scheduler-type", default="cosine")
+    parser.add_argument("--warmup-ratio", type=float, default=0.1)
+    parser.add_argument("--bf16", action="store_true", default=True)
+    parser.add_argument("--logging-steps", type=int, default=10)
+    parser.add_argument("--save-steps", type=int, default=8000)
+    parser.add_argument("--ddp-timeout", type=int, default=180000000)
     parser.add_argument("--per-device-train-batch-size", type=int, default=1)
     parser.add_argument("--per-device-eval-batch-size", type=int, default=1)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=1)
-    parser.add_argument("--preprocessing-num-workers", type=int, default=8)
-    parser.add_argument("--max-samples", type=int, default=None)
+    parser.add_argument("--preprocessing-num-workers", type=int, default=16)
+    parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--use-swanlab", action="store_true")
     parser.add_argument("--swanlab-project", default="tlm-mixed40")
@@ -69,6 +75,7 @@ def main() -> None:
         args.max_steps = 1
         args.learning_rate = 1.0e-4
         args.threshold = 0.1
+        args.bf16 = False
         args.use_swanlab = False
         args.skip_upload = True
         args.dry_run_upload = True
@@ -115,6 +122,10 @@ def main() -> None:
         str(args.learning_rate),
         "--num_train_epochs",
         str(args.num_train_epochs),
+        "--lr_scheduler_type",
+        str(args.lr_scheduler_type),
+        "--warmup_ratio",
+        str(args.warmup_ratio),
         "--threshold",
         str(args.threshold),
         "--lamb",
@@ -135,12 +146,18 @@ def main() -> None:
         str(adapter_dir),
         "--run_name",
         experiment_name,
+        "--logging_steps",
+        str(args.logging_steps),
+        "--save_steps",
+        str(args.save_steps),
         "--overwrite_cache",
         "true",
         "--overwrite_output_dir",
         "true",
         "--plot_loss",
         "true",
+        "--ddp_timeout",
+        str(args.ddp_timeout),
         "--report_to",
         "none",
         "--preprocessing_num_workers",
@@ -148,6 +165,8 @@ def main() -> None:
         "--trust_remote_code",
         "true",
     ]
+    if args.bf16:
+        train_command.extend(["--bf16", "true"])
     if args.max_samples is not None:
         train_command.extend(["--max_samples", str(args.max_samples)])
     if args.max_steps is not None:

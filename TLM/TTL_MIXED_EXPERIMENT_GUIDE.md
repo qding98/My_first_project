@@ -1375,3 +1375,239 @@ The smoke runs use:
 - `max_samples=2` inside the unified safety eval
 
 So the numerical values are only for pipeline verification, not for scientific interpretation.
+## 2026-03-26 中文补充：严格对齐原始 Offline TTL 与串行实验脚本
+
+这一节是当前最新版补充说明，优先级高于文档里更早的旧描述。
+
+### 一、pipeline 默认超参数现已严格对齐 `examples/train_lora/offline_ttl.yaml`
+
+下面两个脚本现在都已经按原始 `offline_ttl.yaml` 对齐：
+
+- `scripts/experiments/run_clean_ttl_pipeline.py`
+- `scripts/experiments/run_mixed40_ttl_pipeline.py`
+
+严格对齐的关键项包括：
+
+- `model_name_or_path = meta-llama/Meta-Llama-3-8B-Instruct`
+- `stage = ttl`
+- `setting = offline_ttl`
+- `do_train = true`
+- `do_predict = true`
+- `finetuning_type = lora`
+- `lora_target = q_proj,v_proj`
+- `trust_remote_code = true`
+- `threshold = 3`
+- `lamb = 0.1`
+- `template = llama3`
+- `cutoff_len = 4096`
+- `max_samples = 41000`
+- `overwrite_cache = true`
+- `preprocessing_num_workers = 16`
+- `logging_steps = 10`
+- `save_steps = 8000`
+- `plot_loss = true`
+- `overwrite_output_dir = true`
+- `per_device_train_batch_size = 1`
+- `gradient_accumulation_steps = 1`
+- `learning_rate = 5.0e-5`
+- `num_train_epochs = 1.0`
+- `lr_scheduler_type = cosine`
+- `warmup_ratio = 0.1`
+- `bf16 = true`
+- `ddp_timeout = 180000000`
+- `temperature = 0.0`
+- `do_sample = false`
+- `max_new_tokens = 512`
+- `per_device_eval_batch_size = 1`
+- `predict_with_generate = true`
+- `report_to = none`
+
+说明：
+
+- 唯一允许不同的是数据集相关参数，因为 clean 和 mixed40 本来就要喂不同数据。
+- `smoke-test` 模式下会临时改成更小参数，这是为了本地 CPU 调试，不属于正式实验配置。
+
+### 二、统一安全评测脚本现在负责哪些指标
+
+统一评测入口：
+
+- `scripts/eval/run_wildjailbreak_controlled_eval.py`
+
+它现在统一负责下面 5 组评测数据：
+
+- `harmful_mix_2k`
+- `wildjailbreak_train_vanilla_benign_1k`
+- `wildjailbreak_eval_adversarial_benign`
+- `wildjailbreak_eval_adversarial_harmful`
+- `wildjailbreak_train_harmful_lift_holdout_1k`
+
+对应统一输出指标：
+
+- `mix_harmful_asr`
+- `train_vanilla_benign_refusal`
+- `eval_adversarial_benign_refusal`
+- `eval_adversarial_harmful_asr`
+- `jailbreak_lift`
+
+也就是说，现在：
+
+- base model
+- clean TTL 模型
+- mixed40 TTL 模型
+
+都应该走同一个统一评测脚本。
+
+### 三、你当前指定的串行实验流程
+
+按照你这次明确提出的流程，我新增了总控脚本：
+
+- `scripts/experiments/run_requested_ttl_serial_suite.py`
+
+这个脚本**只串行执行，不并行**，目的就是避免同时起多个训练/评测进程导致 OOM。
+
+它当前内置的执行顺序是：
+
+1. `agriculture_5k` clean
+   - clean：`TLM/data/AdaptEval/agriculture-qa_random_5k.json`
+   - mixed：`TLM/data/AdaptEval_mixed/agriculture_5k_advharm_40.json`
+
+2. `alpaca_gpt4_5k` clean
+   - clean：`TLM/data/AdaptEval/alpaca_gpt4_en_random_5k.json`
+   - mixed：`TLM/data/AdaptEval_mixed/agriculture_5k_advharm_40.json`
+   - 这是你当前指定的“cross-domain 对照”，不是程序自动推断出来的默认逻辑
+
+3. `gsm8k_5k` clean
+   - clean：`TLM/data/AdaptEval/gsm8k_random_5k.json`
+   - mixed：`TLM/data/AdaptEval_mixed/gsm8k_5k_advharm_40.json`
+
+### 四、串行总控脚本的执行逻辑
+
+`run_requested_ttl_serial_suite.py` 的逻辑非常简单：
+
+1. 先跑 clean pipeline
+2. clean pipeline 内部完成：
+   - offline TTL 训练
+   - clean 主任务评测
+   - 统一安全评测
+   - 导出/可选上传
+
+3. 再跑 mixed40 pipeline
+4. mixed40 pipeline 内部完成：
+   - offline TTL 训练
+   - benign 主任务评测
+   - 统一安全评测
+   - 导出/可选上传
+
+5. 一个 pair 结束后，才进入下一个 pair
+
+因此整套流程从设计上就是串行的。
+
+### 五、正式运行命令
+
+如果你要按你当前指定的整套流程串行跑，命令是：
+
+```powershell
+cd d:\Qsh的个人资料\科研\LLM\My_first_project\TLM
+$env:PYTHONPATH="$PWD\src"
+$env:HF_HOME="D:\hf_cache"
+$env:HF_DATASETS_CACHE="D:\hf_cache\datasets"
+$env:HUGGINGFACE_HUB_CACHE="D:\hf_cache\hub"
+
+python scripts\experiments\run_requested_ttl_serial_suite.py
+```
+
+如果你在 Linux 服务器上，等价写法是：
+
+```bash
+cd /path/to/My_first_project/TLM
+export PYTHONPATH="$PWD/src"
+export HF_HOME=/your/cache/path/hf_cache
+export HF_DATASETS_CACHE=/your/cache/path/hf_cache/datasets
+export HUGGINGFACE_HUB_CACHE=/your/cache/path/hf_cache/hub
+
+python scripts/experiments/run_requested_ttl_serial_suite.py
+```
+
+### 六、单独运行 clean / mixed40 pipeline 的正式命令
+
+#### 1. clean agriculture
+
+```powershell
+python scripts\experiments\run_clean_ttl_pipeline.py --dataset agriculture_5k
+```
+
+#### 2. mixed agriculture
+
+```powershell
+python scripts\experiments\run_mixed40_ttl_pipeline.py --dataset agriculture_5k
+```
+
+#### 3. clean alpaca
+
+```powershell
+python scripts\experiments\run_clean_ttl_pipeline.py --dataset alpaca_gpt4_5k
+```
+
+#### 4. mixed agriculture for alpaca 对照
+
+```powershell
+python scripts\experiments\run_mixed40_ttl_pipeline.py --dataset agriculture_5k
+```
+
+#### 5. clean gsm8k
+
+```powershell
+python scripts\experiments\run_clean_ttl_pipeline.py --dataset gsm8k_5k
+```
+
+#### 6. mixed gsm8k
+
+```powershell
+python scripts\experiments\run_mixed40_ttl_pipeline.py --dataset gsm8k_5k
+```
+
+### 七、统一评测脚本的单独用法
+
+如果你已经有一个训练好的模型目录或 adapter，也可以单独跑统一评测：
+
+```powershell
+python scripts\eval\run_wildjailbreak_controlled_eval.py `
+  --model-path saves\pipelines\clean\agriculture_5k\adapter `
+  --base-model-path meta-llama/Meta-Llama-3-8B-Instruct `
+  --trust-remote-code
+```
+
+### 八、输出结果在哪里看
+
+#### 1. clean pipeline
+
+- `saves/pipelines/clean/<dataset>/pipeline_summary.json`
+- `saves/pipelines/clean/<dataset>/adapter/`
+- `saves/pipelines/clean/<dataset>/controlled_eval/adapter/wildjailbreak_controlled_eval_summary.json`
+
+#### 2. mixed40 pipeline
+
+- `saves/pipelines/mixed40/<dataset>/pipeline_summary.json`
+- `saves/pipelines/mixed40/<dataset>/adapter/`
+- `saves/pipelines/mixed40/<dataset>/controlled_eval/adapter/wildjailbreak_controlled_eval_summary.json`
+
+#### 3. 串行总控脚本
+
+- `saves/serial_suites/requested_suite/requested_serial_ttl_suite_summary.json`
+
+### 九、这轮新增/修改的关键文件
+
+- `scripts/experiments/run_clean_ttl_pipeline.py`
+- `scripts/experiments/run_mixed40_ttl_pipeline.py`
+- `scripts/experiments/run_requested_ttl_serial_suite.py`
+- `scripts/eval/run_wildjailbreak_controlled_eval.py`
+
+### 十、目前需要你注意的一点
+
+你指定的第二组实验是：
+
+- clean：`alpaca_gpt4_5k`
+- mixed：`agriculture_5k_advharm_40`
+
+这个不是常规的“同领域 clean vs mixed”对照，而是**跨领域 mixed 对照**。  
+我已经按你的要求把它写进串行总控脚本里了，但后面你写实验结论时，建议你单独说明这一点。
