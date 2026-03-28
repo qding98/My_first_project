@@ -55,6 +55,29 @@ def load_local_env(path: Path) -> dict[str, str]:
     return values
 
 
+def warn_memory_risk(args: argparse.Namespace) -> None:
+    model_name = str(args.model_name_or_path)
+    if args.smoke_test:
+        return
+
+    if "Qwen/Qwen2.5-7B-Instruct" not in model_name:
+        return
+
+    if args.per_device_train_batch_size >= 20:
+        print(
+            "[warn] per_device_train_batch_size >= 20 is risky for the serial Qwen2.5-7B suite on an 80GB A800. "
+            "A previous agriculture mixed40 run OOMed at train batch size 32 while trying to allocate 13.98 GiB "
+            "with only 10.32 GiB free, and the long-form mixed40 profile can now reach cutoff_len 2048. "
+            "A safer formal starting point is train batch size 16."
+        )
+
+    if args.per_device_eval_batch_size >= 24:
+        print(
+            "[warn] per_device_eval_batch_size >= 24 is aggressive for the later controlled evaluations and "
+            "the long-form alpaca clean eval profile. A safer formal starting point is eval batch size 16."
+        )
+
+
 def parse_args(defaults: dict[str, str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run the requested clean/mixed40 offline TTL experiments serially with base/clean/mix evaluations."
@@ -75,7 +98,7 @@ def parse_args(defaults: dict[str, str]) -> argparse.Namespace:
     parser.add_argument("--warmup-ratio", type=float, default=0.1)
     parser.add_argument("--bf16", action="store_true", default=True)
     parser.add_argument("--logging-steps", type=int, default=10)
-    parser.add_argument("--save-steps", type=int, default=8000)
+    parser.add_argument("--save-steps", type=int, default=60)
     parser.add_argument("--ddp-timeout", type=int, default=180000000)
     parser.add_argument("--per-device-train-batch-size", type=int, default=1)
     parser.add_argument("--per-device-eval-batch-size", type=int, default=1)
@@ -84,6 +107,27 @@ def parse_args(defaults: dict[str, str]) -> argparse.Namespace:
     parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--only-dataset",
+        choices=[step["clean_dataset"] for step in DEFAULT_PLAN],
+        default=None,
+        help="Only run one clean/mixed40 pair from the serial suite.",
+    )
+    parser.add_argument(
+        "--start-from-dataset",
+        choices=[step["clean_dataset"] for step in DEFAULT_PLAN],
+        default=None,
+        help="Run this dataset and the remaining datasets in order.",
+    )
+    parser.add_argument(
+        "--resume-from-step",
+        choices=["base_model_eval", "clean_pipeline", "mixed_pipeline"],
+        default="base_model_eval",
+        help=(
+            "When used with --start-from-dataset, resume the first selected dataset from this step. "
+            "For example, use mixed_pipeline to skip the completed base/clean stages and rerun mixed40."
+        ),
+    )
     parser.add_argument("--disable-dataset-profiles", action="store_true")
     parser.add_argument("--skip-export", action="store_true")
     parser.add_argument("--skip-upload", action="store_true")
@@ -205,6 +249,10 @@ def main() -> None:
     args = parse_args(local_defaults)
     if args.smoke_test:
         apply_smoke_test_overrides(args)
+    warn_memory_risk(args)
+
+    if args.only_dataset and args.start_from_dataset:
+        raise ValueError("--only-dataset and --start-from-dataset cannot be used together.")
 
     env = make_env(args.hf_home)
     if args.use_swanlab:
@@ -218,31 +266,60 @@ def main() -> None:
     run_tag = build_run_tag(args.learning_rate, args.per_device_train_batch_size, args.seed, args.gradient_accumulation_steps)
     run_root = resolve_output_root(args.output_root) / run_tag
 
+    if args.only_dataset is not None:
+        selected_plan = [step for step in DEFAULT_PLAN if step["clean_dataset"] == args.only_dataset]
+    elif args.start_from_dataset is not None:
+        start_index = next(
+            idx for idx, step in enumerate(DEFAULT_PLAN) if step["clean_dataset"] == args.start_from_dataset
+        )
+        selected_plan = DEFAULT_PLAN[start_index:]
+    else:
+        selected_plan = list(DEFAULT_PLAN)
+
     suite_results = []
-    for step in DEFAULT_PLAN:
+    for index, step in enumerate(selected_plan):
         clean_dataset = step["clean_dataset"]
         dataset_root = run_root / clean_dataset
+        resume_step = "base_model_eval"
+        if args.start_from_dataset is not None and index == 0:
+            resume_step = args.resume_from_step
 
-        base_model_eval = run_model_eval_suite(
-            model_path=args.model_name_or_path,
-            model_role_dir=dataset_root / "base_model",
-            clean_dataset=clean_dataset,
-            env=env,
-            base_model_path=args.model_name_or_path,
-            dataset_dir=args.dataset_dir,
-            template=args.template,
-            cutoff_len=args.cutoff_len,
-            max_new_tokens=args.max_new_tokens,
-            temperature=args.temperature,
-            per_device_eval_batch_size=args.per_device_eval_batch_size,
-            preprocessing_num_workers=args.preprocessing_num_workers,
-            max_samples=args.max_samples,
-            smoke_test=args.smoke_test,
-            hf_home=args.hf_home,
-            use_dataset_profiles=not args.disable_dataset_profiles,
-        )
+        if resume_step == "base_model_eval":
+            base_model_eval = run_model_eval_suite(
+                model_path=args.model_name_or_path,
+                model_role_dir=dataset_root / "base_model",
+                clean_dataset=clean_dataset,
+                env=env,
+                base_model_path=args.model_name_or_path,
+                dataset_dir=args.dataset_dir,
+                template=args.template,
+                cutoff_len=args.cutoff_len,
+                max_new_tokens=args.max_new_tokens,
+                temperature=args.temperature,
+                per_device_eval_batch_size=args.per_device_eval_batch_size,
+                preprocessing_num_workers=args.preprocessing_num_workers,
+                max_samples=args.max_samples,
+                smoke_test=args.smoke_test,
+                hf_home=args.hf_home,
+                use_dataset_profiles=not args.disable_dataset_profiles,
+            )
+        else:
+            base_model_eval = {
+                "skipped": True,
+                "resume_from_step": resume_step,
+                "expected_summary_path": str(dataset_root / "base_model" / "model_eval_summary.json"),
+            }
 
-        clean_result = run_pipeline("run_clean_ttl_pipeline.py", clean_dataset, args, env, run_root)
+        if resume_step in {"base_model_eval", "clean_pipeline"}:
+            clean_result = run_pipeline("run_clean_ttl_pipeline.py", clean_dataset, args, env, run_root)
+        else:
+            clean_result = {
+                "script": "run_clean_ttl_pipeline.py",
+                "dataset": clean_dataset,
+                "summary_path": str(dataset_root / "clean_model" / "pipeline_summary.json"),
+                "skipped": True,
+                "resume_from_step": resume_step,
+            }
         mixed_result = run_pipeline("run_mixed40_ttl_pipeline.py", clean_dataset, args, env, run_root)
 
         suite_results.append(
@@ -277,6 +354,7 @@ def main() -> None:
             "threshold": args.threshold,
             "lamb": args.lamb,
             "preprocessing_num_workers": args.preprocessing_num_workers,
+            "only_dataset": args.only_dataset,
             "disable_dataset_profiles": args.disable_dataset_profiles,
         },
         "runs": suite_results,

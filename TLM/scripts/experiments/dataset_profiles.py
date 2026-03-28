@@ -13,6 +13,7 @@ SAFETY_DATASETS = {
 
 SMALL_CLEAN_DATASETS = {"agriculture_5k", "gsm8k_5k"}
 LONG_FORM_CLEAN_DATASETS = {"alpaca_gpt4_5k"}
+MIXED40_SUFFIX = "_advharm_40"
 
 
 @dataclass(frozen=True)
@@ -50,9 +51,12 @@ def resolve_generation_profile(
         return GenerationProfile(cutoff_len=768, max_new_tokens=128, profile_name="gsm8k_clean")
 
     if dataset_name in LONG_FORM_CLEAN_DATASETS:
-        return GenerationProfile(cutoff_len=1536, max_new_tokens=384, profile_name="long_form_clean")
+        return GenerationProfile(cutoff_len=1536, max_new_tokens=512, profile_name="long_form_clean")
 
-    if dataset_name.endswith("_advharm_40"):
+    if dataset_name.endswith(MIXED40_SUFFIX):
+        base_dataset_name = dataset_name.removesuffix(MIXED40_SUFFIX)
+        if base_dataset_name in LONG_FORM_CLEAN_DATASETS:
+            return GenerationProfile(cutoff_len=2048, max_new_tokens=512, profile_name="long_form_mixed40_train")
         return GenerationProfile(cutoff_len=1536, max_new_tokens=256, profile_name="mixed40_train")
 
     return GenerationProfile(

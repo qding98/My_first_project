@@ -1,10 +1,15 @@
 cd /root/data/My_first_project/TLM
 
 HF_HOME=/root/data/qsh/hf_cache
-LR=0.0001
+LR=0.00014
+# Based on the pulled A800 OOM log and the active dataset profiles:
+# - agriculture mixed40 at 1536 tokens already OOMed at train batch size 32
+# - alpaca_gpt4_5k_advharm_40 now uses the active long-form mixed40 profile (2048 / 512)
+# - a safer full-suite starting point is TRAIN_BS=16, EVAL_BS=16
 TRAIN_BS=16
 EVAL_BS=16
 GA_STEPS=1
+SAVE_STEPS=60
 SEED=42
 NUM_WORKERS=8
 MODEL_NAME="Qwen/Qwen2.5-7B-Instruct"
@@ -16,32 +21,82 @@ mkdir -p logs
 
 # Latest code enables dataset profiles by default.
 # Do not add --disable-dataset-profiles unless you intentionally want the old uniform behavior.
+# This is the full requested serial suite.
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
   --model-name-or-path "$MODEL_NAME" \
   --template qwen \
   --dataset-dir data \
   --hf-home "$HF_HOME" \
   --output-root "$OUTPUT_ROOT" \
-  --output-root "$OUTPUT_ROOT" \
   --learning-rate "$LR" \
   --per-device-train-batch-size "$TRAIN_BS" \
   --per-device-eval-batch-size "$EVAL_BS" \
   --gradient-accumulation-steps "$GA_STEPS" \
+  --save-steps "$SAVE_STEPS" \
   --preprocessing-num-workers "$NUM_WORKERS" \
   --seed "$SEED" \
-  --cutoff-len "$CUTOFF_LEN" \
-  --max-new-tokens "$MAX_NEW_TOKENS" \
-  --disable-dataset-profiles \
   --skip-export \
   --skip-upload \
   --use-swanlab \
   --swanlab-project "$SWANLAB_PROJECT" \
   --swanlab-workspace "$SWANLAB_WORKSPACE" \
-  --swanlab-project "$SWANLAB_PROJECT" \
-  --swanlab-workspace "$SWANLAB_WORKSPACE" \
   --swanlab-mode cloud \
   > "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.log" \
   2> "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.err" &
+
+
+# Agriculture-only formal rerun on latest code.
+# Uses the new --only-dataset entry and keeps dataset profiles enabled.
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
+  --only-dataset agriculture_5k \
+  --model-name-or-path "$MODEL_NAME" \
+  --template qwen \
+  --dataset-dir data \
+  --hf-home "$HF_HOME" \
+  --output-root "$OUTPUT_ROOT" \
+  --learning-rate "$LR" \
+  --per-device-train-batch-size "$TRAIN_BS" \
+  --per-device-eval-batch-size "$EVAL_BS" \
+  --gradient-accumulation-steps "$GA_STEPS" \
+  --save-steps "$SAVE_STEPS" \
+  --preprocessing-num-workers "$NUM_WORKERS" \
+  --seed "$SEED" \
+  --skip-export \
+  --skip-upload \
+  --use-swanlab \
+  --swanlab-project "$SWANLAB_PROJECT" \
+  --swanlab-workspace "$SWANLAB_WORKSPACE" \
+  --swanlab-mode cloud \
+  > "logs/agriculture_only_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.log" \
+  2> "logs/agriculture_only_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.err" &
+
+
+# Resume from the agriculture mixed40 OOM point.
+# This skips the already-completed agriculture base eval + clean pipeline,
+# reruns agriculture mixed40, then continues with alpaca_gpt4_5k and gsm8k_5k.
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
+  --start-from-dataset agriculture_5k \
+  --resume-from-step mixed_pipeline \
+  --model-name-or-path "$MODEL_NAME" \
+  --template qwen \
+  --dataset-dir data \
+  --hf-home "$HF_HOME" \
+  --output-root "$OUTPUT_ROOT" \
+  --learning-rate "$LR" \
+  --per-device-train-batch-size "$TRAIN_BS" \
+  --per-device-eval-batch-size "$EVAL_BS" \
+  --gradient-accumulation-steps "$GA_STEPS" \
+  --save-steps "$SAVE_STEPS" \
+  --preprocessing-num-workers "$NUM_WORKERS" \
+  --seed "$SEED" \
+  --skip-export \
+  --skip-upload \
+  --use-swanlab \
+  --swanlab-project "$SWANLAB_PROJECT" \
+  --swanlab-workspace "$SWANLAB_WORKSPACE" \
+  --swanlab-mode cloud \
+  > "logs/requested_suite_resume_from_agriculture_mixed_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.log" \
+  2> "logs/requested_suite_resume_from_agriculture_mixed_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.err" &
 
 
 # =========================
