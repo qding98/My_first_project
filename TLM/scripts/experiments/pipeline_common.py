@@ -106,7 +106,8 @@ def apply_smoke_test_overrides(args) -> None:
     args.logging_steps = 1
     args.save_steps = 1
     args.preprocessing_num_workers = min(getattr(args, "preprocessing_num_workers", 1), 1)
-    args.skip_upload = True
+    # Keep smoke uploads in dry-run mode so we exercise the export/upload path
+    # without pushing the tiny smoke model to ModelScope.
     args.dry_run_upload = True
 
 
