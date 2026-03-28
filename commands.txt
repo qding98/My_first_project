@@ -12,9 +12,9 @@ OUTPUT_ROOT="saves/serial_suites/requested_suite"
 SWANLAB_PROJECT="TLM_new_A800"
 SWANLAB_WORKSPACE="qding666"
 
-
-# Latest code enables dataset profiles by default.
-# Do not add --disable-dataset-profiles unless you intentionally want the old uniform behavior.
+CUTOFF_LEN=1024
+MAX_NEW_TOKENS=256
+# Override the mixed40 generation profile so the KV cache stays within 80 GiB on A800s.
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
   --model-name-or-path "$MODEL_NAME" \
   --template qwen \
@@ -27,6 +27,9 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiment
   --gradient-accumulation-steps "$GA_STEPS" \
   --preprocessing-num-workers "$NUM_WORKERS" \
   --seed "$SEED" \
+  --cutoff-len "$CUTOFF_LEN" \
+  --max-new-tokens "$MAX_NEW_TOKENS" \
+  --disable-dataset-profiles \
   --skip-export \
   --skip-upload \
   --use-swanlab \
