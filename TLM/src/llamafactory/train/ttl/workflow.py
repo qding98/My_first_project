@@ -35,6 +35,7 @@ class TTLModel(nn.Module):
                  training_args: "Seq2SeqTrainingArguments", 
                  finetuning_args: "FinetuningArguments", 
                  generating_args: "GeneratingArguments",
+                callbacks: Optional[List["TrainerCallback"]],
                 tokenizer_module,
                 template,
                 model
@@ -46,6 +47,7 @@ class TTLModel(nn.Module):
         self.model_args = model_args
         self.generating_args = generating_args
         self.template = template
+        self.callbacks = callbacks
 
         self.tokenizer_module = tokenizer_module
         self.tokenizer = self.tokenizer_module["tokenizer"]
@@ -55,7 +57,7 @@ class TTLModel(nn.Module):
         self.base_output_dir = self.training_args.output_dir
         
     
-    def reset_trainer(self, train_dataset, **kwargs):
+    def reset_trainer(self, train_dataset, callbacks: Optional[List["TrainerCallback"]] = None, **kwargs):
         data_collator = SFTDataCollatorWith4DAttentionMask(
             template=self.template,
             # pad_to_multiple_of=8 if self.training_args.do_train else None,  # for shift short attention
@@ -74,6 +76,7 @@ class TTLModel(nn.Module):
             model_args=self.model_args,
             data_args=self.data_args,
             data_collator=data_collator,
+            callbacks=callbacks,
             train_dataset=train_dataset,
             **self.tokenizer_module,
             **kwargs
@@ -101,9 +104,14 @@ class TTLModel(nn.Module):
         self.training_args.generation_max_length = self.training_args.generation_max_length or self.data_args.cutoff_len
         self.training_args.generation_num_beams = self.data_args.eval_num_beams or self.training_args.generation_num_beams
         self.training_args.remove_unused_columns = False  # important for multimodal dataset
-        self.reset_trainer(train_dataset=train_batch)
-        self.trainer.train(resume_from_checkpoint=self.training_args.resume_from_checkpoint)
+        self.reset_trainer(train_dataset=train_batch, callbacks=self.callbacks)
+        train_result = self.trainer.train(resume_from_checkpoint=self.training_args.resume_from_checkpoint)
         self.trainer.save_model()
+        self.trainer.log_metrics("train", train_result.metrics)
+        self.trainer.save_metrics("train", train_result.metrics)
+        self.trainer.save_state()
+        if self.trainer.is_world_process_zero() and self.finetuning_args.plot_loss:
+            plot_loss(self.base_output_dir, keys=["loss", "eval_loss", "eval_accuracy"])
 
         self.unwrap_model()
 
@@ -154,9 +162,14 @@ class TTLModel(nn.Module):
         self.training_args.output_dir = self.base_output_dir  # 保存 adapter 的文件夹
         self.tokenizer.padding_side = "right"
 
-        self.reset_trainer(train_dataset=train_batch)
-        self.trainer.train(resume_from_checkpoint=self.training_args.resume_from_checkpoint)
+        self.reset_trainer(train_dataset=train_batch, callbacks=self.callbacks)
+        train_result = self.trainer.train(resume_from_checkpoint=self.training_args.resume_from_checkpoint)
         self.trainer.save_model()    # 保存模型到 training_args.output_dir
+        self.trainer.log_metrics("train", train_result.metrics)
+        self.trainer.save_metrics("train", train_result.metrics)
+        self.trainer.save_state()
+        if self.trainer.is_world_process_zero() and self.finetuning_args.plot_loss:
+            plot_loss(self.base_output_dir, keys=["loss", "eval_loss", "eval_accuracy"])
 
         self.unwrap_model()
 
@@ -192,6 +205,7 @@ def run_ttl(
         training_args=training_args,
         finetuning_args=finetuning_args,
         generating_args=generating_args,
+        callbacks=callbacks,
         tokenizer_module=tokenizer_module,
         template=template, 
         model=model

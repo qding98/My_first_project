@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 
 from pipeline_common import (
+    DEFAULT_FORMAL_MODEL_NAME_OR_PATH,
+    DEFAULT_FORMAL_TEMPLATE,
     DEFAULT_MODELSCOPE_REPO_PREFIX,
-    ROOT,
+    apply_smoke_test_overrides,
     build_modescope_repo_id,
     ensure_dataset_exists,
     make_env,
     python_module_command,
+    resolve_output_root,
     run_command,
-    run_controlled_eval,
     run_eval,
+    run_model_eval_suite,
     task_type_from_dataset_name,
     ttl_predict_dir,
     write_json,
@@ -21,10 +23,11 @@ from pipeline_common import (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the fixed 40% mixed offline TTL experiment, then evaluate benign accuracy and the unified safety suite."
+        description="Train the mixed40 offline TTL model, then evaluate it on the requested clean and safety datasets."
     )
     parser.add_argument("--dataset", required=True, help="Base clean AdaptEval dataset name, e.g. agriculture_5k")
-    parser.add_argument("--model-name-or-path", default="meta-llama/Meta-Llama-3-8B-Instruct")
+    parser.add_argument("--model-name-or-path", default=DEFAULT_FORMAL_MODEL_NAME_OR_PATH)
+    parser.add_argument("--template", default=DEFAULT_FORMAL_TEMPLATE)
     parser.add_argument("--output-root", default="saves/pipelines/mixed40")
     parser.add_argument("--dataset-dir", default="data")
     parser.add_argument("--hf-home", default="D:\\hf_cache")
@@ -44,9 +47,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--per-device-train-batch-size", type=int, default=1)
     parser.add_argument("--per-device-eval-batch-size", type=int, default=1)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=1)
-    parser.add_argument("--preprocessing-num-workers", type=int, default=16)
+    parser.add_argument("--preprocessing-num-workers", type=int, default=8)
     parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--use-swanlab", action="store_true")
     parser.add_argument("--swanlab-project", default="tlm-mixed40")
     parser.add_argument("--swanlab-workspace", default=None)
@@ -68,28 +72,18 @@ def main() -> None:
     ensure_dataset_exists(mixed_dataset)
 
     if args.smoke_test:
-        args.model_name_or_path = "llamafactory/tiny-random-Llama-3"
-        args.cutoff_len = 64
-        args.max_new_tokens = 8
-        args.max_samples = 1
-        args.max_steps = 1
-        args.learning_rate = 1.0e-4
-        args.threshold = 0.1
-        args.bf16 = False
-        args.use_swanlab = False
-        args.skip_upload = True
-        args.dry_run_upload = True
+        apply_smoke_test_overrides(args)
 
     env = make_env(args.hf_home)
 
-    experiment_name = f"mixed40_{args.dataset}_offline_ttl"
-    base_dir = ROOT / args.output_root / args.dataset
+    output_root = resolve_output_root(args.output_root)
+    base_dir = output_root / args.dataset / "mix_model"
     adapter_dir = base_dir / "adapter"
-    controlled_eval_dir = base_dir / "controlled_eval"
     export_dir = base_dir / "exported_model"
     metrics_dir = base_dir / "metrics"
     summary_path = base_dir / "pipeline_summary.json"
 
+    experiment_name = f"mixed40_{args.dataset}_offline_ttl_seed_{args.seed}"
     train_command = [
         *python_module_command("-m", "llamafactory.cli", "train"),
         "--stage",
@@ -109,7 +103,7 @@ def main() -> None:
         "--dataset_dir",
         args.dataset_dir,
         "--template",
-        "llama3",
+        args.template,
         "--cutoff_len",
         str(args.cutoff_len),
         "--per_device_train_batch_size",
@@ -130,6 +124,8 @@ def main() -> None:
         str(args.threshold),
         "--lamb",
         str(args.lamb),
+        "--seed",
+        str(args.seed),
         "--do_train",
         "true",
         "--do_predict",
@@ -187,25 +183,15 @@ def main() -> None:
         if args.swanlab_workspace:
             train_command.extend(["--swanlab_workspace", args.swanlab_workspace])
 
-    run_command(train_command, cwd=ROOT, env=env)
+    run_command(train_command, cwd=resolve_output_root("."), env=env)
 
     mixed_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, args.max_new_tokens) / "generated_predictions.jsonl"
-    mixed_eval_json = metrics_dir / "mixed_eval.json"
-    mixed_metrics = run_eval(
+    mixed_eval_json = metrics_dir / "train_dataset_eval.json"
+    mixed_train_metrics = run_eval(
         mixed_prediction_file,
         mixed_eval_json,
         task_type=task_type_from_dataset_name(args.dataset),
         env=env,
-    )
-
-    controlled_eval = run_controlled_eval(
-        model_path=adapter_dir,
-        output_dir=controlled_eval_dir,
-        env=env,
-        base_model_path=args.model_name_or_path,
-        max_samples=args.max_samples,
-        smoke_test=args.smoke_test,
-        hf_home=args.hf_home,
     )
 
     exported = False
@@ -219,13 +205,13 @@ def main() -> None:
             "--finetuning_type",
             "lora",
             "--template",
-            "llama3",
+            args.template,
             "--export_dir",
             str(export_dir),
             "--trust_remote_code",
             "true",
         ]
-        run_command(export_command, cwd=ROOT, env=env)
+        run_command(export_command, cwd=resolve_output_root("."), env=env)
         exported = True
 
     uploaded = False
@@ -242,17 +228,36 @@ def main() -> None:
             upload_command.extend(["--token", args.modelscope_token])
         if args.dry_run_upload:
             upload_command.append("--dry-run")
-        run_command(upload_command, cwd=ROOT, env=env)
+        run_command(upload_command, cwd=resolve_output_root("."), env=env)
         uploaded = not args.dry_run_upload
+
+    model_eval_summary = run_model_eval_suite(
+        model_path=adapter_dir,
+        model_role_dir=base_dir,
+        clean_dataset=args.dataset,
+        env=env,
+        base_model_path=args.model_name_or_path,
+        dataset_dir=args.dataset_dir,
+        template=args.template,
+        cutoff_len=args.cutoff_len,
+        max_new_tokens=args.max_new_tokens,
+        temperature=args.temperature,
+        per_device_eval_batch_size=args.per_device_eval_batch_size,
+        preprocessing_num_workers=args.preprocessing_num_workers,
+        max_samples=args.max_samples,
+        smoke_test=args.smoke_test,
+        hf_home=args.hf_home,
+    )
 
     summary = {
         "experiment_name": experiment_name,
+        "model_role": "mix_model",
         "clean_dataset": args.dataset,
         "mixed_dataset": mixed_dataset,
         "adapter_dir": str(adapter_dir),
-        "mixed_prediction_file": str(mixed_prediction_file),
-        "mixed_eval_metrics": mixed_metrics,
-        "controlled_eval": controlled_eval,
+        "train_dataset_prediction_file": str(mixed_prediction_file),
+        "train_dataset_metrics": mixed_train_metrics,
+        "model_eval": model_eval_summary,
         "export_dir": str(export_dir) if exported else None,
         "modelscope_repo_id": repo_id if exported and not args.skip_upload else None,
         "uploaded": uploaded,

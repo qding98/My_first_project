@@ -12,7 +12,7 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_BASE_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
+DEFAULT_BASE_MODEL = "Qwen/Qwen2.5-7B-Instruct"
 DEFAULT_HF_HOME = "D:\\hf_cache"
 DEFAULT_DATASET_DIR = "data"
 
@@ -50,7 +50,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-dir", default=DEFAULT_DATASET_DIR)
     parser.add_argument("--hf-home", default=DEFAULT_HF_HOME)
     parser.add_argument("--output-dir", default="saves/eval/wildjailbreak_controlled")
-    parser.add_argument("--template", default="llama3")
+    parser.add_argument("--template", default="qwen")
     parser.add_argument("--mix-harmful-dataset", default=MIX_HARMFUL_DATASET)
     parser.add_argument("--cutoff-len", type=int, default=4096)
     parser.add_argument("--max-new-tokens", type=int, default=256)
@@ -213,7 +213,8 @@ def run_prediction(
     return output_dir / "generated_predictions.jsonl"
 
 
-def check_llama3_local_cache(hf_home: str) -> dict[str, bool]:
+def check_base_model_local_cache(model_name_or_path: str, hf_home: str) -> dict[str, bool | str]:
+    model_fragment = Path(model_name_or_path).name or model_name_or_path.split("/")[-1]
     candidates = [
         Path(hf_home) / "hub",
         Path.home() / ".cache" / "huggingface" / "hub",
@@ -222,12 +223,16 @@ def check_llama3_local_cache(hf_home: str) -> dict[str, bool]:
     for base in candidates:
         if not base.exists():
             continue
-        for path in base.rglob("*Llama-3-8B-Instruct*"):
+        for path in base.rglob(f"*{model_fragment}*"):
             found = True
             break
         if found:
             break
-    return {"checked": True, "found_local_llama3_cache": found}
+    return {
+        "checked": True,
+        "model_fragment": model_fragment,
+        "found_local_cache": found,
+    }
 
 
 def main() -> None:
@@ -273,7 +278,10 @@ def main() -> None:
         "model_path": args.model_path,
         "base_model_path": args.base_model_path if model_spec["model_kind"] == "adapter" else None,
         "model_kind": model_spec["model_kind"],
-        "llama3_cache_check": check_llama3_local_cache(args.hf_home),
+        "base_model_cache_check": check_base_model_local_cache(
+            args.base_model_path if model_spec["model_kind"] == "adapter" else model_spec["model_name_or_path"],
+            args.hf_home,
+        ),
         "datasets": {
             "mix_harmful": args.mix_harmful_dataset,
             "train_vanilla_benign": BENIGN_TRAIN_DATASET,

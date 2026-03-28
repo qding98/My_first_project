@@ -32,16 +32,21 @@ class SwanLabCallback(TrainerCallback):
             raise ImportError("SwanLab is not installed. Please run `pip install swanlab`.") from exc
 
         self.swanlab = swanlab
+        self.run = None
         api_key = os.getenv("SWANLAB_API_KEY")
         if api_key:
-            self.swanlab.login(api_key=api_key, save=False)
+            try:
+                self.swanlab.login(api_key=api_key, save=False)
+            except TypeError:
+                self.swanlab.login(api_key=api_key)
 
         init_kwargs = {
             "project": project,
-            "experiment_name": experiment_name,
             "config": config,
             "mode": mode,
         }
+        if experiment_name:
+            init_kwargs["experiment_name"] = experiment_name
         if workspace:
             init_kwargs["workspace"] = workspace
         if logdir:
@@ -61,11 +66,19 @@ class SwanLabCallback(TrainerCallback):
                 clean_logs[key] = value
 
         if clean_logs:
-            self.swanlab.log(clean_logs, step=state.global_step)
+            try:
+                self.swanlab.log(clean_logs, step=state.global_step)
+            except TypeError:
+                self.swanlab.log(clean_logs)
 
     @override
     def on_train_end(
         self, args: "TrainingArguments", state: "TrainerState", control: "TrainerControl", **kwargs
     ) -> None:
-        if state.is_world_process_zero and hasattr(self.swanlab, "finish"):
+        if not state.is_world_process_zero:
+            return
+
+        if self.run is not None and hasattr(self.run, "finish"):
+            self.run.finish()
+        elif hasattr(self.swanlab, "finish"):
             self.swanlab.finish()
