@@ -124,11 +124,21 @@ def parse_args(defaults: dict[str, str]) -> argparse.Namespace:
         choices=["base_model_eval", "clean_pipeline", "mixed_pipeline"],
         default="base_model_eval",
         help=(
-            "When used with --start-from-dataset, resume the first selected dataset from this step. "
-            "For example, use mixed_pipeline to skip the completed base/clean stages and rerun mixed40."
+            "When used with --only-dataset or --start-from-dataset, resume the first selected dataset from this step. "
+            "For example, use clean_pipeline to skip base-model eval, or mixed_pipeline to skip the completed "
+            "base/clean stages and rerun mixed40."
         ),
     )
     parser.add_argument("--disable-dataset-profiles", action="store_true")
+    parser.add_argument(
+        "--reuse-base-model-controlled-eval-summary",
+        default=None,
+        help=(
+            "Reuse an existing wildjailbreak_controlled_eval_summary.json for the base-model stage. "
+            "This lets later dataset runs skip duplicate base-model safety evaluation while still running "
+            "their own clean-dataset evaluation."
+        ),
+    )
     parser.add_argument("--skip-export", action="store_true")
     parser.add_argument("--skip-upload", action="store_true")
     parser.add_argument("--dry-run-upload", action="store_true")
@@ -281,7 +291,7 @@ def main() -> None:
         clean_dataset = step["clean_dataset"]
         dataset_root = run_root / clean_dataset
         resume_step = "base_model_eval"
-        if args.start_from_dataset is not None and index == 0:
+        if index == 0 and (args.start_from_dataset is not None or args.only_dataset is not None):
             resume_step = args.resume_from_step
 
         if resume_step == "base_model_eval":
@@ -302,6 +312,7 @@ def main() -> None:
                 smoke_test=args.smoke_test,
                 hf_home=args.hf_home,
                 use_dataset_profiles=not args.disable_dataset_profiles,
+                reuse_controlled_eval_summary=args.reuse_base_model_controlled_eval_summary,
             )
         else:
             base_model_eval = {
@@ -355,7 +366,10 @@ def main() -> None:
             "lamb": args.lamb,
             "preprocessing_num_workers": args.preprocessing_num_workers,
             "only_dataset": args.only_dataset,
+            "start_from_dataset": args.start_from_dataset,
+            "resume_from_step": args.resume_from_step,
             "disable_dataset_profiles": args.disable_dataset_profiles,
+            "reuse_base_model_controlled_eval_summary": args.reuse_base_model_controlled_eval_summary,
         },
         "runs": suite_results,
     }

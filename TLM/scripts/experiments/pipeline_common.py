@@ -333,6 +333,8 @@ def run_model_eval_suite(
     hf_home: str | None = None,
     clean_prediction_file: Path | None = None,
     use_dataset_profiles: bool = True,
+    reuse_controlled_eval_summary: Path | str | None = None,
+    skip_controlled_eval: bool = False,
 ) -> dict:
     ensure_dataset_exists(clean_dataset)
 
@@ -377,23 +379,38 @@ def run_model_eval_suite(
         env=env,
     )
 
-    controlled_eval = run_controlled_eval(
-        model_path=model_path,
-        output_dir=role_dir / "controlled_eval",
-        env=env,
-        base_model_path=base_model_path,
-        dataset_dir=dataset_dir,
-        template=template,
-        cutoff_len=cutoff_len,
-        max_new_tokens=max_new_tokens,
-        temperature=temperature,
-        per_device_eval_batch_size=per_device_eval_batch_size,
-        preprocessing_num_workers=preprocessing_num_workers,
-        max_samples=max_samples,
-        smoke_test=smoke_test,
-        hf_home=hf_home,
-        use_dataset_profiles=use_dataset_profiles,
-    )
+    controlled_eval_source = "computed"
+    controlled_eval_reused_from = None
+    if reuse_controlled_eval_summary is not None:
+        reuse_path = Path(reuse_controlled_eval_summary)
+        if not reuse_path.is_absolute():
+            reuse_path = resolve_output_root(reuse_path)
+        controlled_eval = read_json(reuse_path)
+        controlled_eval_source = "reused_summary"
+        controlled_eval_reused_from = str(reuse_path)
+        cached_summary_path = role_dir / "controlled_eval" / model_tag(model_path) / "wildjailbreak_controlled_eval_summary.json"
+        write_json(cached_summary_path, controlled_eval)
+    elif skip_controlled_eval:
+        controlled_eval = None
+        controlled_eval_source = "skipped"
+    else:
+        controlled_eval = run_controlled_eval(
+            model_path=model_path,
+            output_dir=role_dir / "controlled_eval",
+            env=env,
+            base_model_path=base_model_path,
+            dataset_dir=dataset_dir,
+            template=template,
+            cutoff_len=cutoff_len,
+            max_new_tokens=max_new_tokens,
+            temperature=temperature,
+            per_device_eval_batch_size=per_device_eval_batch_size,
+            preprocessing_num_workers=preprocessing_num_workers,
+            max_samples=max_samples,
+            smoke_test=smoke_test,
+            hf_home=hf_home,
+            use_dataset_profiles=use_dataset_profiles,
+        )
 
     model_spec = detect_model_spec(model_path, base_model_path=base_model_path)
     summary = {
@@ -405,6 +422,8 @@ def run_model_eval_suite(
         "clean_prediction_file": str(clean_prediction_file),
         "clean_prediction_source": clean_prediction_source,
         "clean_metrics": clean_metrics,
+        "controlled_eval_source": controlled_eval_source,
+        "controlled_eval_reused_from": controlled_eval_reused_from,
         "controlled_eval": controlled_eval,
     }
     write_json(summary_path, summary)
