@@ -22,15 +22,21 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiment
   --dataset-dir data \
   --hf-home "$HF_HOME" \
   --output-root "$OUTPUT_ROOT" \
+  --output-root "$OUTPUT_ROOT" \
   --learning-rate "$LR" \
   --per-device-train-batch-size "$TRAIN_BS" \
   --per-device-eval-batch-size "$EVAL_BS" \
   --gradient-accumulation-steps "$GA_STEPS" \
   --preprocessing-num-workers "$NUM_WORKERS" \
   --seed "$SEED" \
+  --cutoff-len "$CUTOFF_LEN" \
+  --max-new-tokens "$MAX_NEW_TOKENS" \
+  --disable-dataset-profiles \
   --skip-export \
   --skip-upload \
   --use-swanlab \
+  --swanlab-project "$SWANLAB_PROJECT" \
+  --swanlab-workspace "$SWANLAB_WORKSPACE" \
   --swanlab-project "$SWANLAB_PROJECT" \
   --swanlab-workspace "$SWANLAB_WORKSPACE" \
   --swanlab-mode cloud \
