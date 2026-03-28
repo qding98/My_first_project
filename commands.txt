@@ -1,0 +1,29 @@
+LR=0.00014
+TRAIN_BS=32
+EVAL_BS=32
+GA_STEPS=1
+SEED=42
+NUM_WORKERS=8
+MODEL_NAME="Qwen/Qwen2.5-7B-Instruct"
+
+nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
+  --model-name-or-path "$MODEL_NAME" \
+  --template qwen \
+  --dataset-dir data \
+  --hf-home "$HF_HOME" \
+  --learning-rate "$LR" \
+  --per-device-train-batch-size "$TRAIN_BS" \
+  --per-device-eval-batch-size "$EVAL_BS" \
+  --gradient-accumulation-steps "$GA_STEPS" \
+  --preprocessing-num-workers "$NUM_WORKERS" \
+  --seed "$SEED" \
+  --skip-export \
+  --skip-upload \
+  --use-swanlab \
+  --swanlab-project "TLM_new_A800" \
+  --swanlab-workspace "qding666" \
+  --swanlab-mode cloud \
+  --cutoff-len 1536 \
+  --max-new-tokens 384 \
+  > "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.log" \
+  2> "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.err" &
