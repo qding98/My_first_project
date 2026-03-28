@@ -13,10 +13,8 @@ from pipeline_common import (
     python_module_command,
     resolve_output_root,
     run_command,
-    run_eval,
     run_model_eval_suite,
-    task_type_from_dataset_name,
-    ttl_predict_dir,
+    select_generation_profile,
     write_json,
 )
 
@@ -51,6 +49,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--disable-dataset-profiles", action="store_true")
     parser.add_argument("--use-swanlab", action="store_true")
     parser.add_argument("--swanlab-project", default="tlm-mixed40")
     parser.add_argument("--swanlab-workspace", default=None)
@@ -80,8 +79,14 @@ def main() -> None:
     base_dir = output_root / args.dataset / "mix_model"
     adapter_dir = base_dir / "adapter"
     export_dir = base_dir / "exported_model"
-    metrics_dir = base_dir / "metrics"
     summary_path = base_dir / "pipeline_summary.json"
+    train_profile = select_generation_profile(
+        mixed_dataset,
+        cutoff_len=args.cutoff_len,
+        max_new_tokens=args.max_new_tokens,
+        smoke_test=args.smoke_test,
+        use_dataset_profiles=not args.disable_dataset_profiles,
+    )
 
     experiment_name = f"mixed40_{args.dataset}_offline_ttl_seed_{args.seed}"
     train_command = [
@@ -98,14 +103,12 @@ def main() -> None:
         "q_proj,v_proj",
         "--dataset",
         mixed_dataset,
-        "--eval_dataset",
-        mixed_dataset,
         "--dataset_dir",
         args.dataset_dir,
         "--template",
         args.template,
         "--cutoff_len",
-        str(args.cutoff_len),
+        str(train_profile.cutoff_len),
         "--per_device_train_batch_size",
         str(args.per_device_train_batch_size),
         "--gradient_accumulation_steps",
@@ -129,15 +132,13 @@ def main() -> None:
         "--do_train",
         "true",
         "--do_predict",
-        "true",
-        "--predict_with_generate",
-        "true",
+        "false",
         "--temperature",
         str(args.temperature),
         "--do_sample",
         "false",
         "--max_new_tokens",
-        str(args.max_new_tokens),
+        str(train_profile.max_new_tokens),
         "--output_dir",
         str(adapter_dir),
         "--run_name",
@@ -184,15 +185,6 @@ def main() -> None:
             train_command.extend(["--swanlab_workspace", args.swanlab_workspace])
 
     run_command(train_command, cwd=resolve_output_root("."), env=env)
-
-    mixed_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, args.max_new_tokens) / "generated_predictions.jsonl"
-    mixed_eval_json = metrics_dir / "train_dataset_eval.json"
-    mixed_train_metrics = run_eval(
-        mixed_prediction_file,
-        mixed_eval_json,
-        task_type=task_type_from_dataset_name(args.dataset),
-        env=env,
-    )
 
     exported = False
     if not args.skip_export:
@@ -247,6 +239,7 @@ def main() -> None:
         max_samples=args.max_samples,
         smoke_test=args.smoke_test,
         hf_home=args.hf_home,
+        use_dataset_profiles=not args.disable_dataset_profiles,
     )
 
     summary = {
@@ -254,9 +247,15 @@ def main() -> None:
         "model_role": "mix_model",
         "clean_dataset": args.dataset,
         "mixed_dataset": mixed_dataset,
+        "train_generation_profile": {
+            "cutoff_len": train_profile.cutoff_len,
+            "max_new_tokens": train_profile.max_new_tokens,
+            "profile_name": train_profile.profile_name,
+        },
+        "train_dataset_prediction_file": None,
+        "train_dataset_metrics": None,
+        "skipped_mixed_train_prediction": True,
         "adapter_dir": str(adapter_dir),
-        "train_dataset_prediction_file": str(mixed_prediction_file),
-        "train_dataset_metrics": mixed_train_metrics,
         "model_eval": model_eval_summary,
         "export_dir": str(export_dir) if exported else None,
         "modelscope_repo_id": repo_id if exported and not args.skip_upload else None,

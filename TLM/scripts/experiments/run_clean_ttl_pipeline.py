@@ -15,6 +15,7 @@ from pipeline_common import (
     run_command,
     run_eval,
     run_model_eval_suite,
+    select_generation_profile,
     task_type_from_dataset_name,
     ttl_predict_dir,
     write_json,
@@ -51,6 +52,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--disable-dataset-profiles", action="store_true")
     parser.add_argument("--use-swanlab", action="store_true")
     parser.add_argument("--swanlab-project", default="tlm-clean-baseline")
     parser.add_argument("--swanlab-workspace", default=None)
@@ -80,6 +82,13 @@ def main() -> None:
     export_dir = base_dir / "exported_model"
     metrics_dir = base_dir / "metrics"
     summary_path = base_dir / "pipeline_summary.json"
+    train_profile = select_generation_profile(
+        args.dataset,
+        cutoff_len=args.cutoff_len,
+        max_new_tokens=args.max_new_tokens,
+        smoke_test=args.smoke_test,
+        use_dataset_profiles=not args.disable_dataset_profiles,
+    )
 
     experiment_name = f"clean_{args.dataset}_offline_ttl_seed_{args.seed}"
     train_command = [
@@ -103,7 +112,7 @@ def main() -> None:
         "--template",
         args.template,
         "--cutoff_len",
-        str(args.cutoff_len),
+        str(train_profile.cutoff_len),
         "--per_device_train_batch_size",
         str(args.per_device_train_batch_size),
         "--gradient_accumulation_steps",
@@ -135,7 +144,7 @@ def main() -> None:
         "--do_sample",
         "false",
         "--max_new_tokens",
-        str(args.max_new_tokens),
+        str(train_profile.max_new_tokens),
         "--output_dir",
         str(adapter_dir),
         "--run_name",
@@ -183,7 +192,7 @@ def main() -> None:
 
     run_command(train_command, cwd=resolve_output_root("."), env=env)
 
-    clean_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, args.max_new_tokens) / "generated_predictions.jsonl"
+    clean_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, train_profile.max_new_tokens) / "generated_predictions.jsonl"
     clean_eval_json = metrics_dir / "train_dataset_eval.json"
     clean_train_metrics = run_eval(
         clean_prediction_file,
@@ -246,6 +255,7 @@ def main() -> None:
         smoke_test=args.smoke_test,
         hf_home=args.hf_home,
         clean_prediction_file=clean_prediction_file,
+        use_dataset_profiles=not args.disable_dataset_profiles,
     )
 
     summary = {
@@ -253,6 +263,11 @@ def main() -> None:
         "model_role": "clean_model",
         "clean_dataset": args.dataset,
         "train_dataset": args.dataset,
+        "train_generation_profile": {
+            "cutoff_len": train_profile.cutoff_len,
+            "max_new_tokens": train_profile.max_new_tokens,
+            "profile_name": train_profile.profile_name,
+        },
         "adapter_dir": str(adapter_dir),
         "train_dataset_prediction_file": str(clean_prediction_file),
         "train_dataset_metrics": clean_train_metrics,

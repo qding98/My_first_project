@@ -10,8 +10,12 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
-
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.experiments.dataset_profiles import GenerationProfile, profile_to_dict, resolve_generation_profile
+
 DEFAULT_BASE_MODEL = "Qwen/Qwen2.5-7B-Instruct"
 DEFAULT_HF_HOME = "D:\\hf_cache"
 DEFAULT_DATASET_DIR = "data"
@@ -58,6 +62,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--per-device-eval-batch-size", type=int, default=1)
     parser.add_argument("--preprocessing-num-workers", type=int, default=8)
     parser.add_argument("--max-samples", type=int, default=None)
+    parser.add_argument("--disable-dataset-profiles", action="store_true")
     parser.add_argument("--trust-remote-code", action="store_true")
     parser.add_argument("--smoke-test", action="store_true")
     return parser.parse_args()
@@ -165,7 +170,21 @@ def run_prediction(
     args: argparse.Namespace,
     env: dict[str, str],
     output_dir: Path,
-) -> Path:
+) -> tuple[Path, dict[str, int | str]]:
+    if args.disable_dataset_profiles and not args.smoke_test:
+        profile = GenerationProfile(
+            cutoff_len=args.cutoff_len,
+            max_new_tokens=args.max_new_tokens,
+            profile_name="uniform_cli",
+        )
+    else:
+        profile = resolve_generation_profile(
+            dataset_name,
+            default_cutoff_len=args.cutoff_len,
+            default_max_new_tokens=args.max_new_tokens,
+            smoke_test=args.smoke_test,
+        )
+
     command = [
         *python_command("-m", "llamafactory.cli", "train"),
         "--stage",
@@ -183,9 +202,9 @@ def run_prediction(
         "--template",
         args.template,
         "--cutoff_len",
-        str(args.cutoff_len),
+        str(profile.cutoff_len),
         "--max_new_tokens",
-        str(args.max_new_tokens),
+        str(profile.max_new_tokens),
         "--temperature",
         str(args.temperature),
         "--do_sample",
@@ -210,7 +229,7 @@ def run_prediction(
     if args.max_samples is not None:
         command.extend(["--max_samples", str(args.max_samples)])
     run_command(command, env=env)
-    return output_dir / "generated_predictions.jsonl"
+    return output_dir / "generated_predictions.jsonl", profile_to_dict(profile)
 
 
 def check_base_model_local_cache(model_name_or_path: str, hf_home: str) -> dict[str, bool | str]:
@@ -253,6 +272,7 @@ def main() -> None:
     base_dir.mkdir(parents=True, exist_ok=True)
 
     prediction_files = {}
+    generation_profiles = {}
     for dataset_name in [
         args.mix_harmful_dataset,
         BENIGN_TRAIN_DATASET,
@@ -260,7 +280,7 @@ def main() -> None:
         HARMFUL_EVAL_DATASET,
         LIFT_DATASET,
     ]:
-        prediction_files[dataset_name] = run_prediction(
+        prediction_files[dataset_name], generation_profiles[dataset_name] = run_prediction(
             dataset_name,
             model_spec,
             args,
@@ -289,6 +309,7 @@ def main() -> None:
             "eval_adversarial_harmful": HARMFUL_EVAL_DATASET,
             "harmful_lift_holdout": LIFT_DATASET,
         },
+        "generation_profiles": generation_profiles,
         "metrics": {
             "mix_harmful_asr": refusal_rate(mix_harmful_rows),
             "train_vanilla_benign_refusal": refusal_rate(train_benign_rows),

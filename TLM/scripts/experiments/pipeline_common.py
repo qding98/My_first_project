@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
+from dataset_profiles import GenerationProfile, profile_to_dict, resolve_generation_profile
 
 ROOT = Path(__file__).resolve().parents[2]
 DATASET_INFO_PATH = ROOT / "data" / "dataset_info.json"
@@ -158,6 +159,26 @@ def run_eval(prediction_file: Path, output_json: Path, task_type: str = "auto", 
     return read_json(output_json)
 
 
+def select_generation_profile(
+    dataset_name: str,
+    *,
+    cutoff_len: int,
+    max_new_tokens: int,
+    smoke_test: bool = False,
+    use_dataset_profiles: bool = True,
+) -> GenerationProfile:
+    if use_dataset_profiles:
+        return resolve_generation_profile(
+            dataset_name,
+            default_cutoff_len=cutoff_len,
+            default_max_new_tokens=max_new_tokens,
+            smoke_test=smoke_test,
+        )
+
+    profile_name = "smoke_uniform" if smoke_test else "uniform_cli"
+    return GenerationProfile(cutoff_len=cutoff_len, max_new_tokens=max_new_tokens, profile_name=profile_name)
+
+
 def run_prediction(
     dataset_name: str,
     model_path: Path | str,
@@ -173,9 +194,18 @@ def run_prediction(
     per_device_eval_batch_size: int = 1,
     preprocessing_num_workers: int = 8,
     max_samples: int | None = None,
-) -> Path:
+    smoke_test: bool = False,
+    use_dataset_profiles: bool = True,
+) -> tuple[Path, GenerationProfile]:
     ensure_dataset_exists(dataset_name)
     model_spec = detect_model_spec(model_path, base_model_path=base_model_path)
+    profile = select_generation_profile(
+        dataset_name,
+        cutoff_len=cutoff_len,
+        max_new_tokens=max_new_tokens,
+        smoke_test=smoke_test,
+        use_dataset_profiles=use_dataset_profiles,
+    )
 
     command = [
         *python_module_command("-m", "llamafactory.cli", "train"),
@@ -194,9 +224,9 @@ def run_prediction(
         "--template",
         template,
         "--cutoff_len",
-        str(cutoff_len),
+        str(profile.cutoff_len),
         "--max_new_tokens",
-        str(max_new_tokens),
+        str(profile.max_new_tokens),
         "--temperature",
         str(temperature),
         "--do_sample",
@@ -222,7 +252,7 @@ def run_prediction(
         command.extend(["--max_samples", str(max_samples)])
 
     run_command(command, cwd=ROOT, env=env)
-    return output_dir / "generated_predictions.jsonl"
+    return output_dir / "generated_predictions.jsonl", profile
 
 
 def run_controlled_eval(
@@ -241,6 +271,7 @@ def run_controlled_eval(
     max_samples: int | None = None,
     smoke_test: bool = False,
     hf_home: str | None = None,
+    use_dataset_profiles: bool = True,
 ) -> dict:
     command = python_module_command(
         "scripts/eval/run_wildjailbreak_controlled_eval.py",
@@ -271,6 +302,8 @@ def run_controlled_eval(
         command.extend(["--hf-home", hf_home])
     if smoke_test:
         command.append("--smoke-test")
+    if not use_dataset_profiles:
+        command.append("--disable-dataset-profiles")
     command.extend(["--trust-remote-code"])
 
     run_command(command, cwd=ROOT, env=env)
@@ -298,6 +331,7 @@ def run_model_eval_suite(
     smoke_test: bool = False,
     hf_home: str | None = None,
     clean_prediction_file: Path | None = None,
+    use_dataset_profiles: bool = True,
 ) -> dict:
     ensure_dataset_exists(clean_dataset)
 
@@ -305,9 +339,16 @@ def run_model_eval_suite(
     metrics_dir = role_dir / "metrics"
     prediction_root = role_dir / "evaluation_predictions"
     summary_path = role_dir / "model_eval_summary.json"
+    clean_profile = select_generation_profile(
+        clean_dataset,
+        cutoff_len=cutoff_len,
+        max_new_tokens=max_new_tokens,
+        smoke_test=smoke_test,
+        use_dataset_profiles=use_dataset_profiles,
+    )
 
     if clean_prediction_file is None:
-        clean_prediction_file = run_prediction(
+        clean_prediction_file, clean_profile = run_prediction(
             clean_dataset,
             model_path,
             prediction_root / clean_dataset,
@@ -321,6 +362,8 @@ def run_model_eval_suite(
             per_device_eval_batch_size=per_device_eval_batch_size,
             preprocessing_num_workers=preprocessing_num_workers,
             max_samples=max_samples,
+            smoke_test=smoke_test,
+            use_dataset_profiles=use_dataset_profiles,
         )
         clean_prediction_source = "evaluation_predictions"
     else:
@@ -348,6 +391,7 @@ def run_model_eval_suite(
         max_samples=max_samples,
         smoke_test=smoke_test,
         hf_home=hf_home,
+        use_dataset_profiles=use_dataset_profiles,
     )
 
     model_spec = detect_model_spec(model_path, base_model_path=base_model_path)
@@ -356,6 +400,7 @@ def run_model_eval_suite(
         "model_kind": model_spec["model_kind"],
         "base_model_path": base_model_path if model_spec["model_kind"] == "adapter" else None,
         "clean_dataset": clean_dataset,
+        "clean_generation_profile": profile_to_dict(clean_profile),
         "clean_prediction_file": str(clean_prediction_file),
         "clean_prediction_source": clean_prediction_source,
         "clean_metrics": clean_metrics,

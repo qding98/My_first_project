@@ -115,19 +115,25 @@ class TTLModel(nn.Module):
 
         self.unwrap_model()
 
-        # predict
-        gen_kwargs = self.generating_args.to_dict()
-        gen_kwargs["eos_token_id"] = [self.tokenizer.eos_token_id] + self.tokenizer.additional_special_tokens_ids
-        gen_kwargs["pad_token_id"] = self.tokenizer.pad_token_id
-        gen_kwargs["logits_processor"] = get_logits_processor()
-        # decoder-only models must use left-padding for batched generation.
-        if self.training_args.predict_with_generate:
-            self.tokenizer.padding_side = "left"  # use left-padding in generation
-        self.training_args.output_dir = self.base_output_dir + f'/predict-temperature_{self.generating_args.temperature}-max_new_tokens_{self.generating_args.max_new_tokens}'
-        
-        self.reset_trainer(train_dataset=None)
-        predict_results = self.trainer.predict(predict_batch, metric_key_prefix="predict", **gen_kwargs)
-        self.trainer.save_predictions(predict_batch, predict_results)
+        if self.training_args.do_predict:
+            if predict_batch is None:
+                raise ValueError("`predict_batch` is required when `do_predict` is enabled in offline TTL.")
+
+            gen_kwargs = self.generating_args.to_dict()
+            gen_kwargs["eos_token_id"] = [self.tokenizer.eos_token_id] + self.tokenizer.additional_special_tokens_ids
+            gen_kwargs["pad_token_id"] = self.tokenizer.pad_token_id
+            gen_kwargs["logits_processor"] = get_logits_processor()
+            # decoder-only models must use left-padding for batched generation.
+            if self.training_args.predict_with_generate:
+                self.tokenizer.padding_side = "left"  # use left-padding in generation
+            self.training_args.output_dir = (
+                self.base_output_dir
+                + f'/predict-temperature_{self.generating_args.temperature}-max_new_tokens_{self.generating_args.max_new_tokens}'
+            )
+
+            self.reset_trainer(train_dataset=None)
+            predict_results = self.trainer.predict(predict_batch, metric_key_prefix="predict", **gen_kwargs)
+            self.trainer.save_predictions(predict_batch, predict_results)
     
 
     def forward_for_online(self, train_batch, predict_batch):
@@ -139,23 +145,30 @@ class TTLModel(nn.Module):
         # use the latest model to predict
         ####################################
 
-        self.training_args.output_dir = self.base_output_dir + f'/predict-temperature_{self.generating_args.temperature}-max_new_tokens_{self.generating_args.max_new_tokens}'  # the folder to save prediction results
-        # Keyword arguments for `model.generate`
-        gen_kwargs = self.generating_args.to_dict()
-        gen_kwargs["eos_token_id"] = [self.tokenizer.eos_token_id] + self.tokenizer.additional_special_tokens_ids
-        gen_kwargs["pad_token_id"] = self.tokenizer.pad_token_id
-        gen_kwargs["logits_processor"] = get_logits_processor()
-        # decoder-only models must use left-padding for batched generation.
-        if self.training_args.predict_with_generate:
-            self.tokenizer.padding_side = "left"  # use left-padding in generation
-        
-        self.training_args.generation_max_length = self.training_args.generation_max_length or self.data_args.cutoff_len
-        self.training_args.generation_num_beams = self.data_args.eval_num_beams or self.training_args.generation_num_beams
-        self.training_args.remove_unused_columns = False  # important for multimodal dataset
-        
-        self.reset_trainer(train_dataset=None)
-        predict_results = self.trainer.predict(predict_batch, metric_key_prefix="predict", **gen_kwargs)
-        self.trainer.save_predictions(predict_batch, predict_results)
+        if self.training_args.do_predict:
+            if predict_batch is None:
+                raise ValueError("`predict_batch` is required when `do_predict` is enabled in online TTL.")
+
+            self.training_args.output_dir = (
+                self.base_output_dir
+                + f'/predict-temperature_{self.generating_args.temperature}-max_new_tokens_{self.generating_args.max_new_tokens}'
+            )  # the folder to save prediction results
+            # Keyword arguments for `model.generate`
+            gen_kwargs = self.generating_args.to_dict()
+            gen_kwargs["eos_token_id"] = [self.tokenizer.eos_token_id] + self.tokenizer.additional_special_tokens_ids
+            gen_kwargs["pad_token_id"] = self.tokenizer.pad_token_id
+            gen_kwargs["logits_processor"] = get_logits_processor()
+            # decoder-only models must use left-padding for batched generation.
+            if self.training_args.predict_with_generate:
+                self.tokenizer.padding_side = "left"  # use left-padding in generation
+
+            self.training_args.generation_max_length = self.training_args.generation_max_length or self.data_args.cutoff_len
+            self.training_args.generation_num_beams = self.data_args.eval_num_beams or self.training_args.generation_num_beams
+            self.training_args.remove_unused_columns = False  # important for multimodal dataset
+
+            self.reset_trainer(train_dataset=None)
+            predict_results = self.trainer.predict(predict_batch, metric_key_prefix="predict", **gen_kwargs)
+            self.trainer.save_predictions(predict_batch, predict_results)
         
         self.unwrap_model()
 
@@ -193,10 +206,13 @@ def run_ttl(
     model = load_model(tokenizer, model_args, finetuning_args, training_args.do_train)
 
     
-    train_dataset = dataset_module['train_dataset']
-    eval_dataset = dataset_module['eval_dataset']
+    train_dataset = dataset_module["train_dataset"]
+    eval_dataset = dataset_module.get("eval_dataset")
     print(train_dataset, eval_dataset)
-    print(train_dataset[0], '\n', eval_dataset[0])
+    if eval_dataset is not None:
+        print(train_dataset[0], '\n', eval_dataset[0])
+    else:
+        print(train_dataset[0])
     
 
     ttl_model = TTLModel(

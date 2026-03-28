@@ -84,6 +84,7 @@ def parse_args(defaults: dict[str, str]) -> argparse.Namespace:
     parser.add_argument("--max-samples", type=int, default=41000)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--disable-dataset-profiles", action="store_true")
     parser.add_argument("--skip-export", action="store_true")
     parser.add_argument("--skip-upload", action="store_true")
     parser.add_argument("--dry-run-upload", action="store_true")
@@ -168,6 +169,8 @@ def run_pipeline(script_name: str, dataset: str, args: argparse.Namespace, env: 
         command.extend(["--max-samples", str(args.max_samples)])
     if args.max_steps is not None:
         command.extend(["--max-steps", str(args.max_steps)])
+    if args.disable_dataset_profiles:
+        command.append("--disable-dataset-profiles")
     if args.skip_export:
         command.append("--skip-export")
     if args.skip_upload:
@@ -236,6 +239,7 @@ def main() -> None:
             max_samples=args.max_samples,
             smoke_test=args.smoke_test,
             hf_home=args.hf_home,
+            use_dataset_profiles=not args.disable_dataset_profiles,
         )
 
         clean_result = run_pipeline("run_clean_ttl_pipeline.py", clean_dataset, args, env, run_root)
@@ -273,6 +277,7 @@ def main() -> None:
             "threshold": args.threshold,
             "lamb": args.lamb,
             "preprocessing_num_workers": args.preprocessing_num_workers,
+            "disable_dataset_profiles": args.disable_dataset_profiles,
         },
         "runs": suite_results,
     }
