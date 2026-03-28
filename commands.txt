@@ -1,3 +1,6 @@
+cd /root/data/My_first_project/TLM
+
+HF_HOME=/root/data/qsh/hf_cache
 LR=0.00014
 TRAIN_BS=32
 EVAL_BS=32
@@ -5,12 +8,19 @@ GA_STEPS=1
 SEED=42
 NUM_WORKERS=8
 MODEL_NAME="Qwen/Qwen2.5-7B-Instruct"
+OUTPUT_ROOT="saves/serial_suites/requested_suite"
+SWANLAB_PROJECT="TLM_new_A800"
+SWANLAB_WORKSPACE="qding666"
 
-nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
+
+# Latest code enables dataset profiles by default.
+# Do not add --disable-dataset-profiles unless you intentionally want the old uniform behavior.
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
   --model-name-or-path "$MODEL_NAME" \
   --template qwen \
   --dataset-dir data \
   --hf-home "$HF_HOME" \
+  --output-root "$OUTPUT_ROOT" \
   --learning-rate "$LR" \
   --per-device-train-batch-size "$TRAIN_BS" \
   --per-device-eval-batch-size "$EVAL_BS" \
@@ -20,10 +30,11 @@ nohup python scripts/experiments/run_requested_ttl_serial_suite.py \
   --skip-export \
   --skip-upload \
   --use-swanlab \
-  --swanlab-project "TLM_new_A800" \
-  --swanlab-workspace "qding666" \
+  --swanlab-project "$SWANLAB_PROJECT" \
+  --swanlab-workspace "$SWANLAB_WORKSPACE" \
   --swanlab-mode cloud \
-  --cutoff-len 1536 \
-  --max-new-tokens 384 \
   > "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.log" \
   2> "logs/requested_suite_lr${LR}_trainbs${TRAIN_BS}_evalbs${EVAL_BS}_seed${SEED}.err" &
+
+kill -STOP <pid>
+kill -CONT <pid>
