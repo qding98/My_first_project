@@ -80,19 +80,6 @@ def python_module_command(*args: str) -> list[str]:
     return [sys.executable, *args]
 
 
-def task_type_from_dataset_name(dataset_name: str) -> str:
-    lowered = dataset_name.lower()
-    if "gsm8k" in lowered:
-        return "gsm8k"
-    if "logiqa" in lowered:
-        return "logiqa"
-    if "meta_math" in lowered:
-        return "meta_math"
-    if "agriculture" in lowered:
-        return "exact_match"
-    return "similarity"
-
-
 def apply_smoke_test_overrides(args) -> None:
     args.model_name_or_path = DEFAULT_SMOKE_MODEL_NAME_OR_PATH
     args.template = DEFAULT_SMOKE_TEMPLATE
@@ -142,22 +129,15 @@ def detect_model_spec(model_path_arg: Path | str, base_model_path: str | None = 
     return {"model_name_or_path": str(model_path_arg), "model_kind": "hf_id"}
 
 
-def run_eval(prediction_file: Path, output_json: Path, task_type: str = "auto", env: dict | None = None) -> dict:
-    output_json.parent.mkdir(parents=True, exist_ok=True)
-    run_command(
-        python_module_command(
-            "scripts/eval/eval_ttl_mixed.py",
-            "--prediction-file",
-            str(prediction_file),
-            "--task-type",
-            task_type,
-            "--output-json",
-            str(output_json),
-        ),
-        cwd=ROOT,
-        env=env,
-    )
-    return read_json(output_json)
+def load_eval_results_metrics(eval_dir: Path, output_json: Path | None = None) -> tuple[dict, Path]:
+    for candidate in (eval_dir / "eval_results.json", eval_dir / "all_results.json"):
+        if candidate.exists():
+            metrics = read_json(candidate)
+            if output_json is not None:
+                write_json(output_json, metrics)
+            return metrics, candidate
+
+    raise FileNotFoundError(f"No native eval metrics file found in {eval_dir}.")
 
 
 def select_generation_profile(
@@ -180,7 +160,7 @@ def select_generation_profile(
     return GenerationProfile(cutoff_len=cutoff_len, max_new_tokens=max_new_tokens, profile_name=profile_name)
 
 
-def run_prediction(
+def run_clean_eval(
     dataset_name: str,
     model_path: Path | str,
     output_dir: Path,
@@ -212,9 +192,13 @@ def run_prediction(
         *python_module_command("-m", "llamafactory.cli", "train"),
         "--stage",
         "sft",
-        "--do_predict",
+        "--do_eval",
         "true",
+        "--do_predict",
+        "false",
         "--predict_with_generate",
+        "false",
+        "--compute_accuracy",
         "true",
         "--model_name_or_path",
         model_spec["model_name_or_path"],
@@ -226,12 +210,6 @@ def run_prediction(
         template,
         "--cutoff_len",
         str(profile.cutoff_len),
-        "--max_new_tokens",
-        str(profile.max_new_tokens),
-        "--temperature",
-        str(temperature),
-        "--do_sample",
-        "false",
         "--per_device_eval_batch_size",
         str(per_device_eval_batch_size),
         "--output_dir",
@@ -253,7 +231,7 @@ def run_prediction(
         command.extend(["--max_samples", str(max_samples)])
 
     run_command(command, cwd=ROOT, env=env)
-    return output_dir / "generated_predictions.jsonl", profile
+    return output_dir, profile
 
 
 def run_controlled_eval(
@@ -331,7 +309,6 @@ def run_model_eval_suite(
     max_samples: int | None = None,
     smoke_test: bool = False,
     hf_home: str | None = None,
-    clean_prediction_file: Path | None = None,
     use_dataset_profiles: bool = True,
     reuse_controlled_eval_summary: Path | str | None = None,
     skip_controlled_eval: bool = False,
@@ -350,34 +327,26 @@ def run_model_eval_suite(
         use_dataset_profiles=use_dataset_profiles,
     )
 
-    if clean_prediction_file is None:
-        clean_prediction_file, clean_profile = run_prediction(
-            clean_dataset,
-            model_path,
-            prediction_root / clean_dataset,
-            env=env,
-            base_model_path=base_model_path,
-            dataset_dir=dataset_dir,
-            template=template,
-            cutoff_len=cutoff_len,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            per_device_eval_batch_size=per_device_eval_batch_size,
-            preprocessing_num_workers=preprocessing_num_workers,
-            max_samples=max_samples,
-            smoke_test=smoke_test,
-            use_dataset_profiles=use_dataset_profiles,
-        )
-        clean_prediction_source = "evaluation_predictions"
-    else:
-        clean_prediction_source = "training_predict_output"
-
-    clean_metrics = run_eval(
-        Path(clean_prediction_file),
-        metrics_dir / "clean_eval.json",
-        task_type=task_type_from_dataset_name(clean_dataset),
+    clean_eval_output = metrics_dir / "clean_eval.json"
+    clean_eval_run_dir, clean_profile = run_clean_eval(
+        clean_dataset,
+        model_path,
+        prediction_root / clean_dataset,
         env=env,
+        base_model_path=base_model_path,
+        dataset_dir=dataset_dir,
+        template=template,
+        cutoff_len=cutoff_len,
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        per_device_eval_batch_size=per_device_eval_batch_size,
+        preprocessing_num_workers=preprocessing_num_workers,
+        max_samples=max_samples,
+        smoke_test=smoke_test,
+        use_dataset_profiles=use_dataset_profiles,
     )
+    clean_metrics, native_clean_eval_file = load_eval_results_metrics(clean_eval_run_dir, clean_eval_output)
+    clean_metric_source = "eval_results_json"
 
     controlled_eval_source = "computed"
     controlled_eval_reused_from = None
@@ -419,9 +388,11 @@ def run_model_eval_suite(
         "base_model_path": base_model_path if model_spec["model_kind"] == "adapter" else None,
         "clean_dataset": clean_dataset,
         "clean_generation_profile": profile_to_dict(clean_profile),
-        "clean_prediction_file": str(clean_prediction_file),
-        "clean_prediction_source": clean_prediction_source,
+        "clean_eval_run_dir": str(clean_eval_run_dir),
+        "native_clean_eval_file": str(native_clean_eval_file),
+        "clean_eval_file": str(clean_eval_output),
         "clean_metrics": clean_metrics,
+        "clean_metric_source": clean_metric_source,
         "controlled_eval_source": controlled_eval_source,
         "controlled_eval_reused_from": controlled_eval_reused_from,
         "controlled_eval": controlled_eval,

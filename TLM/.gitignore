@@ -168,7 +168,7 @@ hf_cache/
 om_cache/
 cache/
 config/
-saves/
 output/
 wandb/
 models/
+saves/

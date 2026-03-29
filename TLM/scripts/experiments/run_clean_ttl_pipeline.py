@@ -13,10 +13,8 @@ from pipeline_common import (
     python_module_command,
     resolve_output_root,
     run_command,
-    run_eval,
     run_model_eval_suite,
     select_generation_profile,
-    task_type_from_dataset_name,
     ttl_predict_dir,
     write_json,
 )
@@ -80,7 +78,6 @@ def main() -> None:
     base_dir = output_root / args.dataset / "clean_model"
     adapter_dir = base_dir / "adapter"
     export_dir = base_dir / "exported_model"
-    metrics_dir = base_dir / "metrics"
     summary_path = base_dir / "pipeline_summary.json"
     train_profile = select_generation_profile(
         args.dataset,
@@ -192,14 +189,7 @@ def main() -> None:
 
     run_command(train_command, cwd=resolve_output_root("."), env=env)
 
-    clean_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, train_profile.max_new_tokens) / "generated_predictions.jsonl"
-    clean_eval_json = metrics_dir / "train_dataset_eval.json"
-    clean_train_metrics = run_eval(
-        clean_prediction_file,
-        clean_eval_json,
-        task_type=task_type_from_dataset_name(args.dataset),
-        env=env,
-    )
+    ttl_training_prediction_file = ttl_predict_dir(adapter_dir, args.temperature, train_profile.max_new_tokens) / "generated_predictions.jsonl"
 
     exported = False
     if not args.skip_export:
@@ -254,10 +244,8 @@ def main() -> None:
         max_samples=args.max_samples,
         smoke_test=args.smoke_test,
         hf_home=args.hf_home,
-        clean_prediction_file=clean_prediction_file,
         use_dataset_profiles=not args.disable_dataset_profiles,
     )
-
     summary = {
         "experiment_name": experiment_name,
         "model_role": "clean_model",
@@ -269,8 +257,7 @@ def main() -> None:
             "profile_name": train_profile.profile_name,
         },
         "adapter_dir": str(adapter_dir),
-        "train_dataset_prediction_file": str(clean_prediction_file),
-        "train_dataset_metrics": clean_train_metrics,
+        "ttl_training_prediction_file": str(ttl_training_prediction_file),
         "model_eval": model_eval_summary,
         "export_dir": str(export_dir) if exported else None,
         "modelscope_repo_id": repo_id if exported and not args.skip_upload else None,
