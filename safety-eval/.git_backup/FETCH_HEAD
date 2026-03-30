@@ -1,0 +1,11 @@
+060cc903d64703214c549b5c3a30ea8ceef2e588		branch 'main' of https://github.com/allenai/safety-eval
+217388063953c6f84ceb12a78b2d5c4a90a937a7	not-for-merge	branch 'low-gpu-utilization' of https://github.com/allenai/safety-eval
+8af3578080973c7e36877a10f62f67c8e3a1dfa5	not-for-merge	branch 'maliam-add-reasoning-models' of https://github.com/allenai/safety-eval
+237f0322c32bde45a9f217ffac4dfbff84862cef	not-for-merge	branch 'maliam-litellm-compatability' of https://github.com/allenai/safety-eval
+37bc2115deea199ecd466f6499c33944bf3b8dd6	not-for-merge	branch 'maliam-mamba-models' of https://github.com/allenai/safety-eval
+9a3e80cca3e2628375bf6fbd8d8dffb8e333aec2	not-for-merge	branch 'maliam-strongreject-bbq' of https://github.com/allenai/safety-eval
+fa9a572261461076b216fd7f90296dfae2e250d2	not-for-merge	branch 'maliam-subset-matches' of https://github.com/allenai/safety-eval
+032940c5c49a3e7a86ddaf23e2b2911b3f9de9e3	not-for-merge	branch 'maliam-transformers' of https://github.com/allenai/safety-eval
+a8835e90fa6fa25bed60745b54b00b743aec80f7	not-for-merge	branch 'olmo-hybrid' of https://github.com/allenai/safety-eval
+2fc190f337431122f132653546af9092f44a25da	not-for-merge	branch 'regex-bug-fix' of https://github.com/allenai/safety-eval
+14b30a98290701ae1409fd9ca488a68e52099455	not-for-merge	branch 'update-library-dependencies' of https://github.com/allenai/safety-eval

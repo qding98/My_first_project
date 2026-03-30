@@ -4,3 +4,4 @@ __pycache__/
 
 llm-tta/save/
 TLM/.swanlab.env
+TLM/.tmp/
