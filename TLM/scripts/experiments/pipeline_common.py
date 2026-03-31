@@ -62,6 +62,36 @@ def make_env(hf_home: str | None = None) -> dict:
     return env
 
 
+def force_offline_hf_env(env: dict[str, str]) -> None:
+    env["HF_HUB_OFFLINE"] = "1"
+    env["TRANSFORMERS_OFFLINE"] = "1"
+    env["HF_DATASETS_OFFLINE"] = "1"
+
+
+def resolve_cached_model_path(model_name_or_path: str, hf_home: str | None = None) -> str:
+    if Path(model_name_or_path).exists():
+        return str(Path(model_name_or_path).resolve())
+
+    if "/" not in model_name_or_path:
+        return model_name_or_path
+
+    cache_root = Path(hf_home or "D:\\hf_cache") / "hub"
+    snapshot_root = cache_root / f"models--{model_name_or_path.replace('/', '--')}" / "snapshots"
+    if not snapshot_root.exists():
+        return model_name_or_path
+
+    snapshots = sorted(
+        (candidate for candidate in snapshot_root.iterdir() if candidate.is_dir()),
+        key=lambda path: path.stat().st_mtime,
+        reverse=True,
+    )
+    for snapshot in snapshots:
+        if (snapshot / "config.json").exists():
+            return str(snapshot.resolve())
+
+    return model_name_or_path
+
+
 def resolve_output_root(output_root: str | Path) -> Path:
     path = Path(output_root)
     return path if path.is_absolute() else ROOT / path
@@ -81,7 +111,10 @@ def python_module_command(*args: str) -> list[str]:
 
 
 def apply_smoke_test_overrides(args) -> None:
-    args.model_name_or_path = DEFAULT_SMOKE_MODEL_NAME_OR_PATH
+    args.model_name_or_path = resolve_cached_model_path(
+        DEFAULT_SMOKE_MODEL_NAME_OR_PATH,
+        getattr(args, "hf_home", None),
+    )
     args.template = DEFAULT_SMOKE_TEMPLATE
     args.cutoff_len = 64
     args.max_new_tokens = 8

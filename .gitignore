@@ -2,6 +2,8 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
+/llm-tta/data/
+/linux_runtime_env.sh
 llm-tta/save/
 TLM/.swanlab.env
 TLM/.tmp/

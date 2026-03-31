@@ -1,0 +1,303 @@
+D:\anacoda3\envs\TLM\lib\site-packages\jieba\_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[INFO|hub.py:363] 2026-03-31 16:37:15,947 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:677] 2026-03-31 16:37:15,947 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\config.json
+[INFO|configuration_utils.py:746] 2026-03-31 16:37:15,955 >> Model config LlamaConfig {
+  "_name_or_path": "D:\\hf_cache\\hub\\models--llamafactory--tiny-random-Llama-3\\snapshots\\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8",
+  "architectures": [
+    "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "head_dim": 4,
+  "hidden_act": "silu",
+  "hidden_size": 16,
+  "initializer_range": 0.02,
+  "intermediate_size": 64,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 2,
+  "num_key_value_heads": 4,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+    "factor": 8.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "vocab_size": 128256
+}
+
+[INFO|hub.py:363] 2026-03-31 16:37:15,955 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:2092] 2026-03-31 16:37:15,955 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:15,955 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:15,955 >> loading file tokenizer.model
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:15,955 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:15,964 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:15,964 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-03-31 16:37:17,157 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|hub.py:363] 2026-03-31 16:37:17,168 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:363] 2026-03-31 16:37:17,168 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:363] 2026-03-31 16:37:17,168 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:363] 2026-03-31 16:37:17,168 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:677] 2026-03-31 16:37:17,174 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\config.json
+[INFO|configuration_utils.py:746] 2026-03-31 16:37:17,178 >> Model config LlamaConfig {
+  "_name_or_path": "D:\\hf_cache\\hub\\models--llamafactory--tiny-random-Llama-3\\snapshots\\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8",
+  "architectures": [
+    "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "head_dim": 4,
+  "hidden_act": "silu",
+  "hidden_size": 16,
+  "initializer_range": 0.02,
+  "intermediate_size": 64,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 2,
+  "num_key_value_heads": 4,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+    "factor": 8.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "vocab_size": 128256
+}
+
+[INFO|hub.py:363] 2026-03-31 16:37:17,178 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:2092] 2026-03-31 16:37:17,178 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:17,183 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:17,183 >> loading file tokenizer.model
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:17,183 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:17,183 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2209] 2026-03-31 16:37:17,188 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-03-31 16:37:18,366 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Converting format of dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Converting format of dataset: 100%|██████████| 1/1 [00:00<00:00, 46.00 examples/s]
+Running tokenizer on dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Running tokenizer on dataset: 100%|██████████| 1/1 [00:00<00:00, 27.58 examples/s]
+[INFO|hub.py:363] 2026-03-31 16:37:19,295 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:677] 2026-03-31 16:37:19,295 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\config.json
+[INFO|configuration_utils.py:746] 2026-03-31 16:37:19,300 >> Model config LlamaConfig {
+  "_name_or_path": "D:\\hf_cache\\hub\\models--llamafactory--tiny-random-Llama-3\\snapshots\\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8",
+  "architectures": [
+    "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "head_dim": 4,
+  "hidden_act": "silu",
+  "hidden_size": 16,
+  "initializer_range": 0.02,
+  "intermediate_size": 64,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 2,
+  "num_key_value_heads": 4,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+    "factor": 8.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "vocab_size": 128256
+}
+
+[INFO|modeling_utils.py:3607] 2026-03-31 16:37:19,569 >> Offline mode: forcing local_files_only=True
+[INFO|modeling_utils.py:3934] 2026-03-31 16:37:19,578 >> loading weights file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\model.safetensors
+[INFO|modeling_utils.py:1670] 2026-03-31 16:37:19,585 >> Instantiating LlamaForCausalLM model under default dtype torch.float32.
+[INFO|configuration_utils.py:1096] 2026-03-31 16:37:19,591 >> Generate config GenerationConfig {
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ]
+}
+
+[INFO|modeling_utils.py:4800] 2026-03-31 16:37:19,987 >> All model checkpoint weights were used when initializing LlamaForCausalLM.
+
+[INFO|modeling_utils.py:4808] 2026-03-31 16:37:20,000 >> All the weights of LlamaForCausalLM were initialized from the model checkpoint at D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use LlamaForCausalLM for predictions without further training.
+[INFO|configuration_utils.py:1049] 2026-03-31 16:37:20,002 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\generation_config.json
+[INFO|configuration_utils.py:1096] 2026-03-31 16:37:20,004 >> Generate config GenerationConfig {
+  "bos_token_id": 128000,
+  "do_sample": true,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "temperature": 0.6,
+  "top_p": 0.9
+}
+
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\train\ttl\trainer.py:69: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CustomSeq2SeqTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(**kwargs)
+[WARNING|trainer.py:648] 2026-03-31 16:37:20,078 >> max_steps is given, it will override any value given in num_train_epochs
+[INFO|trainer.py:2313] 2026-03-31 16:37:20,488 >> ***** Running training *****
+[INFO|trainer.py:2314] 2026-03-31 16:37:20,500 >>   Num examples = 1
+[INFO|trainer.py:2315] 2026-03-31 16:37:20,500 >>   Num Epochs = 1
+[INFO|trainer.py:2316] 2026-03-31 16:37:20,500 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:2319] 2026-03-31 16:37:20,500 >>   Total train batch size (w. parallel, distributed & accumulation) = 1
+[INFO|trainer.py:2320] 2026-03-31 16:37:20,500 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:2321] 2026-03-31 16:37:20,500 >>   Total optimization steps = 1
+[INFO|trainer.py:2322] 2026-03-31 16:37:20,504 >>   Number of trainable parameters = 1,024
+  0%|          | 0/1 [00:00<?, ?it/s][WARNING|trainer.py:760] 2026-03-31 16:37:20,515 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+100%|██████████| 1/1 [00:00<00:00,  6.37it/s]                                             100%|██████████| 1/1 [00:00<00:00,  6.37it/s][INFO|trainer.py:3801] 2026-03-31 16:37:20,681 >> Saving model checkpoint to D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter\checkpoint-1
+[INFO|hub.py:363] 2026-03-31 16:37:20,723 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:677] 2026-03-31 16:37:20,733 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\config.json
+[INFO|configuration_utils.py:746] 2026-03-31 16:37:20,736 >> Model config LlamaConfig {
+  "architectures": [
+    "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "head_dim": 4,
+  "hidden_act": "silu",
+  "hidden_size": 16,
+  "initializer_range": 0.02,
+  "intermediate_size": 64,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 2,
+  "num_key_value_heads": 4,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+    "factor": 8.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "vocab_size": 128256
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-03-31 16:37:20,752 >> tokenizer config file saved in D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter\checkpoint-1\tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-03-31 16:37:20,754 >> Special tokens file saved in D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter\checkpoint-1\special_tokens_map.json
+[INFO|trainer.py:2584] 2026-03-31 16:37:21,257 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                             100%|██████████| 1/1 [00:00<00:00,  6.37it/s]100%|██████████| 1/1 [00:00<00:00,  1.33it/s]
+[INFO|trainer.py:3801] 2026-03-31 16:37:21,263 >> Saving model checkpoint to D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter
+[INFO|hub.py:363] 2026-03-31 16:37:21,279 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:677] 2026-03-31 16:37:21,279 >> loading configuration file D:\hf_cache\hub\models--llamafactory--tiny-random-Llama-3\snapshots\bf2a2e3bf199ad2ee96f02a3c00246c608db22a8\config.json
+[INFO|configuration_utils.py:746] 2026-03-31 16:37:21,284 >> Model config LlamaConfig {
+  "architectures": [
+    "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": [
+    128001,
+    128008,
+    128009
+  ],
+  "head_dim": 4,
+  "hidden_act": "silu",
+  "hidden_size": 16,
+  "initializer_range": 0.02,
+  "intermediate_size": 64,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 2,
+  "num_key_value_heads": 4,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+    "factor": 8.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "vocab_size": 128256
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-03-31 16:37:21,297 >> tokenizer config file saved in D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter\tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-03-31 16:37:21,303 >> Special tokens file saved in D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\pipelines\vallina\vallina_lr_0.0001_bs_1_seed_42\alpaca_villina_mixed40\vallina_model\adapter\special_tokens_map.json
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 20010 (\N{CJK UNIFIED IDEOGRAPH-4E2A}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 20154 (\N{CJK UNIFIED IDEOGRAPH-4EBA}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 36164 (\N{CJK UNIFIED IDEOGRAPH-8D44}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 26009 (\N{CJK UNIFIED IDEOGRAPH-6599}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 31185 (\N{CJK UNIFIED IDEOGRAPH-79D1}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)
+D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\src\llamafactory\extras\ploting.py:100: UserWarning: Glyph 30740 (\N{CJK UNIFIED IDEOGRAPH-7814}) missing from font(s) DejaVu Sans.
+  plt.savefig(figure_path, format="png", dpi=100)

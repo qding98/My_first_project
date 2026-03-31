@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass
 
 SAFETY_DATASETS = {
     "harmful_mix_2k",
+    "villina_mixed",
     "wildjailbreak_train_vanilla_benign_1k",
     "wildjailbreak_eval_adversarial_benign",
     "wildjailbreak_eval_adversarial_harmful",
@@ -13,6 +14,7 @@ SAFETY_DATASETS = {
 
 SMALL_CLEAN_DATASETS = {"agriculture_5k", "gsm8k_5k"}
 LONG_FORM_CLEAN_DATASETS = {"alpaca_gpt4_5k"}
+LONG_FORM_CUSTOM_MIXED_DATASETS = {"alpaca_villina_mixed40"}
 MIXED40_SUFFIX = "_advharm_40"
 
 
@@ -52,6 +54,13 @@ def resolve_generation_profile(
 
     if dataset_name in LONG_FORM_CLEAN_DATASETS:
         return GenerationProfile(cutoff_len=1536, max_new_tokens=512, profile_name="long_form_clean")
+
+    if dataset_name in LONG_FORM_CUSTOM_MIXED_DATASETS:
+        return GenerationProfile(
+            cutoff_len=2048,
+            max_new_tokens=512,
+            profile_name="long_form_villina_mixed40_train",
+        )
 
     if dataset_name.endswith(MIXED40_SUFFIX):
         base_dataset_name = dataset_name.removesuffix(MIXED40_SUFFIX)

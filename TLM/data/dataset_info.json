@@ -39,6 +39,12 @@
   "harmful_mix_2k": {
     "file_name": "AdaptEval_mixed/harmful_mix_2k.json"
   },
+  "villina_mixed": {
+    "file_name": "AdaptEval_mixed/villina_mixed.json"
+  },
+  "alpaca_villina_mixed40": {
+    "file_name": "AdaptEval_mixed/alpaca_villina_mixed40.json"
+  },
   "wildjailbreak_train_vanilla_benign_1k": {
     "file_name": "WildJailbreak_controlled/train_vanilla_benign_1k.json"
   },
