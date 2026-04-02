@@ -7,15 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
-HARMFUL_SETS = {
-    "harmful_mix_2k",
-    "wildjailbreak_eval_adversarial_harmful",
-    "wildjailbreak_train_harmful_lift_holdout_1k",
-}
-BENIGN_SETS = {
-    "wildjailbreak_train_vanilla_benign_1k",
-    "wildjailbreak_eval_adversarial_benign",
-}
+from safety_eval_catalog import BENIGN_DATASETS, HARMFUL_DATASETS, extract_user_prompt
 
 
 class HarmfulSuccessMode:
@@ -107,35 +99,6 @@ def load_jsonl(path: Path) -> List[Dict[str, Any]]:
             if isinstance(item, dict):
                 items.append(item)
     return items
-
-
-def extract_user_prompt(prompt: Any) -> str:
-    if not isinstance(prompt, str):
-        return ""
-
-    text = prompt.strip()
-    if not text:
-        return ""
-
-    user_marker = "\nuser\n"
-    assistant_marker = "\nassistant"
-
-    user_idx = text.rfind(user_marker)
-    if user_idx != -1:
-        start = user_idx + len(user_marker)
-        assistant_idx = text.find(assistant_marker, start)
-        if assistant_idx != -1:
-            return text[start:assistant_idx].strip()
-        return text[start:].strip()
-
-    if text.startswith("user\n"):
-        body = text[len("user\n") :]
-        assistant_idx = body.find("\nassistant")
-        if assistant_idx != -1:
-            return body[:assistant_idx].strip()
-        return body.strip()
-
-    return text
 
 
 def iter_prediction_files(root: Path) -> Iterable[Tuple[str, str, Path]]:
@@ -280,14 +243,14 @@ def compute_group_metrics(
 
     results: Dict[str, Any] = {}
     for source_type, group_items in grouped.items():
-        if dataset_name in HARMFUL_SETS:
+        if dataset_name in HARMFUL_DATASETS:
             results[source_type] = compute_harmful_metrics(group_items, success_mode)
-        elif dataset_name in BENIGN_SETS:
+        elif dataset_name in BENIGN_DATASETS:
             results[source_type] = compute_benign_metrics(group_items)
         else:
             results[source_type] = {"num_total": len(group_items)}
 
-    if dataset_name in HARMFUL_SETS and {
+    if dataset_name in HARMFUL_DATASETS and {
         "vanilla_harmful",
         "adversarial_harmful",
     }.issubset(grouped.keys()):
@@ -314,9 +277,9 @@ def annotate_items_with_classifier(
         item["_classifier_response_harmfulness"] = serialized.get("response_harmfulness")
         item["_classifier_is_parsing_error"] = parse_error
         item["_classifier_valid"] = valid
-        if dataset_name in HARMFUL_SETS:
+        if dataset_name in HARMFUL_DATASETS:
             item["_classifier_success"] = success
-        if dataset_name in BENIGN_SETS:
+        if dataset_name in BENIGN_DATASETS:
             item["_classifier_refusal"] = serialized.get("response_refusal") == "refusal"
         item["_classifier"] = serialized
 
@@ -340,9 +303,9 @@ def main() -> None:
         preds = classify_items(items, classifier, args.classifier_batch_size)
         annotate_items_with_classifier(items, preds, args.harmful_success_mode, dataset)
 
-        if dataset in HARMFUL_SETS:
+        if dataset in HARMFUL_DATASETS:
             metrics = compute_harmful_metrics(items, args.harmful_success_mode)
-        elif dataset in BENIGN_SETS:
+        elif dataset in BENIGN_DATASETS:
             metrics = compute_benign_metrics(items)
         else:
             metrics = {

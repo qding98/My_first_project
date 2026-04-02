@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from workflow_shared import resolve_workflow_path
+from safety_eval_catalog import extract_user_prompt
 from pipeline_common import write_json
 
 
@@ -130,22 +131,6 @@ def load_prediction_rows(path: Path) -> list[dict[str, Any]]:
             if line:
                 rows.append(json.loads(line))
     return rows
-
-
-def extract_user_prompt(prompt: Any) -> str:
-    """从拼接 prompt 中只抽取 user prompt，供 safety-eval 输入。"""
-
-    if not isinstance(prompt, str):
-        return ""
-    text = prompt.strip()
-    if not text:
-        return ""
-    user_index = text.rfind("\nuser\n")
-    if user_index != -1:
-        return text[user_index + len("\nuser\n") :].split("\nassistant", 1)[0].strip()
-    if text.startswith("user\n"):
-        return text[len("user\n") :].split("\nassistant", 1)[0].strip()
-    return text
 
 
 def build_classifier_input(row: dict[str, Any]) -> dict[str, str]:
