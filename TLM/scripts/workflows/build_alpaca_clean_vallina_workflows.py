@@ -20,6 +20,7 @@ from workflow_yaml_bundle_common import (
     build_generated_prediction_file,
     build_namespace_tag,
     infer_model_source_tag,
+    namespaced_root,
     sanitize_name,
     summarize_name_list,
     to_yaml_path,
@@ -131,12 +132,6 @@ def build_bundle_namespace(args: argparse.Namespace) -> str:
         ),
     ]
     return build_namespace_tag("alpaca_clean_vallina", readable_parts, payload)
-
-
-def namespaced_root(root_arg: str, namespace: str) -> str:
-    """把 builder 级输出根目录挂到唯一命名空间下。"""
-
-    return f"{root_arg.rstrip('/\\\\')}/{namespace}"
 
 
 def resolve_path_runtime_args(args: argparse.Namespace) -> dict[str, int | float]:

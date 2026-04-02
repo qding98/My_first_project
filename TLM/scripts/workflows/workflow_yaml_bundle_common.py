@@ -201,6 +201,12 @@ def build_generated_prediction_file(
     return run_root / dataset_name / "generated_predictions.jsonl"
 
 
+def namespaced_root(root_arg: str, namespace: str) -> str:
+    """把某个阶段的输出根目录挂到唯一命名空间下。"""
+
+    return f"{root_arg.rstrip('/\\\\')}/{namespace}"
+
+
 def append_filename_suffix(path_arg: str | Path, suffix: str) -> Path:
     """给 yaml 文件名追加命名空间后缀，避免重复生成时覆盖。"""
 

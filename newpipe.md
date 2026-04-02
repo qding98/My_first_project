@@ -3,6 +3,7 @@
 自 `2026-04-02` 起，`vallina` 流程不再走一体化 workflow。
 
 当前唯一推荐接口：
+- 训练 yaml builder：`TLM/scripts/workflows/build_vallina_train_workflow.py`
 - 训练：`TLM/scripts/workflows/run_train_workflow_yaml.py`
 - 生成：`TLM/scripts/workflows/run_generate_workflow_yaml.py`
 - 评测：`TLM/scripts/workflows/run_eval_workflow_yaml.py`
@@ -58,7 +59,10 @@ python TLM\scripts\workflows\run_eval_workflow_yaml.py TLM\examples\workflows\va
 
 ## Linux 正式运行
 
-先复制三份模板，再改本机路径和超参数：
+训练阶段现在推荐先用 builder 生成 yaml，再交给 runner 执行。
+生成和评测可以继续手改模板，也可以继续走你已经在用的专用 builder。
+
+先准备环境：
 
 ```bash
 export PROJECT_ROOT=/root/data/My_first_project
@@ -70,9 +74,21 @@ source "${PROJECT_ROOT}/linux_runtime_env.sh"
 
 ```bash
 conda activate TLM
-cp "${PROJECT_ROOT}/TLM/examples/workflows/vallina_train_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_train_local.yaml"
+python "${PROJECT_ROOT}/TLM/scripts/workflows/build_vallina_train_workflow.py" \
+  --output-dir "${PROJECT_ROOT}/TLM/examples/workflows/generated/vallina_train_formal" \
+  --base-model-path Qwen/Qwen2.5-7B-Instruct \
+  --hf-home /root/data/qsh/hf_cache \
+  --dataset alpaca_villina_mixed40 \
+  --output-root saves/workflows/train_outputs/vallina_train_formal \
+  --target-vram-gb 80 \
+  --per-device-train-batch-size 16 \
+  --per-device-eval-batch-size 16 \
+  --learning-rate 1.0e-4 \
+  --seed 42
+
+# 后续直接使用 builder 打印出来的真实 yaml 路径，不要手猜 namespace 子目录
 nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_train_workflow_yaml.py" \
-  "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_train_local.yaml" \
+  "/path/to/generated/vallina_train.yaml" \
   > "${PROJECT_ROOT}/TLM/logs/vallina_train.log" \
   2> "${PROJECT_ROOT}/TLM/logs/vallina_train.err" &
 ```
@@ -101,11 +117,20 @@ nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_eval_workflow_yaml.py" \
 
 ## 你需要改的字段
 
-训练 yaml：
-- `defaults.hf_home`
-- `train.target_vram_gb`
-- `train.per_device_train_batch_size`
-- `train.per_device_eval_batch_size`
+训练 builder：
+- `--base-model-path`
+- `--dataset`
+- `--target-vram-gb`
+- `--per-device-train-batch-size`
+- `--per-device-eval-batch-size`
+- `--learning-rate`
+- `--seed`
+- `--output-root`
+
+如果你不手传 `--per-device-train-batch-size` / `--per-device-eval-batch-size` / `--learning-rate`：
+- builder 会按和 `train_unit.py` 一致的规则先算出真实运行值
+- 然后把这些解析后的值直接写进 yaml
+- 同时把模型、数据集、超参数打进 namespace，避免不同设置覆盖同一路径
 
 生成 yaml：
 - `defaults.hf_home`
