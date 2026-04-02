@@ -45,6 +45,9 @@ pip install -e "${SAFETY_EVAL_DIR}"
 echo "[run] pip install -r ${SAFETY_EVAL_DIR}/requirements.txt"
 pip install -r "${SAFETY_EVAL_DIR}/requirements.txt"
 
+echo "[run] pip install jieba rouge-chinese nltk"
+pip install jieba rouge-chinese nltk
+
 echo "[done] safety-eval 环境已就绪"
 echo "[env] ${ENV_NAME}"
 echo "[next] conda activate ${ENV_NAME}"

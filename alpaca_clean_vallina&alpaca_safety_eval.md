@@ -1,124 +1,144 @@
-# Alpaca Clean / Vallina 安全评测新接口
+# Alpaca Clean / Vallina 新接口
 
-自 `2026-04-02` 起，这部分流程统一切到 `workflow yaml + runner`。
+这部分现在也统一走三段式接口，不再使用旧的专用脚本。
 
-已经废弃的旧入口：
-- `TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py`
-- `TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py`
-- `TLM/scripts/experiments/run_vallina_generation_suite.py`
-
-统一入口：
-- `TLM/scripts/workflows/run_workflow_yaml.py`
+当前入口：
+- 生成：`TLM/scripts/workflows/run_generate_workflow_yaml.py`
+- 评测：`TLM/scripts/workflows/run_eval_workflow_yaml.py`
 
 推荐模板：
-- `TLM/examples/workflows/clean_vallina_eval_template.yaml`
+- 生成模板：[vallina_generate_template.yaml](D:/Qsh的个人资料/科研/LLM/My_first_project/TLM/examples/workflows/vallina_generate_template.yaml)
+- 评测模板：[vallina_eval_template.yaml](D:/Qsh的个人资料/科研/LLM/My_first_project/TLM/examples/workflows/vallina_eval_template.yaml)
 
-## 现在怎么配
+## 现在怎么做 clean / vallina 对照
 
-这个模板覆盖的是：
-- `generate-only`
-- 可以加载 `clean adapter` 或 `vallina adapter`
-- 也可以删掉 `adapter_path` 改成纯 `base model`
-- 生成后可直接接 `safety_evals`
+第一步，分别准备两份 generate yaml：
+- 一份填 `clean adapter`
+- 一份填 `vallina adapter`
 
-关键字段：
+你主要改这几个字段：
 - `generate.base_model_path`
 - `generate.adapter_path`
+- `generate.model_alias`
 - `generate.datasets`
 - `generate.per_device_eval_batch_size`
-- `safety_evals[].evaluation_mode`
-- `safety_evals[].harmful_success_mode`
-- `safety_evals[].classifier_batch_size`
 
-评测口径：
-- `harmful_asr`
-  - 主指标：`asr_valid_only`
-  - 默认 success：`compliance_and_harmful`
-- `benign_refusal`
-  - 主指标：`refusal_rate_valid_only`
+如果要直接测 `base model`，删除 `generate.adapter_path`。
+
+第二步，分别准备两份 eval yaml：
+- 一份指向 `clean model` 生成出的 `generated_predictions.jsonl`
+- 一份指向 `vallina model` 生成出的 `generated_predictions.jsonl`
+
+你主要改这几个字段：
+- `prediction_evals[].prediction_file`
+- `safety_evals[].prediction_file`
+- `safety_evals[].classifier_batch_size`
 
 ## Windows smoke
 
-当前已经实际跑通的 smoke 是新工作流的两条基础支路：
-- `train -> adapter generate -> similarity + gsm8k accuracy`
-- `generate-only -> base model -> similarity`
+当前已经实际跑通的 smoke 是三段式基础链路：
+- 训练 smoke
+- adapter generate smoke
+- eval smoke
 
 命令：
 
 ```powershell
 conda activate TLM
-python TLM\scripts\workflows\run_workflow_yaml.py TLM\examples\workflows\vallina_smoke_windows.yaml
+python TLM\scripts\workflows\run_train_workflow_yaml.py TLM\examples\workflows\vallina_train_smoke_windows.yaml
+python TLM\scripts\workflows\run_generate_workflow_yaml.py TLM\examples\workflows\vallina_generate_smoke_windows.yaml
+python TLM\scripts\workflows\run_eval_workflow_yaml.py TLM\examples\workflows\vallina_eval_smoke_windows.yaml
 ```
 
-如果你只想复查 generate-only 的 base model 支路，可以只跑第二个 job：
+smoke 汇总：
+- [train_workflow_run_summary.json](D:/Qsh的个人资料/科研/LLM/My_first_project/TLM/saves/workflows/train_workflow_run_summary.json)
+- [generate_workflow_run_summary.json](D:/Qsh的个人资料/科研/LLM/My_first_project/TLM/saves/workflows/generate_workflow_run_summary.json)
+- [eval_workflow_run_summary.json](D:/Qsh的个人资料/科研/LLM/My_first_project/TLM/saves/workflows/eval_workflow_run_summary.json)
 
-```powershell
-conda activate TLM
-python TLM\scripts\workflows\run_workflow_yaml.py TLM\examples\workflows\vallina_smoke_windows.yaml --only-job base_generate_smoke
-```
+## Linux 生成
 
-说明：
-- `safety-eval` 的 smoke 这次没有在 Windows 上跑
-- 原因不是脚本没接好，而是你当前 `safety-eval` 环境还没配完
-
-## Linux generate-only
-
-先复制模板，再把路径改成你机器上的真实值：
+clean / vallina 两个模型都走同一个生成入口，只是 yaml 不同。
 
 ```bash
 export PROJECT_ROOT=/root/data/My_first_project
 cd "${PROJECT_ROOT}"
 source "${PROJECT_ROOT}/linux_runtime_env.sh"
 conda activate TLM
-cp "${PROJECT_ROOT}/TLM/examples/workflows/clean_vallina_eval_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_clean_vallina_eval_local.yaml"
+cp "${PROJECT_ROOT}/TLM/examples/workflows/vallina_generate_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_clean_generate_local.yaml"
+cp "${PROJECT_ROOT}/TLM/examples/workflows/vallina_generate_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_generate_local.yaml"
 ```
 
-你至少要改这些字段：
-- `defaults.hf_home`
-- `defaults.safety_eval_root`
-- `generate.base_model_path`
-- `generate.adapter_path`
-- `generate.model_alias`
-- `generate.per_device_eval_batch_size`
-
-如果这次要直接用 `base model`，删除 `generate.adapter_path` 即可。
-
-后台运行 generate + safety-eval：
+后台运行：
 
 ```bash
-nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_workflow_yaml.py" \
-  "${PROJECT_ROOT}/TLM/examples/workflows/_clean_vallina_eval_local.yaml" \
-  > "${PROJECT_ROOT}/TLM/logs/clean_vallina_eval.log" \
-  2> "${PROJECT_ROOT}/TLM/logs/clean_vallina_eval.err" &
+nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_generate_workflow_yaml.py" \
+  "${PROJECT_ROOT}/TLM/examples/workflows/_clean_generate_local.yaml" \
+  > "${PROJECT_ROOT}/TLM/logs/clean_generate.log" \
+  2> "${PROJECT_ROOT}/TLM/logs/clean_generate.err" &
+
+nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_generate_workflow_yaml.py" \
+  "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_generate_local.yaml" \
+  > "${PROJECT_ROOT}/TLM/logs/vallina_generate.log" \
+  2> "${PROJECT_ROOT}/TLM/logs/vallina_generate.err" &
 ```
 
-## 只跑 generate
+## Linux 评测
 
-如果你现在只想先在 `4090D` 上做 generate，不跑 safety-eval，把 yaml 改成：
-- 保留 `generate.enabled: true`
-- 删除或禁用全部 `safety_evals`
+评测入口支持两类指标同时放在一个 eval yaml 里：
+- 原仓库 native eval：`prediction_evals`
+- `safety-eval`：`safety_evals`
 
-推荐：
-- `generate.per_device_eval_batch_size: 4`
+推荐在 `safety-eval` 环境里跑：
 
-## 只跑 safety-eval
+```bash
+export PROJECT_ROOT=/root/data/My_first_project
+cd "${PROJECT_ROOT}"
+source "${PROJECT_ROOT}/linux_runtime_env.sh"
+conda activate safety-eval
+cp "${PROJECT_ROOT}/TLM/examples/workflows/vallina_eval_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_clean_eval_local.yaml"
+cp "${PROJECT_ROOT}/TLM/examples/workflows/vallina_eval_template.yaml" "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_eval_local.yaml"
+```
 
-如果预测已经导出好了，不想重新 generate：
-- `generate.enabled: false`
-- 保留 `safety_evals`
-- 把每个 `safety_evals[].prediction_file` 改成已有的 `generated_predictions.jsonl`
+后台运行：
 
-推荐：
-- `classifier_batch_size: 8`
-- 如果显存紧，降到 `6`
+```bash
+nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_eval_workflow_yaml.py" \
+  "${PROJECT_ROOT}/TLM/examples/workflows/_clean_eval_local.yaml" \
+  > "${PROJECT_ROOT}/TLM/logs/clean_eval.log" \
+  2> "${PROJECT_ROOT}/TLM/logs/clean_eval.err" &
 
-## 输出目录
+nohup python "${PROJECT_ROOT}/TLM/scripts/workflows/run_eval_workflow_yaml.py" \
+  "${PROJECT_ROOT}/TLM/examples/workflows/_vallina_eval_local.yaml" \
+  > "${PROJECT_ROOT}/TLM/logs/vallina_eval.log" \
+  2> "${PROJECT_ROOT}/TLM/logs/vallina_eval.err" &
+```
 
-统一输出到：
-- `TLM/saves/workflows/clean_vallina_eval/`
+## 主指标口径
 
-常见产物：
-- `predictions/.../generated_predictions.jsonl`
-- `predictions/.../generate_predict.json`
-- `safety/*.json`
-- `workflow_summary.json`
+`prediction_evals`：
+- `similarity`
+- `gsm8k accuracy`
+
+`safety_evals`：
+- `harmful_asr`
+  - 主指标：`asr_valid_only`
+  - 默认 success：`compliance_and_harmful`
+- `benign_refusal`
+  - 主指标：`refusal_rate_valid_only`
+
+## 环境补充
+
+[setup_safety_eval_env.sh](D:/Qsh的个人资料/科研/LLM/My_first_project/setup_safety_eval_env.sh) 现在会额外安装：
+- `jieba`
+- `rouge-chinese`
+- `nltk`
+
+这样 `run_eval_workflow_yaml.py` 在 `safety-eval` 环境里可以同时跑：
+- native eval
+- safety eval
+
+## smoke 中的 safety-eval 说明
+
+- Windows smoke 里 `smoke_test: true` 只走 mock classifier
+- 目的是验证接口闭环，不代表正式评测结果
+- 正式 yaml 不要开这个参数

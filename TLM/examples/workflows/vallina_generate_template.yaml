@@ -1,0 +1,28 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: /path/to/hf_cache
+
+jobs:
+  - name: vallina_generate_formal
+    summary_path: saves/workflows/generate/vallina_generate_formal/workflow_summary.json
+
+    generate:
+      enabled: true
+      base_model_path: ${defaults.base_model_path}
+      adapter_path: /path/to/adapter_or_remove_for_base_model
+      template: ${defaults.template}
+      datasets:
+        - alpaca_gpt4_5k
+        - villina_mixed
+        - wildjailbreak_eval_adversarial_harmful
+      output_root: saves/workflows/generate_outputs
+      model_alias: vallina_formal_model
+      target_vram_gb: 24
+      per_device_eval_batch_size: 4
+      cutoff_len: 4096
+      max_new_tokens: 512
+      seed: 42

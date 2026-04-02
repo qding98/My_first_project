@@ -62,8 +62,10 @@ def apply_generate_smoke(config: dict[str, Any]) -> dict[str, Any]:
 
     if not config["smoke_test"]:
         return config
-    if config["adapter_path"] is None:
-        config["base_model_path"] = resolve_cached_model_path(DEFAULT_SMOKE_MODEL_NAME_OR_PATH, config.get("hf_home"))
+    config["base_model_path"] = resolve_cached_model_path(
+        config["base_model_path"] if config["adapter_path"] is not None else DEFAULT_SMOKE_MODEL_NAME_OR_PATH,
+        config.get("hf_home"),
+    )
     config["template"] = DEFAULT_SMOKE_TEMPLATE
     config["cutoff_len"] = 64
     config["max_new_tokens"] = 8

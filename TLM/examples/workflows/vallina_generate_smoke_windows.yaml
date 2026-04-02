@@ -1,0 +1,24 @@
+version: 1
+
+defaults:
+  base_model_path: llamafactory/tiny-random-Llama-3
+  template: qwen
+  dataset_dir: data
+  hf_home: D:\hf_cache
+
+jobs:
+  - name: vallina_generate_smoke
+    summary_path: saves/workflows/generate/vallina_generate_smoke/workflow_summary.json
+
+    generate:
+      enabled: true
+      base_model_path: ${defaults.base_model_path}
+      adapter_path: D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\workflows\train_outputs\vallina_train_smoke\vallina_lr_0.0001_bs_1_seed_42\train\adapter
+      template: ${defaults.template}
+      datasets:
+        - alpaca_gpt4_5k
+        - gsm8k_5k
+        - villina_mixed
+      output_root: saves/workflows/generate_outputs
+      model_alias: vallina_generate_smoke_model
+      smoke_test: true

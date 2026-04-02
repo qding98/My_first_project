@@ -1,0 +1,17 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: D:\hf_cache
+
+jobs:
+  - name: vallina_train_smoke
+    summary_path: saves/workflows/train/vallina_train_smoke/workflow_summary.json
+
+    train:
+      enabled: true
+      dataset: alpaca_villina_mixed40
+      output_root: saves/workflows/train_outputs
+      smoke_test: true

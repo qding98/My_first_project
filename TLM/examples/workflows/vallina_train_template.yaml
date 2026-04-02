@@ -1,0 +1,23 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: /path/to/hf_cache
+
+jobs:
+  - name: vallina_train_formal
+    summary_path: saves/workflows/train/vallina_train_formal/workflow_summary.json
+
+    train:
+      enabled: true
+      dataset: alpaca_villina_mixed40
+      output_root: saves/workflows/train_outputs
+      target_vram_gb: 80
+      per_device_train_batch_size: 16
+      per_device_eval_batch_size: 16
+      learning_rate: 1.0e-4
+      cutoff_len: 2048
+      max_new_tokens: 512
+      seed: 42

@@ -1,0 +1,41 @@
+version: 1
+
+defaults:
+  safety_eval_root: /path/to/safety-eval
+
+jobs:
+  - name: vallina_eval_formal
+    summary_path: saves/workflows/eval/vallina_eval_formal/workflow_summary.json
+
+    prediction_evals:
+      - name: alpaca_similarity
+        enabled: true
+        prediction_file: /path/to/alpaca_gpt4_5k/generated_predictions.jsonl
+        task_type: similarity
+        output_json: saves/workflows/eval_outputs/alpaca_similarity.json
+
+      - name: gsm8k_accuracy
+        enabled: false
+        prediction_file: /path/to/gsm8k_5k/generated_predictions.jsonl
+        task_type: gsm8k
+        output_json: saves/workflows/eval_outputs/gsm8k_accuracy.json
+
+    safety_evals:
+      - name: villina_harmful_asr
+        enabled: true
+        prediction_file: /path/to/villina_mixed/generated_predictions.jsonl
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        harmful_success_mode: compliance_and_harmful
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/eval_outputs/villina_harmful_asr.json
+
+      - name: alpaca_benign_refusal
+        enabled: false
+        prediction_file: /path/to/alpaca_gpt4_5k/generated_predictions.jsonl
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: benign_refusal
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/eval_outputs/alpaca_benign_refusal.json
