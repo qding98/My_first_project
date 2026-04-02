@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
+/saves/
 /llm-tta/data/
 /linux_runtime_env.sh
 llm-tta/save/

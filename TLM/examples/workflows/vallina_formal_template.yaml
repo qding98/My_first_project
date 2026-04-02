@@ -1,0 +1,58 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: /path/to/hf_cache
+  safety_eval_root: /path/to/safety-eval
+
+jobs:
+  - name: formal_job
+    summary_path: saves/workflows/formal_job/workflow_summary.json
+
+    train:
+      enabled: true
+      dataset: alpaca_villina_mixed40
+      output_root: saves/workflows/formal_job/train
+      target_vram_gb: 80
+      per_device_train_batch_size: 16
+      per_device_eval_batch_size: 16
+      learning_rate: 1.0e-4
+      cutoff_len: 2048
+      max_new_tokens: 512
+      seed: 42
+
+    generate:
+      enabled: true
+      adapter_path: ${jobs.formal_job.train.outputs.adapter_dir}
+      base_model_path: ${jobs.formal_job.train.outputs.model_name_or_path}
+      template: ${defaults.template}
+      datasets:
+        - alpaca_gpt4_5k
+        - villina_mixed
+        - wildjailbreak_eval_adversarial_harmful
+      output_root: saves/workflows/formal_job/predictions
+      model_alias: formal_adapter_model
+      target_vram_gb: 24
+      per_device_eval_batch_size: 4
+      cutoff_len: 4096
+      max_new_tokens: 512
+      seed: 42
+
+    prediction_evals:
+      - name: alpaca_similarity
+        enabled: true
+        prediction_file: ${jobs.formal_job.generate.outputs.datasets.alpaca_gpt4_5k.generated_predictions_jsonl}
+        task_type: similarity
+        output_json: saves/workflows/formal_job/evals/alpaca_similarity.json
+
+    safety_evals:
+      - name: villina_harmful_asr
+        enabled: true
+        prediction_file: ${jobs.formal_job.generate.outputs.datasets.villina_mixed.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/formal_job/safety/villina_harmful_asr.json

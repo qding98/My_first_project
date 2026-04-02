@@ -1,0 +1,63 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: D:\hf_cache
+  safety_eval_root: D:\Qsh的个人资料\科研\LLM\My_first_project\safety-eval
+
+jobs:
+  - name: vallina_smoke
+    summary_path: saves/workflows/vallina_smoke/workflow_summary.json
+
+    train:
+      enabled: true
+      dataset: alpaca_villina_mixed40
+      output_root: saves/workflows/vallina_smoke/train
+      smoke_test: true
+
+    generate:
+      enabled: true
+      adapter_path: ${jobs.vallina_smoke.train.outputs.adapter_dir}
+      base_model_path: ${jobs.vallina_smoke.train.outputs.model_name_or_path}
+      template: ${defaults.template}
+      datasets:
+        - alpaca_gpt4_5k
+        - gsm8k_5k
+      output_root: saves/workflows/vallina_smoke/predictions
+      model_alias: vallina_smoke_model
+      smoke_test: true
+
+    prediction_evals:
+      - name: alpaca_similarity
+        enabled: true
+        prediction_file: ${jobs.vallina_smoke.generate.outputs.datasets.alpaca_gpt4_5k.generated_predictions_jsonl}
+        task_type: similarity
+        output_json: saves/workflows/vallina_smoke/evals/alpaca_similarity.json
+
+      - name: gsm8k_accuracy
+        enabled: true
+        prediction_file: ${jobs.vallina_smoke.generate.outputs.datasets.gsm8k_5k.generated_predictions_jsonl}
+        task_type: gsm8k
+        output_json: saves/workflows/vallina_smoke/evals/gsm8k_accuracy.json
+
+  - name: base_generate_smoke
+    summary_path: saves/workflows/base_generate_smoke/workflow_summary.json
+
+    generate:
+      enabled: true
+      base_model_path: ${defaults.base_model_path}
+      template: ${defaults.template}
+      datasets:
+        - alpaca_gpt4_5k
+      output_root: saves/workflows/base_generate_smoke/predictions
+      model_alias: base_smoke_model
+      smoke_test: true
+
+    prediction_evals:
+      - name: base_alpaca_similarity
+        enabled: true
+        prediction_file: ${jobs.base_generate_smoke.generate.outputs.datasets.alpaca_gpt4_5k.generated_predictions_jsonl}
+        task_type: similarity
+        output_json: saves/workflows/base_generate_smoke/evals/base_alpaca_similarity.json
