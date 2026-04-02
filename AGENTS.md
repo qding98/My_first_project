@@ -15,6 +15,22 @@
 - 单元之间通过明确产物路径衔接，不通过隐式全局状态耦合。
 - 新集成接口优先走 `workflow yaml + runner`，避免继续增加一次性专用入口脚本。
 
+## 最新集成接口
+
+- 统一入口脚本：`TLM/scripts/workflows/run_workflow_yaml.py`
+- 统一配置目录：`TLM/examples/workflows/`
+- 一个 workflow yaml 可以包含多个 `jobs`，每个 job 可独立决定是否启用：
+  - `train`
+  - `generate`
+  - `prediction_evals`
+  - `safety_evals`
+- `generate` 支持两种模型来源：
+  - 传 `adapter_path + base_model_path`，表示加载 LoRA adapter
+  - 只传 `base_model_path`，表示直接用 base model
+- `prediction_evals` 负责原仓库 AdaptEval 风格指标，例如 `similarity`、`gsm8k accuracy`
+- `safety_evals` 负责 `harmful_asr` 或 `benign_refusal`
+- 需要新增流程时，优先新增 yaml 模板或复用现有 workflow 单元，不再新增专用入口脚本
+
 ## 修改约定
 
 - 修改后必须先做最小可运行验证，再做后续清理或删除旧接口。

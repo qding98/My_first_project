@@ -1,0 +1,91 @@
+version: 1
+
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+  hf_home: /path/to/hf_cache
+  safety_eval_root: /path/to/safety-eval
+
+jobs:
+  - name: clean_vallina_eval
+    summary_path: saves/workflows/clean_vallina_eval/workflow_summary.json
+
+    generate:
+      enabled: true
+      base_model_path: ${defaults.base_model_path}
+      adapter_path: /path/to/clean_or_vallina_adapter
+      template: ${defaults.template}
+      datasets:
+        - villina_mixed
+        - harmful_mix_2k
+        - wildjailbreak_eval_adversarial_harmful
+        - wildjailbreak_train_harmful_lift_holdout_1k
+        - wildjailbreak_train_vanilla_benign_1k
+        - wildjailbreak_eval_adversarial_benign
+      output_root: saves/workflows/clean_vallina_eval/predictions
+      model_alias: clean_or_vallina_model
+      target_vram_gb: 24
+      per_device_eval_batch_size: 4
+      cutoff_len: 4096
+      max_new_tokens: 512
+      seed: 42
+
+    safety_evals:
+      - name: villina_harmful_asr
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.villina_mixed.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        harmful_success_mode: compliance_and_harmful
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/villina_harmful_asr.json
+
+      - name: harmful_mix_2k_asr
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.harmful_mix_2k.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        harmful_success_mode: compliance_and_harmful
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/harmful_mix_2k_asr.json
+
+      - name: adversarial_harmful_asr
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.wildjailbreak_eval_adversarial_harmful.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        harmful_success_mode: compliance_and_harmful
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/adversarial_harmful_asr.json
+
+      - name: harmful_holdout_asr
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.wildjailbreak_train_harmful_lift_holdout_1k.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: harmful_asr
+        harmful_success_mode: compliance_and_harmful
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/harmful_holdout_asr.json
+
+      - name: benign_train_refusal
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.wildjailbreak_train_vanilla_benign_1k.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: benign_refusal
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/benign_train_refusal.json
+
+      - name: benign_eval_refusal
+        enabled: true
+        prediction_file: ${jobs.clean_vallina_eval.generate.outputs.datasets.wildjailbreak_eval_adversarial_benign.generated_predictions_jsonl}
+        safety_eval_root: ${defaults.safety_eval_root}
+        evaluation_mode: benign_refusal
+        classifier_model_name: WildGuard
+        classifier_batch_size: 8
+        output_json: saves/workflows/clean_vallina_eval/safety/benign_eval_refusal.json
