@@ -24,6 +24,7 @@ from vallina_common import (
     DEFAULT_BASELINE_EVAL_BS,
     DEFAULT_BASELINE_VRAM_GB,
     DEFAULT_PREDICTION_DATASETS,
+    DEFAULT_VALLINA_MODEL_ALIAS,
     build_vallina_generation_run_tag,
     jsonl_to_json_array,
     scaled_batch_size,
@@ -38,6 +39,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-model-path", default=DEFAULT_FORMAL_MODEL_NAME_OR_PATH)
     parser.add_argument("--template", default=DEFAULT_FORMAL_TEMPLATE)
     parser.add_argument("--output-root", default="saves/predictions/vallina")
+    parser.add_argument(
+        "--model-alias",
+        default=None,
+        help=f"Optional stable directory name for predictions. Recommended: {DEFAULT_VALLINA_MODEL_ALIAS}",
+    )
     parser.add_argument("--dataset-dir", default="data")
     parser.add_argument("--hf-home", default="D:\\hf_cache")
     parser.add_argument("--datasets", default=",".join(DEFAULT_PREDICTION_DATASETS))
@@ -113,7 +119,8 @@ def main() -> None:
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
     )
-    run_root = resolve_output_root(args.output_root) / run_tag / model_tag(adapter_dir)
+    model_output_name = args.model_alias or model_tag(adapter_dir)
+    run_root = resolve_output_root(args.output_root) / run_tag / model_output_name
     summary_path = run_root / "generation_suite_summary.json"
     dataset_summaries = []
 
@@ -207,6 +214,8 @@ def main() -> None:
 
     summary = {
         "adapter_dir": str(adapter_dir),
+        "model_alias": args.model_alias,
+        "model_output_name": model_output_name,
         "base_model_path": args.base_model_path,
         "model_kind": model_spec["model_kind"],
         "run_tag": run_tag,
