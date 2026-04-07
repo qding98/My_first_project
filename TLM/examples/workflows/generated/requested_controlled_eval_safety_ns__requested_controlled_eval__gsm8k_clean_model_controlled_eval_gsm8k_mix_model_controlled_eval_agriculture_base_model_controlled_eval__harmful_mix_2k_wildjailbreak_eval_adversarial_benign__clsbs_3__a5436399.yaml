@@ -1,0 +1,70 @@
+version: 1
+defaults:
+  safety_eval_root: safety-eval
+jobs:
+- name: gsm8k_clean_model_controlled_eval
+  summary_path: saves/workflows/eval/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_clean_model_controlled_eval/workflow_summary.json
+  safety_evals:
+  - name: harmful_mix_2k_harmful_asr
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter/harmful_mix_2k/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: harmful_asr
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_clean_model_controlled_eval/harmful_mix_2k_harmful_asr_clsbs_3.json
+    harmful_success_mode: compliance_and_harmful
+    smoke_test: true
+  - name: wildjailbreak_eval_adversarial_benign_benign_refusal
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter/wildjailbreak_eval_adversarial_benign/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: benign_refusal
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_clean_model_controlled_eval/wildjailbreak_eval_adversarial_benign_benign_refusal_clsbs_3.json
+    smoke_test: true
+- name: gsm8k_mix_model_controlled_eval
+  summary_path: saves/workflows/eval/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_mix_model_controlled_eval/workflow_summary.json
+  safety_evals:
+  - name: harmful_mix_2k_harmful_asr
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter/harmful_mix_2k/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: harmful_asr
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_mix_model_controlled_eval/harmful_mix_2k_harmful_asr_clsbs_3.json
+    harmful_success_mode: compliance_and_harmful
+    smoke_test: true
+  - name: wildjailbreak_eval_adversarial_benign_benign_refusal
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter/wildjailbreak_eval_adversarial_benign/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: benign_refusal
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/gsm8k_mix_model_controlled_eval/wildjailbreak_eval_adversarial_benign_benign_refusal_clsbs_3.json
+    smoke_test: true
+- name: agriculture_base_model_controlled_eval
+  summary_path: saves/workflows/eval/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/agriculture_base_model_controlled_eval/workflow_summary.json
+  safety_evals:
+  - name: harmful_mix_2k_harmful_asr
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.00014_bs_32_seed_42/agriculture_5k/base_model/controlled_eval/Qwen__Qwen2.5-7B-Instruct/harmful_mix_2k/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: harmful_asr
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/agriculture_base_model_controlled_eval/harmful_mix_2k_harmful_asr_clsbs_3.json
+    harmful_success_mode: compliance_and_harmful
+    smoke_test: true
+  - name: wildjailbreak_eval_adversarial_benign_benign_refusal
+    enabled: true
+    prediction_file: saves/serial_suites/requested_suite/lr_0.00014_bs_32_seed_42/agriculture_5k/base_model/controlled_eval/Qwen__Qwen2.5-7B-Instruct/wildjailbreak_eval_adversarial_benign/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: benign_refusal
+    classifier_model_name: WildGuard
+    classifier_batch_size: 3
+    output_json: saves/workflows/eval_outputs/requested_controlled/requested_controlled_eval__gsm8k_clean_model_controlled_eval_gsm8k_mix_model_controlled_eval_agriculture_base_model_controlled_eval__harmful_mix_2k_wildjailbreak_eval_adversarial_benign__clsbs_3__a5436399/agriculture_base_model_controlled_eval/wildjailbreak_eval_adversarial_benign_benign_refusal_clsbs_3.json
+    smoke_test: true

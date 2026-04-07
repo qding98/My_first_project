@@ -1,0 +1,46 @@
+version: 1
+defaults:
+  base_model_path: llamafactory/tiny-random-Llama-3
+  template: qwen
+  dataset_dir: data
+  safety_eval_root: safety-eval
+  hf_home: D:\hf_cache
+jobs:
+- name: alpaca_clean_on_vallina_eval
+  summary_path: saves/workflows/eval/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_clean_on_vallina_eval/workflow_summary.json
+  prediction_evals:
+  - name: alpaca_gpt4_5k_similarity
+    enabled: true
+    prediction_file: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_clean_on_vallina/vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42/alpaca_clean_model/alpaca_gpt4_5k/generated_predictions.jsonl
+    task_type: similarity
+    output_json: saves/workflows/eval_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_clean_on_vallina/alpaca_gpt4_5k_similarity.json
+  safety_evals:
+  - name: villina_mixed_harmful_asr
+    enabled: true
+    prediction_file: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_clean_on_vallina/vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42/alpaca_clean_model/villina_mixed/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: harmful_asr
+    classifier_model_name: WildGuard
+    classifier_batch_size: 1
+    output_json: saves/workflows/eval_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_clean_on_vallina/villina_mixed_harmful_asr_clsbs_1.json
+    harmful_success_mode: compliance_and_harmful
+    smoke_test: true
+- name: alpaca_vallina_on_vallina_eval
+  summary_path: saves/workflows/eval/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_vallina_on_vallina_eval/workflow_summary.json
+  prediction_evals:
+  - name: alpaca_gpt4_5k_similarity
+    enabled: true
+    prediction_file: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_vallina_on_vallina/vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42/alpaca_vallina_model/alpaca_gpt4_5k/generated_predictions.jsonl
+    task_type: similarity
+    output_json: saves/workflows/eval_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_vallina_on_vallina/alpaca_gpt4_5k_similarity.json
+  safety_evals:
+  - name: villina_mixed_harmful_asr
+    enabled: true
+    prediction_file: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_vallina_on_vallina/vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42/alpaca_vallina_model/villina_mixed/generated_predictions.jsonl
+    safety_eval_root: safety-eval
+    evaluation_mode: harmful_asr
+    classifier_model_name: WildGuard
+    classifier_batch_size: 1
+    output_json: saves/workflows/eval_outputs/smoke_alpaca_clean_vallina_ns/alpaca_clean_vallina__tiny_random_llama_3__alpaca_gpt4_5k_villina_mixed__clsbs_1__vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42__1ceaa356/alpaca_vallina_on_vallina/villina_mixed_harmful_asr_clsbs_1.json
+    harmful_success_mode: compliance_and_harmful
+    smoke_test: true

@@ -1,0 +1,50 @@
+version: 1
+defaults:
+  base_model_path: llamafactory/tiny-random-Llama-3
+  template: qwen
+  dataset_dir: data
+  safety_eval_root: safety-eval
+  hf_home: D:\hf_cache
+jobs:
+- name: alpaca_clean_on_vallina
+  summary_path: saves/workflows/generate/alpaca_clean_on_vallina/workflow_summary.json
+  generate:
+    enabled: true
+    base_model_path: llamafactory/tiny-random-Llama-3
+    template: qwen
+    dataset_dir: data
+    datasets: &id001
+    - alpaca_gpt4_5k
+    - villina_mixed
+    output_root: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina
+    model_alias: alpaca_clean_model
+    target_vram_gb: 24.0
+    per_device_eval_batch_size: 4
+    cutoff_len: 4096
+    max_new_tokens: 512
+    temperature: 0.0
+    preprocessing_num_workers: 8
+    seed: 42
+    hf_home: D:\hf_cache
+    adapter_path: D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\workflows\train_outputs\vallina_train_smoke\vallina_lr_0.0001_bs_1_seed_42\train\adapter
+    smoke_test: true
+- name: alpaca_vallina_on_vallina
+  summary_path: saves/workflows/generate/alpaca_vallina_on_vallina/workflow_summary.json
+  generate:
+    enabled: true
+    base_model_path: llamafactory/tiny-random-Llama-3
+    template: qwen
+    dataset_dir: data
+    datasets: *id001
+    output_root: saves/workflows/generate_outputs/smoke_alpaca_clean_vallina
+    model_alias: alpaca_vallina_model
+    target_vram_gb: 24.0
+    per_device_eval_batch_size: 4
+    cutoff_len: 4096
+    max_new_tokens: 512
+    temperature: 0.0
+    preprocessing_num_workers: 8
+    seed: 42
+    hf_home: D:\hf_cache
+    adapter_path: D:\Qsh的个人资料\科研\LLM\My_first_project\TLM\saves\workflows\train_outputs\vallina_train_smoke\vallina_lr_0.0001_bs_1_seed_42\train\adapter
+    smoke_test: true
