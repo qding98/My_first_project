@@ -17,6 +17,7 @@
 它解决的是：
 - `clean adapter` 和 `vallina adapter` 共用一套 generate / eval 接口
 - `prediction_evals` 和 `safety_evals` 同时自动连到正确的 `generated_predictions.jsonl`
+- `safety_evals` 默认会显式写出 `save_per_sample_results: true` 和 `per_sample_output`
 - `--smoke-test` 下自动改用真实 smoke 落盘路径，不需要你再手改 `evalbs_1_cutoff_64_out_8...`
 - builder 会自动在 yaml 输出目录、generate/eval 输出根目录、job summary 路径上追加命名空间 tag
   - tag 里会编码模型、数据集、batch size、seed 等关键信息
@@ -128,6 +129,16 @@ smoke 验证产物：
   - 走 `benign_refusal`
 
 同时它也会把 `classifier_batch_size`、选中的数据集集合和根目录集合编码进输出 yaml 文件名与 eval 输出目录里，避免不同批量评测配置覆盖同一路径。
+
+现在通过 workflow 或 `run_safetyeval_on_predictions.py` 保存的逐样本结果，默认会额外带出：
+- `user_prompt`
+- `prediction_text`
+- `data_type`
+  - 统一规范成 `vanilla_harmful`、`adversarial_harmful`、`vanilla_benign`、`adversarial_benign`
+- `metadata`
+  - 里面集中保留 `source_dataset`、`source_split`、`source_type`、`mixed_into_dataset` 等原始元数据
+- `safety_eval`
+  - 包含 classifier 原始输出、`parse_error`、`valid`、`is_success` / `is_refusal` 等逐样本指标
 
 ### Linux 正式生成 yaml
 

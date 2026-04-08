@@ -17,6 +17,7 @@ from workflow_shared import ROOT  # noqa: F401
 from safety_eval_catalog import infer_safety_evaluation_mode
 from workflow_yaml_bundle_common import (
     append_filename_suffix,
+    build_per_sample_output_path,
     build_eval_batch_tag,
     build_namespace_tag,
     resolve_bundle_path,
@@ -108,7 +109,9 @@ def build_safety_step(job_name: str, dataset_name: str, prediction_file: Path, a
             f"saves/workflows/eval_outputs/requested_controlled/{namespace}/{job_name}/"
             f"{dataset_name}_{evaluation_mode}_clsbs_{args.classifier_batch_size}.json"
         ),
+        "save_per_sample_results": True,
     }
+    step["per_sample_output"] = build_per_sample_output_path(step["output_json"])
     if evaluation_mode == "harmful_asr":
         step["harmful_success_mode"] = args.harmful_success_mode
     if args.smoke_test:

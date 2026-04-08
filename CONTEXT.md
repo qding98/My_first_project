@@ -192,13 +192,25 @@
 仓库内已有离线重评分脚本：
 
 - `TLM/scripts/eval/run_safetyeval_on_predictions.py`
+- `TLM/scripts/workflows/safety_eval_unit.py`
 
 它负责：
 
 - 读取已有 `generated_predictions.jsonl`
 - 调用 `safety-eval` classifier
 - 输出 `safety_eval_summary.json`
-- 可选写回逐条 classifier 标注
+- 默认写回逐条 classifier 标注
+
+当前逐样本导出已经统一成一套 schema，核心字段包括：
+
+- `user_prompt`
+- `prediction_text`
+- `data_type`
+  - 统一规范成 `vanilla_harmful`、`adversarial_harmful`、`vanilla_benign`、`adversarial_benign`
+- `metadata`
+  - 集中保留 `source_dataset`、`source_split`、`source_type`、`mixed_into_dataset` 等原始元数据
+- `safety_eval`
+  - 包含 classifier 输出、`parse_error`、`valid`、`is_success` / `is_refusal` 等逐样本安全指标
 
 补充说明：
 
@@ -292,6 +304,18 @@
 - `metrics/clean_eval.json`
 - `controlled_eval/.../wildjailbreak_controlled_eval_summary.json`
 - `generated_predictions.jsonl`
+
+补充说明：
+
+- 不是所有历史目录都会保存逐样本 `generated_predictions.jsonl`。
+- 例如 `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/evaluation_predictions/gsm8k_5k/`
+  当前只有：
+  - `all_results.json`
+  - `eval_results.json`
+  - `trainer_log.jsonl`
+- 这说明旧 clean eval 链路只落了聚合指标，没有把 GSM8K clean eval 的逐样本生成结果导出。
+- 如果要分析 GSM8K CoT 回答开头是否固定，需要单独生成 `generated_predictions.jsonl`，或使用新的分析脚本先输出缺失报告：
+  - `TLM/scripts/eval/analyze_gsm8k_cot_opening.py`
 
 ## 9. 当前需要完成的实验与分析任务
 

@@ -7,7 +7,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
-from safety_eval_catalog import BENIGN_DATASETS, HARMFUL_DATASETS, extract_user_prompt
+from safety_eval_annotation import annotate_prediction_row, build_classifier_input
+from safety_eval_catalog import BENIGN_DATASETS, HARMFUL_DATASETS
 
 
 class HarmfulSuccessMode:
@@ -126,15 +127,7 @@ def chunk_list(seq: List[Any], size: int) -> Iterable[List[Any]]:
 def classify_items(items: List[Dict[str, Any]], classifier, batch_size: int) -> List[Any]:
     outputs: List[Any] = []
     for batch in chunk_list(items, max(1, batch_size)):
-        preds = classifier.classify(
-            [
-                {
-                    "prompt": extract_user_prompt(it.get("prompt", "")),
-                    "response": it.get("predict", ""),
-                }
-                for it in batch
-            ]
-        )
+        preds = classifier.classify([build_classifier_input(it) for it in batch])
         outputs.extend(preds)
     return outputs
 
@@ -239,7 +232,7 @@ def compute_group_metrics(
 ) -> Dict[str, Any]:
     grouped: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for item in items:
-        grouped[item.get("source_type", "unknown")].append(item)
+        grouped[item.get("data_type") or item.get("source_type", "unknown")].append(item)
 
     results: Dict[str, Any] = {}
     for source_type, group_items in grouped.items():
@@ -269,19 +262,19 @@ def annotate_items_with_classifier(
     items: List[Dict[str, Any]], preds: List[Any], success_mode: str, dataset_name: str
 ) -> None:
     for item, pred in zip(items, preds):
+        original = dict(item)
         serialized = serialize_classifier_output(pred)
-        parse_error, valid, success = _compute_success_flags(serialized, success_mode)
-        item["_classifier_prompt_used"] = extract_user_prompt(item.get("prompt", ""))
-        item["_classifier_prompt_harmfulness"] = serialized.get("prompt_harmfulness")
-        item["_classifier_response_refusal"] = serialized.get("response_refusal")
-        item["_classifier_response_harmfulness"] = serialized.get("response_harmfulness")
-        item["_classifier_is_parsing_error"] = parse_error
-        item["_classifier_valid"] = valid
-        if dataset_name in HARMFUL_DATASETS:
-            item["_classifier_success"] = success
-        if dataset_name in BENIGN_DATASETS:
-            item["_classifier_refusal"] = serialized.get("response_refusal") == "refusal"
-        item["_classifier"] = serialized
+        evaluation_mode = "harmful_asr" if dataset_name in HARMFUL_DATASETS else "benign_refusal"
+        item.clear()
+        item.update(
+            annotate_prediction_row(
+                row=original,
+                classifier_result=serialized,
+                evaluation_mode=evaluation_mode,
+                harmful_success_mode=success_mode,
+                dataset_name=dataset_name,
+            )
+        )
 
 
 def save_jsonl(path: Path, items: List[Dict[str, Any]]) -> None:

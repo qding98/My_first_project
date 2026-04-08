@@ -214,6 +214,13 @@ def append_filename_suffix(path_arg: str | Path, suffix: str) -> Path:
     return path.with_name(f"{path.stem}__{suffix}{path.suffix}")
 
 
+def build_per_sample_output_path(path_arg: str | Path) -> str:
+    """根据 summary JSON 路径推导逐样本导出 JSONL 路径。"""
+
+    path = Path(str(path_arg))
+    return path.with_name(f"{path.stem}_per_sample.jsonl").as_posix()
+
+
 def write_workflow_yaml(path: str | Path, payload: dict[str, Any]) -> Path:
     """把 workflow 配置写成 UTF-8 YAML 文件。"""
 

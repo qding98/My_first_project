@@ -15,13 +15,14 @@ from pathlib import Path
 from typing import Any
 
 from workflow_shared import resolve_workflow_path
-from safety_eval_catalog import extract_user_prompt
+from safety_eval_annotation import annotate_prediction_row, build_classifier_input
 from pipeline_common import write_json
 
 
 def build_safety_eval_config(step: dict[str, Any], defaults: dict[str, Any]) -> dict[str, Any]:
     """整理 safety-eval 配置并统一解析输入输出路径。"""
 
+    output_json = resolve_workflow_path(step["output_json"])
     per_sample_output = step.get("per_sample_output")
     return {
         "name": step["name"],
@@ -32,9 +33,9 @@ def build_safety_eval_config(step: dict[str, Any], defaults: dict[str, Any]) -> 
         "classifier_ephemeral_model": step.get("classifier_ephemeral_model", True),
         "evaluation_mode": step.get("evaluation_mode", "harmful_asr"),
         "harmful_success_mode": step.get("harmful_success_mode", "compliance_and_harmful"),
-        "output_json": resolve_workflow_path(step["output_json"]),
-        "save_per_sample_results": step.get("save_per_sample_results", False),
-        "per_sample_output": resolve_workflow_path(per_sample_output) if per_sample_output else None,
+        "output_json": output_json,
+        "save_per_sample_results": step.get("save_per_sample_results", True),
+        "per_sample_output": resolve_workflow_path(per_sample_output) if per_sample_output else default_per_sample_output(output_json),
         "smoke_test": step.get("smoke_test", False),
     }
 
@@ -133,16 +134,6 @@ def load_prediction_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def build_classifier_input(row: dict[str, Any]) -> dict[str, str]:
-    """把预测样本转换成 safety-eval 需要的 prompt/response 格式。"""
-
-    response = row.get("predict", "")
-    return {
-        "prompt": extract_user_prompt(row.get("prompt", "")),
-        "response": response if isinstance(response, str) else "",
-    }
-
-
 def classify_rows(rows: list[dict[str, Any]], classifier) -> list[Any]:
     """批量调用 safety-eval 分类器。"""
 
@@ -223,16 +214,10 @@ def compute_benign_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def annotate_rows(rows: list[dict[str, Any]], preds: list[Any]) -> list[dict[str, Any]]:
-    """把 classifier 输出回填到逐样本结果中。"""
+def default_per_sample_output(output_json: Path) -> Path:
+    """根据 summary JSON 的位置推导默认逐样本导出路径。"""
 
-    annotated: list[dict[str, Any]] = []
-    for row, pred in zip(rows, preds):
-        item = dict(row)
-        item["_classifier_prompt_used"] = extract_user_prompt(row.get("prompt", ""))
-        item["_classifier"] = serialize_classifier_output(pred)
-        annotated.append(item)
-    return annotated
+    return output_json.with_name(f"{output_json.stem}_per_sample.jsonl")
 
 
 def save_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -251,6 +236,7 @@ def build_safety_summary(config: dict[str, Any], metrics: dict[str, Any]) -> dic
         "name": config["name"],
         "prediction_file": str(config["prediction_file"]),
         "evaluation_mode": config["evaluation_mode"],
+        "per_sample_output": str(config["per_sample_output"]) if config["save_per_sample_results"] else None,
         "metrics": metrics,
     }
 
@@ -261,7 +247,17 @@ def run_safety_eval_step(step: dict[str, Any], defaults: dict[str, Any]) -> dict
     config = build_safety_eval_config(step, defaults)
     classifier = build_classifier(config)
     rows = load_prediction_rows(config["prediction_file"])
-    annotated_rows = annotate_rows(rows, classify_rows(rows, classifier))
+    annotated_rows = []
+    for row, pred in zip(rows, classify_rows(rows, classifier)):
+        annotated_rows.append(
+            annotate_prediction_row(
+                row=row,
+                classifier_result=serialize_classifier_output(pred),
+                evaluation_mode=config["evaluation_mode"],
+                harmful_success_mode=config["harmful_success_mode"],
+                dataset_name=str(row.get("source_dataset") or row.get("dataset") or row.get("mixed_into_dataset") or ""),
+            )
+        )
     metrics = compute_harmful_metrics(annotated_rows, config["harmful_success_mode"]) if config["evaluation_mode"] == "harmful_asr" else compute_benign_metrics(annotated_rows)
     summary = build_safety_summary(config, metrics)
     write_json(config["output_json"], summary)

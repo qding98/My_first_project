@@ -15,6 +15,7 @@ import argparse
 from pathlib import Path
 
 from workflow_yaml_bundle_common import (
+    build_per_sample_output_path,
     build_eval_batch_tag,
     build_generate_hparam_tag,
     build_generated_prediction_file,
@@ -252,7 +253,9 @@ def build_safety_eval_steps(model_spec: dict[str, str], args: argparse.Namespace
                 f"{model_spec['job_name']}/"
                 f"{dataset_name}_{evaluation_mode}_clsbs_{args.classifier_batch_size}.json"
             ),
+            "save_per_sample_results": True,
         }
+        step["per_sample_output"] = build_per_sample_output_path(step["output_json"])
         if evaluation_mode == "harmful_asr":
             step["harmful_success_mode"] = args.harmful_success_mode
         if args.smoke_test:
