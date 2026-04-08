@@ -229,6 +229,18 @@
 
 - `TLM/examples/workflows/`
 
+当前还新增了一类 generate-only builder：
+
+- `TLM/scripts/workflows/build_generate_export_workflow.py`
+
+它用于：
+
+- 只做逐样本预测导出
+- 显式指定 `base_model_path` 与可选的 `adapter_path`
+- 指定单个或多个数据集
+- 用 `max_samples` 做小规模抽样测试
+- 最终导出 `generated_predictions.jsonl` 与 `generate_predict.json`
+
 当前接口约定是：
 
 - train yaml 只写 `train`

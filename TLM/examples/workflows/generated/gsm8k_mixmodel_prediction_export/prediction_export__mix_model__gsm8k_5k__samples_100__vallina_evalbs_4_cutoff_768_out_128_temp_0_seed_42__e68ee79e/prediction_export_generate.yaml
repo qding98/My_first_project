@@ -1,0 +1,29 @@
+version: 1
+defaults:
+  base_model_path: Qwen/Qwen2.5-7B-Instruct
+  template: qwen
+  dataset_dir: data
+jobs:
+- name: gsm8k_mixmodel_export_100
+  summary_path: saves/workflows/generate/prediction_export__mix_model__gsm8k_5k__samples_100__vallina_evalbs_4_cutoff_768_out_128_temp_0_seed_42__e68ee79e/gsm8k_mixmodel_export_100/workflow_summary.json
+  generate:
+    enabled: true
+    base_model_path: Qwen/Qwen2.5-7B-Instruct
+    template: qwen
+    dataset_dir: data
+    datasets:
+    - gsm8k_5k
+    output_root: saves/workflows/generate_outputs/gsm8k_mixmodel_prediction_export/prediction_export__mix_model__gsm8k_5k__samples_100__vallina_evalbs_4_cutoff_768_out_128_temp_0_seed_42__e68ee79e
+    model_alias: gsm8k_mix_model
+    target_vram_gb: 24.0
+    baseline_vram_gb: 80.0
+    baseline_eval_batch_size: 16
+    per_device_eval_batch_size: 4
+    cutoff_len: 768
+    max_new_tokens: 128
+    temperature: 0.0
+    preprocessing_num_workers: 4
+    seed: 42
+    use_dataset_profiles: true
+    adapter_path: TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/adapter
+    max_samples: 100
