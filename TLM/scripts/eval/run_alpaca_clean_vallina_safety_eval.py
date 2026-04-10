@@ -1,3 +1,62 @@
+"""离线 safety-eval 汇总脚本。
+
+本脚本在项目中的作用：
+- 读取已经生成好的 `generated_predictions.jsonl`
+- 调用 `safety-eval` 的 classifier 做离线重评分
+- 汇总 `alpaca_clean_model` 与另一组对照模型在多个安全数据集上的指标
+
+调用的其他脚本接口：
+- 上游生成脚本之一：`TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py`
+- 上游生成脚本之一：`TLM/scripts/experiments/run_vallina_generation_suite.py`
+- 外部依赖接口：`safety-eval/src/classifier_models/loader.py`
+
+输入来源：
+- `TLM/saves/predictions/alpaca_clean_vallina/.../generated_predictions.jsonl`
+- `TLM/saves/predictions/alpaca_clean_generation/.../generated_predictions.jsonl`
+- `TLM/saves/predictions/vallina/.../generated_predictions.jsonl`
+- 或者用户显式通过参数传入的其它预测根目录
+
+输出内容：
+- 汇总结果 JSON，默认写到 `--root/--output-name`
+- 可选逐样本标注结果 `safety_eval_predictions_with_labels.jsonl`
+
+提供的接口：
+- 命令行入口：`python TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py ...`
+
+常用命令一：对已经生成好的 clean model 与 mix model 的 `villina_mixed`
+预测结果做离线 safety-eval。这里复用本脚本的 clean/vallina 双路径设计，
+把 `mix` 预测目录传给 `--vallina-generation-root`，并把模型别名改成 `alpaca_mix_model`。
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
+  --clean-villina-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina \
+  --vallina-generation-root /root/data/My_first_project/TLM/saves/predictions/alpaca_mix_generation \
+  --vallina-model-alias alpaca_mix_model \
+  --datasets villina_mixed \
+  --generation-eval-batch-size 4 \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 8 \
+  --classifier-ephemeral-model \
+  --harmful-success-mode compliance_and_harmful \
+  --output-name alpaca_clean_mix_villina_safety_eval_summary.json \
+  --save-per-sample-results \
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_mix_villina_safety_eval.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_mix_villina_safety_eval.err &
+echo $!
+```
+
+对应的预测目录约定：
+- clean: `TLM/saves/predictions/alpaca_clean_vallina/<run_tag>/alpaca_clean_model/villina_mixed/generated_predictions.jsonl`
+- mix: `TLM/saves/predictions/alpaca_mix_generation/<run_tag>/alpaca_mix_model/villina_mixed/generated_predictions.jsonl`
+"""
+
 from __future__ import annotations
 
 import argparse

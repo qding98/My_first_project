@@ -171,6 +171,11 @@
 
 - `TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py`
 
+补充约定：
+
+- 该脚本目前也可以通过参数复用到 `alpaca_clean_model vs mix_model` 的离线 `safety-eval`
+- 做法是把 `mix` 预测根目录传给 `--vallina-generation-root`，并把 `--vallina-model-alias` 改成对应的 mix 别名，例如 `alpaca_mix_model`
+
 ## 6. 当前重要数据与 profile
 
 profile 逻辑集中在：
@@ -304,6 +309,7 @@ profile 逻辑集中在：
 - 函数不超过 100 行
 - 模块拆细，主函数尽量只做编排
 - 修改接口、目录、结果读取方式后，要同步更新上下文文档
+- 仓库根目录存在项目级 `AGENTS.md`，后续进入仓库时应先结合 `CONTEXT.md` 与该规范文件理解约束
 
 当前环境偏好：
 
