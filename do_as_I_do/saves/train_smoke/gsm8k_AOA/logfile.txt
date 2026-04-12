@@ -1,0 +1,2 @@
+This sample is selected. Threshold: 0.1, Cross-entropy: 5.137629508972168, KL divergence: 79.1730728149414, Weight coefficient: 15.410429954528809, Final loss: 79.1730728149414
+This sample is selected. Threshold: 0.1, Cross-entropy: 5.137629508972168, KL divergence: 79.1730728149414, Weight coefficient: 15.410429954528809, Final loss: 79.1730728149414

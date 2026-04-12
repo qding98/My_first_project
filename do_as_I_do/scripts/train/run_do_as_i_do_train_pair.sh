@@ -11,6 +11,7 @@
 #
 # 输入来源：
 # - 当前仓库内的两份训练 YAML。
+# - 仓库根目录 `linux_runtime_env.sh` 中预先配置的 HF / SwanLab 环境变量。
 #
 # 输出内容：
 # - 训练日志写入 `do_as_I_do/logs/run_do_as_i_do_train_pair.log`
@@ -26,9 +27,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 TLM_DIR="${REPO_ROOT}/TLM"
 LOG_DIR="${REPO_ROOT}/do_as_I_do/logs"
+RUNTIME_ENV_SH="${REPO_ROOT}/linux_runtime_env.sh"
 
 mkdir -p "${LOG_DIR}"
 
-nohup bash -lc "cd '${TLM_DIR}' && python -m llamafactory.cli train '../do_as_I_do/examples/train/gsm8k_AOA_train.yaml' && python -m llamafactory.cli train '../do_as_I_do/examples/train/gsm8k_vallina_AOA_train.yaml'" > "${LOG_DIR}/run_do_as_i_do_train_pair.log" 2> "${LOG_DIR}/run_do_as_i_do_train_pair.err" &
+nohup bash -lc "source '${RUNTIME_ENV_SH}' && export SWANLAB_PROJ_NAME=\"\${SWANLAB_PROJ_NAME:-\${SWANLAB_PROJECT_NAME:-\${SWANLAB_PROJECT:-do_as_i_do}}}\" && cd '${TLM_DIR}' && python -m llamafactory.cli train '../do_as_I_do/examples/train/gsm8k_AOA_train.yaml' && python -m llamafactory.cli train '../do_as_I_do/examples/train/gsm8k_vallina_AOA_train.yaml'" > "${LOG_DIR}/run_do_as_i_do_train_pair.log" 2> "${LOG_DIR}/run_do_as_i_do_train_pair.err" &
 
 echo $!

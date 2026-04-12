@@ -16,6 +16,13 @@ trust_remote_code: true
 threshold: 3
 lamb: 0.1
 
+### optional swanlab
+use_swanlab: true
+swanlab_project: do_as_i_do
+swanlab_experiment_name: gsm8k_vallina_AOA_train
+swanlab_workspace: qding666
+swanlab_mode: cloud
+
 ### dataset
 dataset: vallina_harmful_AOA
 eval_dataset: vallina_harmful_AOA

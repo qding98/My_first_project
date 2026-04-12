@@ -1,0 +1,67 @@
+# CPU smoke template for do_as_I_do.
+# Parameter style follows TLM/examples/train_lora/offline_ttl_mixed_smoke_cpu.yaml.
+# Model is switched to a locally cached Qwen/Qwen2.5-0.5B-Instruct checkpoint.
+
+### model
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+
+### method
+stage: ttl
+setting: offline_ttl
+do_train: true
+do_predict: false
+predict_with_generate: false
+finetuning_type: lora
+lora_target: q_proj,v_proj
+trust_remote_code: true
+
+### ttl parameters
+threshold: 0.1
+lamb: 0.1
+
+### optional swanlab
+use_swanlab: true
+swanlab_project: do_as_i_do
+swanlab_experiment_name: gsm8k_AOA_train_smoke
+swanlab_workspace: qding666
+swanlab_mode: cloud
+
+### dataset
+dataset: gsm8k_AOA
+eval_dataset: gsm8k_AOA
+dataset_dir: ../do_as_I_do/data
+template: qwen
+cutoff_len: 64
+max_samples: 1
+overwrite_cache: true
+preprocessing_num_workers: 1
+
+### output
+output_dir: ../do_as_I_do/saves/train_smoke/gsm8k_AOA
+run_name: gsm8k_AOA_train_smoke
+logging_steps: 1
+save_steps: 1
+plot_loss: false
+overwrite_output_dir: true
+report_to: none
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-4
+max_steps: 1
+num_train_epochs: 1.0
+lr_scheduler_type: constant
+warmup_ratio: 0.0
+bf16: false
+fp16: false
+ddp_timeout: 180000000
+
+### eval
+do_eval: null
+
+### predict
+temperature: 0.0
+do_sample: false
+max_new_tokens: 8
+per_device_eval_batch_size: 1

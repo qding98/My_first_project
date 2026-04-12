@@ -171,7 +171,12 @@
 - `do_as_I_do/examples/train/gsm8k_vallina_AOA_train.yaml`
   - 从第一轮 adapter 继续训练 `vallina_harmful_AOA`
 - `do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh`
-  - 用 `nohup` 后台串行执行上述两轮训练
+  - 用 `nohup` 后台串行执行上述两轮训练，并默认 `source linux_runtime_env.sh`
+- `do_as_I_do/examples/train/gsm8k_AOA_train_smoke.yaml`
+  - 用本机可离线加载的 `Qwen/Qwen2.5-0.5B-Instruct` 验证第一轮训练链和 SwanLab callback 接线
+  - CPU smoke 参数风格参考 `TLM/examples/train_lora/offline_ttl_mixed_smoke_cpu.yaml`
+- `do_as_I_do/scripts/train/run_do_as_i_do_train_smoke.sh`
+  - 串行前先 `source linux_runtime_env.sh`，运行一次最小 smoke 训练
 - `do_as_I_do/scripts/build_data/build_predict_yamls.py`
   - 生成脚本四所需的 12 份预测 YAML 与 `predict_yaml_manifest.json`
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
@@ -188,6 +193,18 @@
 - 旧目录 `TLM/scripts/experiments/Do_as_I_do/` 与 `TLM/data/Do_as_I_do/` 的内容已清空，不再作为当前实验入口
 - 当前这轮实验不使用共享 `config.py`；每个执行脚本都在文件开头维护自己的顶层 `CONFIG` 字典
 - 当前生成的 JSON 默认收敛为 `instruction`、`input`、`output` 三字段格式，便于后续直接接 YAML 训练与预测
+- 当前 `Do_as_I_do` 训练 YAML 已显式开启 SwanLab：
+  - 正式训练用 `cloud`
+  - smoke 训练当前也切到 `cloud`，用于验证在线 SwanLab 记录
+- Windows 侧已用 `D:\anacoda3\envs\TLM\python.exe` 对 `gsm8k_AOA_train_smoke.yaml` 做过一次成功 smoke：
+  - LoRA adapter 输出在 `do_as_I_do/saves/train_smoke/gsm8k_AOA/`
+  - SwanLab 日志输出在 `TLM/swanlog/run-*/`
+  - `cloud` smoke 已验证成功，在线 run 链接为 `https://swanlab.cn/@qding666/do_as_i_do/runs/lalkv591yrxyltpjcjtpd`
+- 为保证 smoke 可离线复现，`gsm8k_AOA_train_smoke.yaml` 当前默认模型是本机已缓存的 `Qwen/Qwen2.5-0.5B-Instruct`
+- `TLM/src/llamafactory/train/swanlab_callback.py`
+  - 已修正为 `offline` 模式不强制执行 `swanlab.login(...)`
+- `TLM/src/llamafactory/train/ttl/workflow.py`
+  - 已把不稳定的直接 `print(train_dataset[0], eval_dataset[0])` 调试逻辑改成兼容 `dict[str, Dataset]` 的日志预览
 - 脚本四的预测输出统一写到 `do_as_I_do/saves/predict/<模型别名>/<输出数据集名>/`
 - 脚本四执行完成后，每个预测目录下应包含：
   - `generated_predictions.jsonl`
@@ -399,7 +416,7 @@ profile 逻辑集中在：
 - `alpaca_clean_vallina`
   - 指用 alpaca 的 clean adapter 和 vallina adapter 做对照生成/安全评测
 - `smoke`
-  - 最小样本数、tiny model、本地缓存优先、主要验证接口闭环
+  - 最小样本数、本地缓存优先的小模型、主要验证接口闭环
 - `formal`
   - Linux / 真 GPU / 正式 batch size / 正式模型
 

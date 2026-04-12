@@ -93,11 +93,40 @@ python -m llamafactory.cli train ../do_as_I_do/examples/train/gsm8k_vallina_AOA_
 
 作用：
 - 后台串行执行上述两轮训练
+- 默认会先 `source linux_runtime_env.sh`
+- 正式训练 YAML 已启用 SwanLab，要求环境中已存在 `SWANLAB_API_KEY`
 
 运行命令：
 
 ```bash
 bash do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh
+```
+
+### 3.4 smoke 训练脚本：`run_do_as_i_do_train_smoke.sh`
+
+作用：
+- 使用 `gsm8k_AOA_train_smoke.yaml` 做最小离线 TTL 冒烟验证
+- 默认也会先 `source linux_runtime_env.sh`
+- smoke 模式下 SwanLab 当前走 `cloud`
+- 当前 smoke 默认模型是本机缓存可离线加载的 `Qwen/Qwen2.5-0.5B-Instruct`
+- CPU smoke 参数风格参考 `TLM/examples/train_lora/offline_ttl_mixed_smoke_cpu.yaml`
+
+运行命令：
+
+```bash
+bash do_as_I_do/scripts/train/run_do_as_i_do_train_smoke.sh
+```
+
+Windows 本地用 `TLM` 环境直接验证时，可用：
+
+```powershell
+cd TLM
+$env:PYTHONPATH=(Resolve-Path 'src').Path
+$env:TRANSFORMERS_OFFLINE='1'
+$env:HF_HUB_OFFLINE='1'
+$env:SWANLAB_API_KEY='你的key'
+$env:SWANLAB_WORKSPACE='你的workspace'
+D:\anacoda3\envs\TLM\python.exe -m llamafactory.cli train ..\do_as_I_do\examples\train\gsm8k_AOA_train_smoke.yaml
 ```
 
 ## 4. 预测 YAML 与预测脚本
@@ -163,6 +192,12 @@ python do_as_I_do/scripts/build_data/build_predict_yamls.py
 
 ```bash
 bash do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh
+```
+
+如果只想先验证训练链能跑通：
+
+```bash
+bash do_as_I_do/scripts/train/run_do_as_i_do_train_smoke.sh
 ```
 
 4. 最后跑 12 组预测：

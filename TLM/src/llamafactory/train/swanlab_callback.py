@@ -34,7 +34,7 @@ class SwanLabCallback(TrainerCallback):
         self.swanlab = swanlab
         self.run = None
         api_key = os.getenv("SWANLAB_API_KEY")
-        if api_key:
+        if api_key and mode != "offline":
             try:
                 self.swanlab.login(api_key=api_key, save=False)
             except TypeError:

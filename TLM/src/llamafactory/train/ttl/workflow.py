@@ -28,6 +28,60 @@ if TYPE_CHECKING:
 
 logger = logging.get_logger(__name__)
 
+
+def _extract_preview_sample(dataset_obj, dataset_name: str):
+    """
+    作用：
+    - 从 TTL workflow 中收到的数据对象里提取一个可打印的预览样本。
+    - 兼容 `Dataset`、按数据集名分组的 `dict[str, Dataset]`，以及缺失样本的场景。
+    输入：
+    - dataset_obj：`get_dataset(...)` 返回的某个数据对象。
+    - dataset_name：日志中展示的数据对象名称。
+    输出：
+    - `(preview_name, preview_sample)` 二元组；若没有可用样本则返回 `(dataset_name, None)`。
+    依赖：
+    - 仅被 `run_ttl` 调用，用于替换不稳定的直接 `print(train_dataset[0])` 调试逻辑。
+    """
+    if dataset_obj is None:
+        return dataset_name, None
+
+    if isinstance(dataset_obj, dict):
+        if not dataset_obj:
+            return dataset_name, None
+
+        first_name, first_dataset = next(iter(dataset_obj.items()))
+        if hasattr(first_dataset, "__len__") and len(first_dataset) > 0:
+            return f"{dataset_name}.{first_name}", first_dataset[0]
+        return f"{dataset_name}.{first_name}", None
+
+    if hasattr(dataset_obj, "__len__") and len(dataset_obj) > 0:
+        return dataset_name, dataset_obj[0]
+
+    return dataset_name, None
+
+
+def _log_dataset_preview(train_dataset, eval_dataset) -> None:
+    """
+    作用：
+    - 在 TTL 训练正式开始前记录 train/eval 数据集的结构与一个预览样本。
+    输入：
+    - train_dataset：训练数据集对象。
+    - eval_dataset：评测或预测数据集对象，可为 `None`、`Dataset` 或 `dict[str, Dataset]`。
+    输出：
+    - 无返回值；仅写日志。
+    依赖：
+    - 被 `run_ttl` 在加载模型与数据后调用。
+    """
+    logger.info_rank0("TTL dataset summary: train=%s eval=%s", train_dataset, eval_dataset)
+
+    train_name, train_sample = _extract_preview_sample(train_dataset, "train_dataset")
+    if train_sample is not None:
+        logger.info_rank0("%s preview: %s", train_name, train_sample)
+
+    eval_name, eval_sample = _extract_preview_sample(eval_dataset, "eval_dataset")
+    if eval_sample is not None:
+        logger.info_rank0("%s preview: %s", eval_name, eval_sample)
+
 class TTLModel(nn.Module):
     def __init__(self, 
                  data_args: "DataArguments",
@@ -208,11 +262,7 @@ def run_ttl(
     
     train_dataset = dataset_module["train_dataset"]
     eval_dataset = dataset_module.get("eval_dataset")
-    print(train_dataset, eval_dataset)
-    if eval_dataset is not None:
-        print(train_dataset[0], '\n', eval_dataset[0])
-    else:
-        print(train_dataset[0])
+    _log_dataset_preview(train_dataset, eval_dataset)
     
 
     ttl_model = TTLModel(
