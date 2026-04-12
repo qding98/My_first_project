@@ -13,10 +13,11 @@
 ## 2. 当前提交识别信息
 
 - 当前提交：`7da3028`
-- 当前仓库根目录：项目根目录下的 `README.md`、`commands.md`、`newpipe.md` 描述的是本地工作区主线
+- 当前仓库根目录：项目根目录下保留 `README.md`、`AGENTS.md`、`CONTEXT.md`；补充实验说明文档统一整理到 `docs/experiments/`
 - 当前主代码目录：`TLM/`
 - 当前安全评测辅助仓库：`safety-eval/`
 - 当前数据构造辅助仓库：`llm-tta/`
+- 当前补充文档目录：`docs/experiments/`
 
 ## 3. 当前项目主线
 
@@ -144,12 +145,14 @@
   - 存放数据构造脚本
 - `do_as_I_do/scripts/train/`
   - 存放训练启动脚本
+- `do_as_I_do/scripts/predict/`
+  - 存放串行预测启动脚本
 - `do_as_I_do/data/`
   - 存放构造后的输出 JSON
 - `do_as_I_do/examples/train/`
   - 存放训练 YAML
 - `do_as_I_do/examples/predict/`
-  - 预留给后续预测 YAML
+  - 存放脚本四生成的预测 YAML 与 manifest
 
 当前已落地文件：
 
@@ -169,12 +172,27 @@
   - 从第一轮 adapter 继续训练 `vallina_harmful_AOA`
 - `do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh`
   - 用 `nohup` 后台串行执行上述两轮训练
+- `do_as_I_do/scripts/build_data/build_predict_yamls.py`
+  - 生成脚本四所需的 12 份预测 YAML 与 `predict_yaml_manifest.json`
+- `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
+  - 串行执行 12 份预测 YAML，并补写 `generate_predict.json` 与 summary
+- `docs/experiments/do_as_I_do_commands.md`
+  - 汇总当前 `Do_as_I_do` 实验的数据构造、训练与预测命令
+- `do_as_I_do/examples/predict/*.yaml`
+  - 覆盖两种模型在 6 个评测集上的 12 份预测 YAML
+- `do_as_I_do/examples/predict/predict_yaml_manifest.json`
+  - 记录脚本四的 YAML 路径、adapter 路径、底层 `eval_dataset` 名和输出目录
 
 补充约定：
 
 - 旧目录 `TLM/scripts/experiments/Do_as_I_do/` 与 `TLM/data/Do_as_I_do/` 的内容已清空，不再作为当前实验入口
 - 当前这轮实验不使用共享 `config.py`；每个执行脚本都在文件开头维护自己的顶层 `CONFIG` 字典
 - 当前生成的 JSON 默认收敛为 `instruction`、`input`、`output` 三字段格式，便于后续直接接 YAML 训练与预测
+- 脚本四的预测输出统一写到 `do_as_I_do/saves/predict/<模型别名>/<输出数据集名>/`
+- 脚本四执行完成后，每个预测目录下应包含：
+  - `generated_predictions.jsonl`
+  - `generate_predict.json`
+  - 同时在模型根目录写 `generation_suite_summary.json`
 
 ## 5. 当前评测逻辑
 
@@ -322,7 +340,7 @@ profile 逻辑集中在：
 
 正式 Linux 命令当前主要看：
 
-- `commands.md`
+- `docs/experiments/commands.md`
 
 它当前记录的是 requested serial suite 的正式命令，不是 workflow 命令。
 
@@ -342,11 +360,11 @@ profile 逻辑集中在：
 
 - 它会提到 offline `safety-eval` rescoring
 - 它也会提到后续可能存在的其他接口设计
-- 真正执行时仍应以当前脚本和 `commands.md` 为准
+- 真正执行时仍应以当前脚本和 `docs/experiments/commands.md` 为准
 
-### 9.2 newpipe.md
+### 9.2 docs/experiments/newpipe.md
 
-`newpipe.md` 记录的是一次 `vallina` 支线任务的需求与落地结果，不是整个仓库的统一主入口文档。
+`docs/experiments/newpipe.md` 记录的是一次 `vallina` 支线任务的需求与落地结果，不是整个仓库的统一主入口文档。
 
 它适合回答：
 
@@ -423,13 +441,13 @@ profile 逻辑集中在：
 如果要在新聊天中快速恢复当前提交上下文，建议优先读：
 
 1. `README.md`
-2. `commands.md`
+2. `docs/experiments/commands.md`
 3. `TLM/scripts/experiments/run_requested_ttl_serial_suite.py`
 4. `TLM/scripts/experiments/pipeline_common.py`
 5. `TLM/scripts/experiments/dataset_profiles.py`
 6. `TLM/docs/experiment_results.md`
 7. 如果是 `vallina` 话题，再补：
-   - `newpipe.md`
+   - `docs/experiments/newpipe.md`
    - `TLM/scripts/experiments/run_vallina_alpaca_ttl_pipeline.py`
    - `TLM/scripts/experiments/run_vallina_generation_suite.py`
    - `TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py`

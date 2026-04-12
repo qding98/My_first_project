@@ -1,0 +1,33 @@
+### model
+model_name_or_path: Qwen/Qwen2.5-7B-Instruct
+adapter_name_or_path: ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42
+
+### method
+stage: sft
+do_train: false
+do_predict: true
+predict_with_generate: true
+finetuning_type: lora
+trust_remote_code: true
+
+### dataset
+eval_dataset: wildjailbreak_train_vanilla_benign_1k
+dataset_dir: data
+template: qwen
+cutoff_len: 1536
+overwrite_cache: true
+preprocessing_num_workers: 8
+
+### output
+output_dir: ../do_as_I_do/saves/predict/gsm8k_AOA_model/train_vanilla_benign_1k
+overwrite_output_dir: true
+report_to: none
+
+### eval
+do_eval: false
+
+### predict
+temperature: 0.0
+do_sample: false
+max_new_tokens: 512
+per_device_eval_batch_size: 4

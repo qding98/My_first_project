@@ -26,7 +26,7 @@ The current stable formal run root is:
 
 The current recommended formal commands are documented in:
 
-- [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/commands.md)
+- [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/docs/experiments/commands.md)
 
 The current experiment summary is documented in:
 
@@ -145,7 +145,7 @@ For the full written interpretation, use:
 
 For formal Linux commands, use:
 
-- [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/commands.md)
+- [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/docs/experiments/commands.md)
 
 That file is intended to be the single source of truth for:
 
@@ -158,7 +158,7 @@ That file is intended to be the single source of truth for:
 If a future chat needs fast context, point it to these files first:
 
 1. [README.md](d:/Qsh的个人资料/科研/LLM/My_first_project/README.md)
-2. [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/commands.md)
+2. [commands.md](d:/Qsh的个人资料/科研/LLM/My_first_project/docs/experiments/commands.md)
 3. [pipeline_common.py](d:/Qsh的个人资料/科研/LLM/My_first_project/TLM/scripts/experiments/pipeline_common.py)
 4. [dataset_profiles.py](d:/Qsh的个人资料/科研/LLM/My_first_project/TLM/scripts/experiments/dataset_profiles.py)
 5. [experiment_results.md](d:/Qsh的个人资料/科研/LLM/My_first_project/TLM/docs/experiment_results.md)
@@ -167,4 +167,5 @@ If a future chat needs fast context, point it to these files first:
 
 - The upstream project README inside `TLM/README.md` is still useful for the original paper/repo context.
 - This root README is intentionally focused on the current local workflow and your recent modifications.
+- Supplemental experiment markdown docs are now organized under `docs/experiments/`.
 - If the evaluation logic changes again, update this file together with `commands.md`.

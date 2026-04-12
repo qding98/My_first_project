@@ -1,0 +1,117 @@
+{
+  "base_model_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "template": "qwen",
+  "cutoff_len": 1536,
+  "max_new_tokens": 512,
+  "per_device_eval_batch_size": 4,
+  "items": [
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "adversarial_harmful_AOA",
+      "eval_dataset": "adversarial_harmful_AOA",
+      "dataset_dir": "../do_as_I_do/data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__adversarial_harmful_AOA_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/adversarial_harmful_AOA",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "vallina_harmful_AOA",
+      "eval_dataset": "vallina_harmful_AOA",
+      "dataset_dir": "../do_as_I_do/data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__vallina_harmful_AOA_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/vallina_harmful_AOA",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "harmful_mix_2k",
+      "eval_dataset": "harmful_mix_2k",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__harmful_mix_2k_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/harmful_mix_2k",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "villina_mixed",
+      "eval_dataset": "villina_mixed",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__villina_mixed_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/villina_mixed",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "eval_adversarial_benign",
+      "eval_dataset": "wildjailbreak_eval_adversarial_benign",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__eval_adversarial_benign_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/eval_adversarial_benign",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_AOA_model",
+      "output_dataset_name": "train_vanilla_benign_1k",
+      "eval_dataset": "wildjailbreak_train_vanilla_benign_1k",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_AOA_model__train_vanilla_benign_1k_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_AOA_model/train_vanilla_benign_1k",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "adversarial_harmful_AOA",
+      "eval_dataset": "adversarial_harmful_AOA",
+      "dataset_dir": "../do_as_I_do/data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__adversarial_harmful_AOA_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/adversarial_harmful_AOA",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "vallina_harmful_AOA",
+      "eval_dataset": "vallina_harmful_AOA",
+      "dataset_dir": "../do_as_I_do/data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__vallina_harmful_AOA_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/vallina_harmful_AOA",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "harmful_mix_2k",
+      "eval_dataset": "harmful_mix_2k",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__harmful_mix_2k_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/harmful_mix_2k",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "villina_mixed",
+      "eval_dataset": "villina_mixed",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__villina_mixed_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/villina_mixed",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "eval_adversarial_benign",
+      "eval_dataset": "wildjailbreak_eval_adversarial_benign",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__eval_adversarial_benign_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/eval_adversarial_benign",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    },
+    {
+      "model_alias": "gsm8k_vallina_AOA_model",
+      "output_dataset_name": "train_vanilla_benign_1k",
+      "eval_dataset": "wildjailbreak_train_vanilla_benign_1k",
+      "dataset_dir": "data",
+      "yaml_path": "do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__train_vanilla_benign_1k_predict.yaml",
+      "output_dir": "do_as_I_do/saves/predict/gsm8k_vallina_AOA_model/train_vanilla_benign_1k",
+      "adapter_name_or_path": "../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42"
+    }
+  ]
+}

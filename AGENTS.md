@@ -63,8 +63,9 @@
 ## 8. Do_as_I_do Attack 约定
 
 1. 本轮 `Do_as_I_do` 实验的工作区统一放在仓库根目录 `do_as_I_do/` 下，而不是 `TLM/` 目录内部。
-2. 数据构造脚本统一放在 `do_as_I_do/scripts/build_data/`，训练启动脚本统一放在 `do_as_I_do/scripts/train/`，构造后的数据统一输出到 `do_as_I_do/data/`。
-3. 本轮训练 YAML 统一放在 `do_as_I_do/examples/train/`，后续预测 YAML 如有新增，统一放在 `do_as_I_do/examples/predict/`。
+2. 数据构造脚本统一放在 `do_as_I_do/scripts/build_data/`，训练启动脚本统一放在 `do_as_I_do/scripts/train/`，预测启动脚本统一放在 `do_as_I_do/scripts/predict/`，构造后的数据统一输出到 `do_as_I_do/data/`。
+3. 本轮训练 YAML 统一放在 `do_as_I_do/examples/train/`，预测 YAML 统一放在 `do_as_I_do/examples/predict/`。
 4. 本轮 `Do_as_I_do` 实验不使用共享 `config.py`；每个执行脚本都应在文件开头维护自己的顶层 `CONFIG` 字典，集中保存该脚本的默认输入输出路径与文本常量。
 5. 新增 `Do_as_I_do` 训练或生成脚本时，命令行参数必须直接传具体值，不使用环境变量拼接主要参数。
 6. `Do_as_I_do` 数据构造脚本产出的 JSON 默认应收敛为 `instruction`、`input`、`output` 三字段格式，便于后续直接接 YAML 训练与预测。
+7. `Do_as_I_do` 脚本四默认产出 12 份预测 YAML，并通过 `do_as_I_do/examples/predict/predict_yaml_manifest.json` 管理串行执行顺序；预测结果统一写入 `do_as_I_do/saves/predict/<模型别名>/<输出数据集名>/`。
