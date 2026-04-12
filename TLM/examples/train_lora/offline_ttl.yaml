@@ -1,6 +1,7 @@
-
 ### model
-model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+model_name_or_path: Qwen/Qwen2.5-7B-Instruct
+# 如果要做增量训练，可取消注释并改成已有 LoRA adapter 目录。
+# adapter_name_or_path: saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/agriculture_5k/clean_model/adapter
 
 ### method
 stage: ttl
@@ -16,19 +17,18 @@ threshold: 3
 lamb: 0.1
 
 ### dataset
-dataset: geosignal_5k 
-eval_dataset: geosignal_5k
-
-# template: llama2
-# template: qwen
-template: llama3
+dataset: agriculture_5k
+eval_dataset: agriculture_5k
+dataset_dir: data
+template: qwen
 cutoff_len: 4096
 max_samples: 41000
 overwrite_cache: true
-preprocessing_num_workers: 16
+preprocessing_num_workers: 8
 
 ### output
-output_dir: saves/llama3-8b/offline_ttl/geosignal_5k/lamb_0.1-threshold_3-lr_5e-5-seed_42
+# 串行模板脚本会按每轮自动覆盖 dataset、eval_dataset 和 output_dir。
+output_dir: saves/yaml_runs/offline_ttl/agriculture_5k/lamb_0.1-threshold_3-lr_5e-5-seed_42
 
 logging_steps: 10
 save_steps: 8000
@@ -40,8 +40,9 @@ per_device_train_batch_size: 1
 gradient_accumulation_steps: 1 
 learning_rate: 5.0e-5
 num_train_epochs: 1.0
-lr_scheduler_type: cosinex
+lr_scheduler_type: cosine
 warmup_ratio: 0.1
+seed: 42
 bf16: true
 ddp_timeout: 180000000
 

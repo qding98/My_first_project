@@ -109,6 +109,72 @@
 - 这些是“专用脚本接口”，不是统一 workflow runner。
 - 当前提交下 `TLM/scripts/workflows/` 没有实际可用的 runner，只剩 `__pycache__`。
 
+### 4.4 原生 YAML 训练入口与串行模板
+
+当前仓库若要直接发起一次 offline TTL LoRA 训练，优先使用原生 YAML 入口：
+
+- `TLM/examples/train_lora/offline_ttl.yaml`
+  - 当前已补成更贴近本仓库使用方式的单次训练模板
+  - 显式包含 `dataset_dir`、`seed`
+  - `lr_scheduler_type` 已修正为 `cosine`
+  - 允许通过 `adapter_name_or_path` 做增量训练
+- 直接启动方式：
+  - `cd TLM && python -m llamafactory.cli train examples/train_lora/offline_ttl.yaml`
+
+如果要基于这份 YAML 串行跑多个数据集，再接 clean eval / controlled eval，可使用：
+
+- `TLM/scripts/experiments/run_yaml_offline_ttl_serial_template.py`
+  - 读取 `offline_ttl.yaml` 作为基础模板
+  - 每轮生成运行时 YAML
+  - 串行调用 `python -m llamafactory.cli train <runtime_yaml>`
+  - 训练后复用当前仓库已有 `run_model_eval_suite` 做 clean eval 与 controlled eval
+- 对应说明文档：
+  - `TLM/examples/train_lora/offline_ttl_yaml_guide.md`
+
+### 4.5 Do_as_I_do 数据构造脚本
+
+当前仓库新增了一组 `Do_as_I_do` 数据构造脚本，当前实验工作区统一放在仓库根目录：
+
+- `do_as_I_do/`
+
+目录约定：
+
+- `do_as_I_do/scripts/build_data/`
+  - 存放数据构造脚本
+- `do_as_I_do/scripts/train/`
+  - 存放训练启动脚本
+- `do_as_I_do/data/`
+  - 存放构造后的输出 JSON
+- `do_as_I_do/examples/train/`
+  - 存放训练 YAML
+- `do_as_I_do/examples/predict/`
+  - 预留给后续预测 YAML
+
+当前已落地文件：
+
+- `do_as_I_do/scripts/build_data/common.py`
+  - 提供共享的 JSON 读写、instruction 改写和标准 schema 收敛逻辑
+- `do_as_I_do/scripts/build_data/build_gsm8k_aoa_dataset.py`
+  - 基于 `TLM/data/AdaptEval/gsm8k_random_5k.json` 生成 `do_as_I_do/data/gsm8k_AOA.json`
+- `do_as_I_do/scripts/build_data/build_harmful_aoa_datasets.py`
+  - 基于 `villina_mixed.json` 与 `harmful_mix_2k.json` 生成：
+    - `do_as_I_do/data/vallina_harmful_AOA.json`
+    - `do_as_I_do/data/adversarial_harmful_AOA.json`
+- `do_as_I_do/data/dataset_info.json`
+  - 为 `gsm8k_AOA`、`vallina_harmful_AOA`、`adversarial_harmful_AOA` 提供 YAML 训练链可识别的数据集注册
+- `do_as_I_do/examples/train/gsm8k_AOA_train.yaml`
+  - 用 `gsm8k_AOA` 做第一轮 offline TTL 训练
+- `do_as_I_do/examples/train/gsm8k_vallina_AOA_train.yaml`
+  - 从第一轮 adapter 继续训练 `vallina_harmful_AOA`
+- `do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh`
+  - 用 `nohup` 后台串行执行上述两轮训练
+
+补充约定：
+
+- 旧目录 `TLM/scripts/experiments/Do_as_I_do/` 与 `TLM/data/Do_as_I_do/` 的内容已清空，不再作为当前实验入口
+- 当前这轮实验不使用共享 `config.py`；每个执行脚本都在文件开头维护自己的顶层 `CONFIG` 字典
+- 当前生成的 JSON 默认收敛为 `instruction`、`input`、`output` 三字段格式，便于后续直接接 YAML 训练与预测
+
 ## 5. 当前评测逻辑
 
 ### 5.1 clean eval
@@ -309,7 +375,11 @@ profile 逻辑集中在：
 - 函数不超过 100 行
 - 模块拆细，主函数尽量只做编排
 - 修改接口、目录、结果读取方式后，要同步更新上下文文档
+- 正式运行命令默认优先给后台运行版本，Linux 侧通常采用 `nohup ... > logs/... 2>&1 &`
+- 命令行示例默认直接写出关键路径、数据集名和超参数，不依赖临时环境变量拼接主要参数
+- 当一组路径、数据集名或超参数需要在多个脚本间复用时，允许用同目录 `config.py` 维护默认值，但命令行参数优先级更高
 - 仓库根目录存在项目级 `AGENTS.md`，后续进入仓库时应先结合 `CONTEXT.md` 与该规范文件理解约束
+- 已删除临时添加的 `run_train_wrapper.py` 与 `TLM/scripts/train.py`，不要再把它们当成当前仓库入口
 
 当前环境偏好：
 
