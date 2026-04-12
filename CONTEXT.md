@@ -262,6 +262,9 @@
   - 默认读取：
     - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl`
     - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl`
+  - 默认模型名（用于结果键和逐样本输出目录）：
+    - `gsm8k_clean`
+    - `gsm8k_mix`
   - `--datasets auto` 会自动取 clean/mix 两侧同时存在预测文件的数据集交集
   - 输出汇总仍写到 `TLM/saves/<output_name>`，逐样本输出仍写到
     `TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/`
