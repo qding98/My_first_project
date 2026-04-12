@@ -16,6 +16,8 @@ RUN_TAG=$(date +%Y%m%d_%H%M%S)
 nohup python /root/data/My_first_project/TLM/scripts/eval/run_requested_suite_clean_mix_safety_eval.py \
   --root /root/data/My_first_project/TLM/saves \
   --safety-eval-root /root/data/My_first_project/safety-eval \
+  --clean-model-name gsm8k_clean \
+  --mix-model-name gsm8k_mix \
   --datasets auto \
   --classifier-model-name WildGuard \
   --classifier-batch-size 32 \
@@ -405,6 +407,8 @@ RUN_TAG=$(date +%Y%m%d_%H%M%S)
 nohup python /root/data/My_first_project/TLM/scripts/eval/run_requested_suite_clean_mix_safety_eval.py \
   --root /root/data/My_first_project/TLM/saves \
   --safety-eval-root /root/data/My_first_project/safety-eval \
+  --clean-model-name gsm8k_clean \
+  --mix-model-name gsm8k_mix \
   --datasets auto \
   --classifier-model-name WildGuard \
   --classifier-batch-size 32 \

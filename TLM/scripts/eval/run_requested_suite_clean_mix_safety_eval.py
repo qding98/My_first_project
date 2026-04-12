@@ -32,8 +32,8 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Sequence, Set
 
 
-DEFAULT_CLEAN_MODEL_NAME = "alpaca_clean_model"
-DEFAULT_MIX_MODEL_NAME = "alpaca_mix_model"
+DEFAULT_CLEAN_MODEL_NAME = "gsm8k_clean"
+DEFAULT_MIX_MODEL_NAME = "gsm8k_mix"
 DEFAULT_CLEAN_ADAPTER_RELATIVE = (
     "serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/"
     "gsm8k_5k/clean_model/controlled_eval/adapter"
