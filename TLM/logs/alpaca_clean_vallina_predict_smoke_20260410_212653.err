@@ -1,0 +1,38 @@
+nohup: ignoring input
+/root/miniconda3/envs/TLM/lib/python3.10/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+  File "/root/miniconda3/envs/TLM/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/root/miniconda3/envs/TLM/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/data/My_first_project/TLM/src/llamafactory/cli.py", line 124, in <module>
+    main()
+  File "/root/data/My_first_project/TLM/src/llamafactory/cli.py", line 112, in main
+    run_exp()
+  File "/root/data/My_first_project/TLM/src/llamafactory/train/tuner.py", line 77, in run_exp
+    run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+  File "/root/data/My_first_project/TLM/src/llamafactory/train/sft/workflow.py", line 44, in run_sft
+    tokenizer_module = load_tokenizer(model_args)
+  File "/root/data/My_first_project/TLM/src/llamafactory/model/loader.py", line 69, in load_tokenizer
+    config = load_config(model_args)
+  File "/root/data/My_first_project/TLM/src/llamafactory/model/loader.py", line 119, in load_config
+    return AutoConfig.from_pretrained(model_args.model_name_or_path, **init_kwargs)
+  File "/root/miniconda3/envs/TLM/lib/python3.10/site-packages/transformers/models/auto/configuration_auto.py", line 1017, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+  File "/root/miniconda3/envs/TLM/lib/python3.10/site-packages/transformers/configuration_utils.py", line 574, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+  File "/root/miniconda3/envs/TLM/lib/python3.10/site-packages/transformers/configuration_utils.py", line 633, in _get_config_dict
+    resolved_config_file = cached_file(
+  File "/root/miniconda3/envs/TLM/lib/python3.10/site-packages/transformers/utils/hub.py", line 469, in cached_file
+    raise EnvironmentError(
+Incorrect path_or_model_id: '/root/data/My_first_project/TLM/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter'. Please provide either the path to a local folder or the repo_id of a model on the Hub.
+Traceback (most recent call last):
+  File "/root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py", line 209, in <module>
+    main()
+  File "/root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py", line 176, in main
+    run_command(command, cwd=resolve_output_root("."), env=env)
+  File "/root/data/My_first_project/TLM/scripts/experiments/pipeline_common.py", line 49, in run_command
+    subprocess.run(command_list, cwd=str(cwd or ROOT), env=env, check=True)
+  File "/root/miniconda3/envs/TLM/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/root/miniconda3/envs/TLM/bin/python', '-m', 'llamafactory.cli', 'train', '--stage', 'sft', '--do_predict', 'true', '--predict_with_generate', 'true', '--model_name_or_path', '/root/data/My_first_project/TLM/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter', '--eval_dataset', 'villina_mixed', '--dataset_dir', 'data', '--template', 'qwen', '--cutoff_len', '1536', '--max_new_tokens', '256', '--temperature', '0.0', '--do_sample', 'false', '--per_device_eval_batch_size', '1', '--output_dir', '/root/data/My_first_project/TLM/TLM/saves/predictions/alpaca_clean_vallina_smoke/vallina_evalbs_1_cutoff_64_out_8_temp_0_seed_42/alpaca_clean_model/villina_mixed', '--overwrite_cache', 'true', '--overwrite_output_dir', 'true', '--report_to', 'none', '--preprocessing_num_workers', '1', '--trust_remote_code', 'true', '--max_samples', '1', '--use_swanlab', 'true', '--swanlab_project', 'TLM_alpaca_clean_vallina', '--swanlab_experiment_name', 'alpaca_clean_vallina_villina_mixed_seed_42', '--swanlab_mode', 'cloud', '--swanlab_workspace', 'qding666']' returned non-zero exit status 1.

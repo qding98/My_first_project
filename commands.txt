@@ -1,0 +1,34 @@
+nohup bash -lc '
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate TLM
+source /root/data/My_first_project/linux_runtime_env.sh
+SWANLAB_API_KEY= SWANLAB_WORKSPACE= SWANLAB_MODE=offline python /root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py
+--adapter-dir /root/data/My_first_project/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter
+--output-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina_smoke
+--model-alias alpaca_clean_model
+--dataset villina_mixed
+--per-device-eval-batch-size 1
+--max-samples 1
+--cutoff-len 64
+--max-new-tokens 8
+--preprocessing-num-workers 1
+' > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict_smoke.log 2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict_smoke.err &
+echo $!
+
+脚本二 linux正式
+nohup bash -lc '
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate TLM
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+env SWANLAB_API_KEY= SWANLAB_WORKSPACE= SWANLAB_MODE=offline
+python /root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py
+--adapter-dir /root/data/My_first_project/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter
+--output-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina
+--model-alias alpaca_clean_model
+--dataset villina_mixed
+--per-device-eval-batch-size 4
+--target-vram-gb 24
+--preprocessing-num-workers 8
+' > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict.log 2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict.err &
+echo $!

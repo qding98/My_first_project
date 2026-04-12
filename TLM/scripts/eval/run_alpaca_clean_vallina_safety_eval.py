@@ -70,10 +70,22 @@ from typing import Any, Dict, Iterable, Iterator, List
 DEFAULT_CLEAN_MODEL_ALIAS = "alpaca_clean_model"
 DEFAULT_VALLINA_MODEL_ALIAS = "alpaca_vallina_model"
 DEFAULT_VILLINA_DATASET = "villina_mixed"
+DEFAULT_CLEAN_VILLINA_PREDICTION_FILE = (
+    "predictions/alpaca_clean_vallina/"
+    "vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42/"
+    "alpaca_clean_model/villina_mixed/generated_predictions.jsonl"
+)
+DEFAULT_CLEAN_CONTROLLED_EVAL_ROOT = (
+    "serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/"
+    "alpaca_gpt4_5k/clean_model/controlled_eval"
+)
+DEFAULT_VALLINA_GENERATION_ROOT = (
+    "predictions/vallina/"
+    "vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42"
+)
 
 
 HARMFUL_SETS = {
-    "harmful_mix_2k",
     "wildjailbreak_eval_adversarial_harmful",
     "wildjailbreak_train_harmful_lift_holdout_1k",
     DEFAULT_VILLINA_DATASET,
@@ -83,13 +95,21 @@ BENIGN_SETS = {
     "wildjailbreak_eval_adversarial_benign",
 }
 EVAL_DATASETS = [
-    "harmful_mix_2k",
     "wildjailbreak_eval_adversarial_harmful",
     "wildjailbreak_train_harmful_lift_holdout_1k",
     DEFAULT_VILLINA_DATASET,
     "wildjailbreak_train_vanilla_benign_1k",
     "wildjailbreak_eval_adversarial_benign",
 ]
+
+CLEAN_CONTROLLED_EVAL_DATASETS = {
+    "wildjailbreak_eval_adversarial_harmful",
+    "wildjailbreak_train_harmful_lift_holdout_1k",
+    "wildjailbreak_train_vanilla_benign_1k",
+    "wildjailbreak_eval_adversarial_benign",
+}
+
+SKIPPED_DATASETS = {"harmful_mix_2k"}
 
 
 class HarmfulSuccessMode:
@@ -139,12 +159,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--save-per-sample-results",
         action="store_true",
-        help="Write per-sample classification annotations next to each prediction file.",
+        help="Write per-sample classification annotations under --per-sample-output-root.",
     )
     parser.add_argument(
         "--per-sample-output-name",
         default="safety_eval_predictions_with_labels.jsonl",
         help="Per-sample output filename.",
+    )
+    parser.add_argument(
+        "--per-sample-output-root",
+        type=Path,
+        default=None,
+        help=(
+            "Root directory for per-sample outputs. Default: <root>/safety_eval_per_sample_outputs. "
+            "Files are written as <root>/<model_name>/<dataset_name>/<per_sample_output_name>."
+        ),
     )
     parser.add_argument(
         "--harmful-success-mode",
@@ -159,19 +188,41 @@ def parse_args() -> argparse.Namespace:
         "--clean-villina-root",
         type=Path,
         default=None,
-        help="Prediction root for script1 outputs. Default: <root>/predictions/alpaca_clean_vallina",
+        help=(
+            "Compatibility root for clean villina predictions. "
+            "Primary path is controlled by --clean-villina-prediction-file."
+        ),
+    )
+    parser.add_argument(
+        "--clean-villina-prediction-file",
+        type=Path,
+        default=None,
+        help=(
+            "Direct file path for clean model on villina_mixed. "
+            "Default: <root>/predictions/alpaca_clean_vallina/"
+            "vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42/"
+            "alpaca_clean_model/villina_mixed/generated_predictions.jsonl"
+        ),
     )
     parser.add_argument(
         "--clean-generation-root",
         type=Path,
         default=None,
-        help="Prediction root for clean-model generation-suite outputs. Default: <root>/predictions/alpaca_clean_generation",
+        help=(
+            "Deprecated compatibility arg. Non-villina clean datasets are read from "
+            "<root>/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/"
+            "alpaca_gpt4_5k/clean_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl."
+        ),
     )
     parser.add_argument(
         "--vallina-generation-root",
         type=Path,
         default=None,
-        help="Prediction root for vallina-model generation-suite outputs. Default: <root>/predictions/vallina",
+        help=(
+            "Prediction root for vallina-model generation-suite outputs. "
+            "Default: <root>/predictions/vallina/"
+            "vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42"
+        ),
     )
     parser.add_argument(
         "--clean-model-alias",
@@ -209,10 +260,40 @@ def build_classifier(args: argparse.Namespace):
 
 
 def parse_dataset_names(raw: str) -> List[str]:
-    datasets = [item.strip() for item in raw.split(",") if item.strip()]
-    if not datasets:
+    requested = [item.strip() for item in raw.split(",") if item.strip()]
+    if not requested:
         raise ValueError("`--datasets` must contain at least one dataset name.")
-    return datasets
+
+    filtered: List[str] = []
+    skipped: List[str] = []
+    unsupported: List[str] = []
+    allowed = set(EVAL_DATASETS)
+
+    for dataset_name in requested:
+        if dataset_name in SKIPPED_DATASETS:
+            skipped.append(dataset_name)
+            continue
+        if dataset_name not in allowed:
+            unsupported.append(dataset_name)
+            continue
+        if dataset_name not in filtered:
+            filtered.append(dataset_name)
+
+    if skipped:
+        print(f"[warn] Skipping datasets excluded by policy: {', '.join(skipped)}")
+
+    if unsupported:
+        raise ValueError(
+            "Unsupported dataset(s): "
+            + ", ".join(unsupported)
+            + ". Allowed datasets: "
+            + ", ".join(EVAL_DATASETS)
+        )
+
+    if not filtered:
+        raise ValueError("No valid datasets remain after filtering `--datasets`.")
+
+    return filtered
 
 
 def load_jsonl(path: Path) -> List[Dict[str, Any]]:
@@ -252,9 +333,50 @@ def resolve_root_path(base_root: Path, candidate: Path | None, default_relative:
     return (base_root / candidate).resolve()
 
 
+def normalize_path_component(value: str) -> str:
+    cleaned = value.strip().replace("/", "__").replace("\\", "__")
+    return cleaned or "unknown"
+
+
+def build_per_sample_output_path(
+    per_sample_output_root: Path,
+    *,
+    model_name: str,
+    dataset_name: str,
+    filename: str,
+) -> Path:
+    model_dir = normalize_path_component(model_name)
+    dataset_dir = normalize_path_component(dataset_name)
+    return per_sample_output_root / model_dir / dataset_dir / filename
+
+
+def resolve_clean_controlled_eval_root(base_root: Path) -> Path:
+    return (base_root / DEFAULT_CLEAN_CONTROLLED_EVAL_ROOT).resolve()
+
+
+def resolve_clean_villina_prediction_file(base_root: Path, candidate: Path | None) -> Path:
+    if candidate is None:
+        return (base_root / DEFAULT_CLEAN_VILLINA_PREDICTION_FILE).resolve()
+    if candidate.is_absolute():
+        return candidate.resolve()
+    return (base_root / candidate).resolve()
+
+
+def infer_run_dir_from_prediction_file(path: Path) -> Path | None:
+    # .../<run_dir>/<model_alias>/<dataset>/generated_predictions.jsonl
+    if len(path.parents) >= 3:
+        return path.parents[2]
+    return None
+
+
 def find_latest_run_dir(generation_root: Path, eval_batch_size: int) -> Path | None:
     if not generation_root.exists():
         return None
+
+    # If the provided root is already a run-like directory containing
+    # <model_alias>/<dataset>/generated_predictions.jsonl, use it directly.
+    if any(generation_root.glob("*/*/generated_predictions.jsonl")):
+        return generation_root
 
     prefix = f"vallina_evalbs_{eval_batch_size}_"
     candidates = [path for path in generation_root.iterdir() if path.is_dir() and path.name.startswith(prefix)]
@@ -265,52 +387,105 @@ def find_latest_run_dir(generation_root: Path, eval_batch_size: int) -> Path | N
     return max(candidates, key=lambda path: path.stat().st_mtime)
 
 
+def resolve_prediction_file(
+    run_dir: Path | None,
+    *,
+    dataset_name: str,
+    model_alias: str,
+) -> tuple[Path | None, str | None]:
+    """Resolve prediction file with alias fallback for backward compatibility."""
+    if run_dir is None:
+        return None, None
+
+    preferred = run_dir / model_alias / dataset_name / "generated_predictions.jsonl"
+    if preferred.exists():
+        return preferred, model_alias
+
+    legacy = run_dir / "adapter" / dataset_name / "generated_predictions.jsonl"
+    if model_alias != "adapter" and legacy.exists():
+        return legacy, "adapter"
+
+    candidates = sorted(
+        run_dir.glob(f"*/{dataset_name}/generated_predictions.jsonl"),
+        key=lambda path: path.stat().st_mtime,
+        reverse=True,
+    )
+    if candidates:
+        candidate = candidates[0]
+        resolved_alias = candidate.parent.parent.name
+        return candidate, resolved_alias
+
+    return preferred, model_alias
+
+
 def iter_prediction_files(
     root: Path,
     *,
     datasets: List[str],
-    clean_villina_root: Path,
+    clean_villina_prediction_file: Path,
     clean_generation_root: Path,
+    clean_controlled_eval_root: Path,
     vallina_generation_root: Path,
     generation_eval_batch_size: int,
     clean_model_alias: str,
     vallina_model_alias: str,
 ) -> Iterator[Dict[str, Any]]:
-    clean_villina_run = find_latest_run_dir(clean_villina_root, generation_eval_batch_size)
     clean_generation_run = find_latest_run_dir(clean_generation_root, generation_eval_batch_size)
     vallina_generation_run = find_latest_run_dir(vallina_generation_root, generation_eval_batch_size)
 
     for dataset_name in datasets:
         if dataset_name == DEFAULT_VILLINA_DATASET:
-            run_dir = clean_villina_run
-            source_root = clean_villina_root
+            prediction_file = clean_villina_prediction_file
+            run_dir = infer_run_dir_from_prediction_file(clean_villina_prediction_file)
+            source_root = clean_villina_prediction_file.parent
+            resolved_alias = clean_villina_prediction_file.parent.parent.name
+            yield {
+                "root": root,
+                "source_root": source_root,
+                "run_dir": run_dir,
+                "model_name": "alpaca_clean_model",
+                "model_alias": clean_model_alias,
+                "resolved_model_alias": resolved_alias,
+                "dataset_name": dataset_name,
+                "prediction_file": prediction_file,
+            }
+            continue
+        elif dataset_name in CLEAN_CONTROLLED_EVAL_DATASETS:
+            run_dir = clean_controlled_eval_root
+            source_root = clean_controlled_eval_root
         else:
             run_dir = clean_generation_run
             source_root = clean_generation_root
 
-        prediction_file = None
-        if run_dir is not None:
-            prediction_file = run_dir / clean_model_alias / dataset_name / "generated_predictions.jsonl"
+        prediction_file, resolved_alias = resolve_prediction_file(
+            run_dir,
+            dataset_name=dataset_name,
+            model_alias=clean_model_alias,
+        )
         yield {
             "root": root,
             "source_root": source_root,
             "run_dir": run_dir,
             "model_name": "alpaca_clean_model",
             "model_alias": clean_model_alias,
+            "resolved_model_alias": resolved_alias,
             "dataset_name": dataset_name,
             "prediction_file": prediction_file,
         }
 
     for dataset_name in datasets:
-        prediction_file = None
-        if vallina_generation_run is not None:
-            prediction_file = vallina_generation_run / vallina_model_alias / dataset_name / "generated_predictions.jsonl"
+        prediction_file, resolved_alias = resolve_prediction_file(
+            vallina_generation_run,
+            dataset_name=dataset_name,
+            model_alias=vallina_model_alias,
+        )
         yield {
             "root": root,
             "source_root": vallina_generation_root,
             "run_dir": vallina_generation_run,
             "model_name": "alpaca_vallina_model",
             "model_alias": vallina_model_alias,
+            "resolved_model_alias": resolved_alias,
             "dataset_name": dataset_name,
             "prediction_file": prediction_file,
         }
@@ -554,8 +729,22 @@ def main() -> None:
     base_root = args.root.resolve()
     dataset_names = parse_dataset_names(args.datasets)
     clean_villina_root = resolve_root_path(base_root, args.clean_villina_root, "predictions/alpaca_clean_vallina")
+    clean_villina_prediction_file = resolve_clean_villina_prediction_file(
+        base_root,
+        args.clean_villina_prediction_file,
+    )
     clean_generation_root = resolve_root_path(base_root, args.clean_generation_root, "predictions/alpaca_clean_generation")
-    vallina_generation_root = resolve_root_path(base_root, args.vallina_generation_root, "predictions/vallina")
+    clean_controlled_eval_root = resolve_clean_controlled_eval_root(base_root)
+    vallina_generation_root = resolve_root_path(
+        base_root,
+        args.vallina_generation_root,
+        DEFAULT_VALLINA_GENERATION_ROOT,
+    )
+    per_sample_output_root = resolve_root_path(
+        base_root,
+        args.per_sample_output_root,
+        "safety_eval_per_sample_outputs",
+    )
 
     classifier = build_classifier(args)
     summary: Dict[str, Any] = {
@@ -573,8 +762,11 @@ def main() -> None:
         "paths": {
             "root": str(base_root),
             "clean_villina_root": str(clean_villina_root),
+            "clean_villina_prediction_file": str(clean_villina_prediction_file),
             "clean_generation_root": str(clean_generation_root),
+            "clean_controlled_eval_root": str(clean_controlled_eval_root),
             "vallina_generation_root": str(vallina_generation_root),
+            "per_sample_output_root": str(per_sample_output_root),
         },
         "results": {},
     }
@@ -582,8 +774,9 @@ def main() -> None:
     for record in iter_prediction_files(
         base_root,
         datasets=dataset_names,
-        clean_villina_root=clean_villina_root,
+        clean_villina_prediction_file=clean_villina_prediction_file,
         clean_generation_root=clean_generation_root,
+        clean_controlled_eval_root=clean_controlled_eval_root,
         vallina_generation_root=vallina_generation_root,
         generation_eval_batch_size=args.generation_eval_batch_size,
         clean_model_alias=args.clean_model_alias,
@@ -598,6 +791,8 @@ def main() -> None:
             "dataset_group": "harmful" if dataset_name in HARMFUL_SETS else "benign",
             "source_root": str(record["source_root"]),
             "run_dir": str(record["run_dir"]) if record["run_dir"] is not None else None,
+            "expected_model_alias": record["model_alias"],
+            "resolved_model_alias": record.get("resolved_model_alias"),
             "prediction_file": str(prediction_file) if prediction_file is not None else None,
         }
 
@@ -642,7 +837,12 @@ def main() -> None:
             )
 
             if args.save_per_sample_results:
-                per_sample_path = prediction_file.parent / args.per_sample_output_name
+                per_sample_path = build_per_sample_output_path(
+                    per_sample_output_root,
+                    model_name=model_name,
+                    dataset_name=dataset_name,
+                    filename=args.per_sample_output_name,
+                )
                 save_jsonl(per_sample_path, annotated_items)
                 dataset_summary["per_sample_output"] = str(per_sample_path)
         except Exception as exc:

@@ -47,7 +47,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-alias", default=DEFAULT_CLEAN_MODEL_ALIAS)
     parser.add_argument("--output-name", default="alpaca_clean_vallina.json")
     parser.add_argument("--summary-name", default="generation_suite_summary.json")
-    parser.add_argument("--hf-home", default="D:\\hf_cache")
+    parser.add_argument("--hf-home", default=os.getenv("HF_HOME", "D:\\hf_cache"))
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--cutoff-len", type=int, default=4096)

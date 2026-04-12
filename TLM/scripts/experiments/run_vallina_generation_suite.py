@@ -45,7 +45,7 @@ def parse_args() -> argparse.Namespace:
         help=f"Optional stable directory name for predictions. Recommended: {DEFAULT_VALLINA_MODEL_ALIAS}",
     )
     parser.add_argument("--dataset-dir", default="data")
-    parser.add_argument("--hf-home", default="D:\\hf_cache")
+    parser.add_argument("--hf-home", default=os.getenv("HF_HOME", "D:\\hf_cache"))
     parser.add_argument("--datasets", default=",".join(DEFAULT_PREDICTION_DATASETS))
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-new-tokens", type=int, default=512)

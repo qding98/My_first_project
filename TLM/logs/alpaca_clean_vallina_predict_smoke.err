@@ -1,0 +1,81 @@
+nohup: ignoring input
+/root/miniconda3/envs/TLM/lib/python3.10/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[INFO|configuration_utils.py:679] 2026-04-11 02:54:22,859 >> loading configuration file config.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-11 02:54:22,868 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file vocab.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file merges.txt from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file tokenizer.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:23,471 >> loading file tokenizer_config.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-11 02:54:23,812 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|configuration_utils.py:679] 2026-04-11 02:54:25,397 >> loading configuration file config.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-11 02:54:25,397 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file vocab.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file merges.txt from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file tokenizer.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-11 02:54:25,837 >> loading file tokenizer_config.json from cache at D:\hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-11 02:54:26,097 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Converting format of dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]Converting format of dataset (num_proc=8):   7%|▋         | 133/2000 [00:00<00:02, 780.06 examples/s]Converting format of dataset (num_proc=8):  20%|██        | 405/2000 [00:00<00:00, 1643.84 examples/s]Converting format of dataset (num_proc=8):  38%|███▊      | 750/2000 [00:00<00:00, 1715.67 examples/s]Converting format of dataset (num_proc=8):  50%|█████     | 1000/2000 [00:00<00:00, 1810.89 examples/s]Converting format of dataset (num_proc=8):  66%|██████▌   | 1315/2000 [00:00<00:00, 1805.76 examples/s]Converting format of dataset (num_proc=8):  75%|███████▌  | 1509/2000 [00:00<00:00, 1815.74 examples/s]Converting format of dataset (num_proc=8):  88%|████████▊ | 1750/2000 [00:00<00:00, 1948.65 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 2000/2000 [00:01<00:00, 1714.32 examples/s]
+Running tokenizer on dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]
