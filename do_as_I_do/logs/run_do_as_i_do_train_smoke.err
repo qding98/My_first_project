@@ -1,0 +1,224 @@
+/root/miniconda3/envs/TLM/lib/python3.10/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[INFO|configuration_utils.py:679] 2026-04-12 21:45:16,870 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 21:45:16,893 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-0.5B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 896,
+  "initializer_range": 0.02,
+  "intermediate_size": 4864,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 21,
+  "model_type": "qwen2",
+  "num_attention_heads": 14,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 2,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151936
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,721 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,721 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,721 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,721 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,722 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:30,722 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 21:45:31,077 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|configuration_utils.py:679] 2026-04-12 21:45:32,911 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 21:45:32,912 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-0.5B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 896,
+  "initializer_range": 0.02,
+  "intermediate_size": 4864,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 21,
+  "model_type": "qwen2",
+  "num_attention_heads": 14,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 2,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151936
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,799 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,799 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,799 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,799 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,800 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 21:45:33,800 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 21:45:34,119 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Converting format of dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Converting format of dataset: 100%|██████████| 1/1 [00:00<00:00, 250.17 examples/s]
+Converting format of dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Converting format of dataset: 100%|██████████| 1/1 [00:00<00:00, 296.67 examples/s]
+Running tokenizer on dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Running tokenizer on dataset: 100%|██████████| 1/1 [00:00<00:00, 130.01 examples/s]
+Running tokenizer on dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Running tokenizer on dataset: 100%|██████████| 1/1 [00:00<00:00, 203.16 examples/s]
+[INFO|configuration_utils.py:679] 2026-04-12 21:45:36,376 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 21:45:36,376 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-0.5B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 896,
+  "initializer_range": 0.02,
+  "intermediate_size": 4864,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 21,
+  "model_type": "qwen2",
+  "num_attention_heads": 14,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 2,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151936
+}
+
+[INFO|modeling_utils.py:3937] 2026-04-12 21:49:05,077 >> loading weights file model.safetensors from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/model.safetensors
+[INFO|modeling_utils.py:1670] 2026-04-12 21:49:05,142 >> Instantiating Qwen2ForCausalLM model under default dtype torch.float32.
+[INFO|configuration_utils.py:1096] 2026-04-12 21:49:05,145 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "eos_token_id": 151645
+}
+
+[INFO|modeling_utils.py:4800] 2026-04-12 21:49:21,499 >> All model checkpoint weights were used when initializing Qwen2ForCausalLM.
+
+[INFO|modeling_utils.py:4808] 2026-04-12 21:49:21,499 >> All the weights of Qwen2ForCausalLM were initialized from the model checkpoint at Qwen/Qwen2.5-0.5B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Qwen2ForCausalLM for predictions without further training.
+[INFO|configuration_utils.py:1051] 2026-04-12 21:49:23,077 >> loading configuration file generation_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/generation_config.json
+[INFO|configuration_utils.py:1096] 2026-04-12 21:49:23,078 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "do_sample": true,
+  "eos_token_id": [
+    151645,
+    151643
+  ],
+  "pad_token_id": 151643,
+  "repetition_penalty": 1.1,
+  "temperature": 0.7,
+  "top_k": 20,
+  "top_p": 0.8
+}
+
+/root/data/My_first_project/TLM/src/llamafactory/train/ttl/trainer.py:69: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CustomSeq2SeqTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(**kwargs)
+[WARNING|trainer.py:648] 2026-04-12 21:49:23,192 >> max_steps is given, it will override any value given in num_train_epochs
+[INFO|trainer.py:2313] 2026-04-12 21:49:23,445 >> ***** Running training *****
+[INFO|trainer.py:2314] 2026-04-12 21:49:23,445 >>   Num examples = 1
+[INFO|trainer.py:2315] 2026-04-12 21:49:23,445 >>   Num Epochs = 1
+[INFO|trainer.py:2316] 2026-04-12 21:49:23,445 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:2319] 2026-04-12 21:49:23,445 >>   Total train batch size (w. parallel, distributed & accumulation) = 1
+[INFO|trainer.py:2320] 2026-04-12 21:49:23,445 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:2321] 2026-04-12 21:49:23,446 >>   Total optimization steps = 1
+[INFO|trainer.py:2322] 2026-04-12 21:49:23,447 >>   Number of trainable parameters = 540,672
+  0%|          | 0/1 [00:00<?, ?it/s][WARNING|trainer.py:760] 2026-04-12 21:49:23,489 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+100%|██████████| 1/1 [01:18<00:00, 78.30s/it]                                             100%|██████████| 1/1 [01:18<00:00, 78.30s/it][INFO|trainer.py:3801] 2026-04-12 21:50:41,756 >> Saving model checkpoint to ../do_as_I_do/saves/train_smoke/gsm8k_AOA/checkpoint-1
+[INFO|configuration_utils.py:679] 2026-04-12 21:50:43,155 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 21:50:43,156 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 896,
+  "initializer_range": 0.02,
+  "intermediate_size": 4864,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 21,
+  "model_type": "qwen2",
+  "num_attention_heads": 14,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 2,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151936
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 21:50:43,173 >> tokenizer config file saved in ../do_as_I_do/saves/train_smoke/gsm8k_AOA/checkpoint-1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 21:50:43,175 >> Special tokens file saved in ../do_as_I_do/saves/train_smoke/gsm8k_AOA/checkpoint-1/special_tokens_map.json
+[INFO|trainer.py:2584] 2026-04-12 21:50:43,419 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                             100%|██████████| 1/1 [01:19<00:00, 78.30s/it]                                             100%|██████████| 1/1 [01:19<00:00, 78.30s/it]
+100%|██████████| 1/1 [01:20<00:00, 80.40s/it]
+[INFO|trainer.py:3801] 2026-04-12 21:50:43,855 >> Saving model checkpoint to ../do_as_I_do/saves/train_smoke/gsm8k_AOA
+[INFO|configuration_utils.py:679] 2026-04-12 21:50:45,881 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 21:50:45,882 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 896,
+  "initializer_range": 0.02,
+  "intermediate_size": 4864,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 21,
+  "model_type": "qwen2",
+  "num_attention_heads": 14,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 2,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151936
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 21:50:45,897 >> tokenizer config file saved in ../do_as_I_do/saves/train_smoke/gsm8k_AOA/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 21:50:45,900 >> Special tokens file saved in ../do_as_I_do/saves/train_smoke/gsm8k_AOA/special_tokens_map.json

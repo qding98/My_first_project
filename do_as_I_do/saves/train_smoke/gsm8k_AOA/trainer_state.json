@@ -10,19 +10,19 @@
   "log_history": [
     {
       "epoch": 1.0,
-      "grad_norm": 440.1694641113281,
+      "grad_norm": 440.1789855957031,
       "learning_rate": 0.0001,
-      "loss": 79.1731,
+      "loss": 79.1746,
       "step": 1
     },
     {
       "epoch": 1.0,
       "step": 1,
       "total_flos": 126887329536.0,
-      "train_loss": 79.1730728149414,
-      "train_runtime": 3.1198,
-      "train_samples_per_second": 0.321,
-      "train_steps_per_second": 0.321
+      "train_loss": 79.17461395263672,
+      "train_runtime": 79.972,
+      "train_samples_per_second": 0.013,
+      "train_steps_per_second": 0.013
     }
   ],
   "logging_steps": 1,

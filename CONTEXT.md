@@ -171,12 +171,12 @@
 - `do_as_I_do/examples/train/gsm8k_vallina_AOA_train.yaml`
   - 从第一轮 adapter 继续训练 `vallina_harmful_AOA`
 - `do_as_I_do/scripts/train/run_do_as_i_do_train_pair.sh`
-  - 用 `nohup` 后台串行执行上述两轮训练，并默认 `source linux_runtime_env.sh`
+  - 用 `nohup` 后台串行执行上述两轮训练，并默认先激活 `TLM` conda 环境（可通过 `DO_AS_I_DO_CONDA_ENV` 覆盖）再 `source linux_runtime_env.sh`
 - `do_as_I_do/examples/train/gsm8k_AOA_train_smoke.yaml`
   - 用本机可离线加载的 `Qwen/Qwen2.5-0.5B-Instruct` 验证第一轮训练链和 SwanLab callback 接线
   - CPU smoke 参数风格参考 `TLM/examples/train_lora/offline_ttl_mixed_smoke_cpu.yaml`
 - `do_as_I_do/scripts/train/run_do_as_i_do_train_smoke.sh`
-  - 串行前先 `source linux_runtime_env.sh`，运行一次最小 smoke 训练
+  - 串行前先激活 `TLM` conda 环境（可通过 `DO_AS_I_DO_CONDA_ENV` 覆盖）并 `source linux_runtime_env.sh`，运行一次最小 smoke 训练
 - `do_as_I_do/scripts/build_data/build_predict_yamls.py`
   - 生成脚本四所需的 12 份预测 YAML 与 `predict_yaml_manifest.json`
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`

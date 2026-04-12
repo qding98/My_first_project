@@ -25,9 +25,18 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 TLM_DIR="${REPO_ROOT}/TLM"
 LOG_DIR="${REPO_ROOT}/do_as_I_do/logs"
 RUNTIME_ENV_SH="${REPO_ROOT}/linux_runtime_env.sh"
+CONDA_SH="${CONDA_SH:-${HOME}/miniconda3/etc/profile.d/conda.sh}"
+CONDA_ENV_NAME="${DO_AS_I_DO_CONDA_ENV:-TLM}"
 
 mkdir -p "${LOG_DIR}"
 
+if [[ ! -f "${CONDA_SH}" ]]; then
+  echo "未找到 conda 初始化脚本: ${CONDA_SH}" >&2
+  exit 1
+fi
+
+source "${CONDA_SH}"
+conda activate "${CONDA_ENV_NAME}"
 source "${RUNTIME_ENV_SH}"
 export SWANLAB_PROJ_NAME="${SWANLAB_PROJ_NAME:-${SWANLAB_PROJECT_NAME:-${SWANLAB_PROJECT:-do_as_i_do}}}"
 

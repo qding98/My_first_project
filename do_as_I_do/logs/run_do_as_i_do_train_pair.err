@@ -1,0 +1,886 @@
+/root/miniconda3/envs/TLM/lib/python3.10/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[INFO|configuration_utils.py:679] 2026-04-12 22:21:48,115 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:21:48,127 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,915 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,915 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,915 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,916 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,916 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:48,916 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 22:21:49,181 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|configuration_utils.py:679] 2026-04-12 22:21:51,051 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:21:51,052 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,784 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,785 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,785 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,785 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,785 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:21:51,785 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 22:21:52,028 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Converting format of dataset (num_proc=8):   0%|          | 0/5000 [00:00<?, ? examples/s]Converting format of dataset (num_proc=8):  12%|█▎        | 625/5000 [00:00<00:00, 5946.43 examples/s]Converting format of dataset (num_proc=8):  75%|███████▌  | 3750/5000 [00:00<00:00, 19271.96 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 5000/5000 [00:00<00:00, 14362.89 examples/s]
+Converting format of dataset (num_proc=8):   0%|          | 0/5000 [00:00<?, ? examples/s]Converting format of dataset (num_proc=8):  25%|██▌       | 1250/5000 [00:00<00:00, 10452.31 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 5000/5000 [00:00<00:00, 23034.32 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 5000/5000 [00:00<00:00, 15389.33 examples/s]
+Running tokenizer on dataset (num_proc=8):   0%|          | 0/5000 [00:00<?, ? examples/s]Running tokenizer on dataset (num_proc=8):  12%|█▎        | 625/5000 [00:00<00:05, 731.81 examples/s]Running tokenizer on dataset (num_proc=8):  38%|███▊      | 1875/5000 [00:01<00:01, 2225.07 examples/s]Running tokenizer on dataset (num_proc=8):  50%|█████     | 2500/5000 [00:01<00:00, 2762.36 examples/s]Running tokenizer on dataset (num_proc=8):  75%|███████▌  | 3750/5000 [00:01<00:00, 3831.40 examples/s]Running tokenizer on dataset (num_proc=8):  88%|████████▊ | 4375/5000 [00:01<00:00, 4099.76 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 5000/5000 [00:01<00:00, 3183.16 examples/s]
+Running tokenizer on dataset (num_proc=8):   0%|          | 0/5000 [00:00<?, ? examples/s]Running tokenizer on dataset (num_proc=8):  12%|█▎        | 625/5000 [00:00<00:06, 727.59 examples/s]Running tokenizer on dataset (num_proc=8):  38%|███▊      | 1875/5000 [00:01<00:01, 2197.69 examples/s]Running tokenizer on dataset (num_proc=8):  50%|█████     | 2500/5000 [00:01<00:00, 2545.58 examples/s]Running tokenizer on dataset (num_proc=8):  75%|███████▌  | 3750/5000 [00:01<00:00, 3907.00 examples/s]Running tokenizer on dataset (num_proc=8):  88%|████████▊ | 4375/5000 [00:01<00:00, 4305.49 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 5000/5000 [00:01<00:00, 3050.28 examples/s]
+[INFO|configuration_utils.py:679] 2026-04-12 22:21:58,036 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:21:58,037 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|modeling_utils.py:3937] 2026-04-12 22:21:58,334 >> loading weights file model.safetensors from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/model.safetensors.index.json
+[INFO|modeling_utils.py:1670] 2026-04-12 22:21:58,340 >> Instantiating Qwen2ForCausalLM model under default dtype torch.bfloat16.
+[INFO|configuration_utils.py:1096] 2026-04-12 22:21:58,342 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "eos_token_id": 151645
+}
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:02<00:07,  2.43s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:04<00:04,  2.32s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:06<00:02,  2.21s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:08<00:00,  2.08s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:08<00:00,  2.16s/it]
+[INFO|modeling_utils.py:4800] 2026-04-12 22:22:07,217 >> All model checkpoint weights were used when initializing Qwen2ForCausalLM.
+
+[INFO|modeling_utils.py:4808] 2026-04-12 22:22:07,217 >> All the weights of Qwen2ForCausalLM were initialized from the model checkpoint at Qwen/Qwen2.5-7B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Qwen2ForCausalLM for predictions without further training.
+[INFO|configuration_utils.py:1051] 2026-04-12 22:22:08,316 >> loading configuration file generation_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/generation_config.json
+[INFO|configuration_utils.py:1096] 2026-04-12 22:22:08,316 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "do_sample": true,
+  "eos_token_id": [
+    151645,
+    151643
+  ],
+  "pad_token_id": 151643,
+  "repetition_penalty": 1.05,
+  "temperature": 0.7,
+  "top_k": 20,
+  "top_p": 0.8
+}
+
+/root/data/My_first_project/TLM/src/llamafactory/train/ttl/trainer.py:69: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CustomSeq2SeqTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(**kwargs)
+[INFO|trainer.py:698] 2026-04-12 22:22:08,581 >> Using auto half precision backend
+[INFO|trainer.py:2313] 2026-04-12 22:22:08,794 >> ***** Running training *****
+[INFO|trainer.py:2314] 2026-04-12 22:22:08,794 >>   Num examples = 5,000
+[INFO|trainer.py:2315] 2026-04-12 22:22:08,794 >>   Num Epochs = 1
+[INFO|trainer.py:2316] 2026-04-12 22:22:08,794 >>   Instantaneous batch size per device = 16
+[INFO|trainer.py:2319] 2026-04-12 22:22:08,794 >>   Total train batch size (w. parallel, distributed & accumulation) = 16
+[INFO|trainer.py:2320] 2026-04-12 22:22:08,795 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:2321] 2026-04-12 22:22:08,795 >>   Total optimization steps = 313
+[INFO|trainer.py:2322] 2026-04-12 22:22:08,796 >>   Number of trainable parameters = 2,523,136
+  0%|          | 0/313 [00:00<?, ?it/s][WARNING|trainer.py:760] 2026-04-12 22:22:09,108 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  0%|          | 1/313 [00:05<29:20,  5.64s/it][WARNING|trainer.py:760] 2026-04-12 22:22:14,448 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  1%|          | 2/313 [00:06<15:46,  3.04s/it][WARNING|trainer.py:760] 2026-04-12 22:22:15,674 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  1%|          | 3/313 [00:08<11:23,  2.20s/it][WARNING|trainer.py:760] 2026-04-12 22:22:16,879 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  1%|▏         | 4/313 [00:09<09:15,  1.80s/it][WARNING|trainer.py:760] 2026-04-12 22:22:18,053 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  2%|▏         | 5/313 [00:10<08:08,  1.58s/it][WARNING|trainer.py:760] 2026-04-12 22:22:19,261 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  2%|▏         | 6/313 [00:11<08:01,  1.57s/it][WARNING|trainer.py:760] 2026-04-12 22:22:20,794 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  2%|▏         | 7/313 [00:13<07:53,  1.55s/it][WARNING|trainer.py:760] 2026-04-12 22:22:22,298 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  3%|▎         | 8/313 [00:14<07:21,  1.45s/it][WARNING|trainer.py:760] 2026-04-12 22:22:23,535 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  3%|▎         | 9/313 [00:15<06:57,  1.37s/it][WARNING|trainer.py:760] 2026-04-12 22:22:24,740 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  3%|▎         | 10/313 [00:17<06:45,  1.34s/it]                                                  3%|▎         | 10/313 [00:17<06:45,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:22:26,005 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  4%|▎         | 11/313 [00:18<06:32,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:22:27,218 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  4%|▍         | 12/313 [00:19<06:28,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:22:28,482 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  4%|▍         | 13/313 [00:21<06:48,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:22:30,008 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  4%|▍         | 14/313 [00:22<06:46,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:22:31,367 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  5%|▍         | 15/313 [00:23<06:33,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:22:32,600 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  5%|▌         | 16/313 [00:24<06:19,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:22:33,780 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  5%|▌         | 17/313 [00:26<06:13,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:22:35,000 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  6%|▌         | 18/313 [00:27<06:03,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:22:36,164 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  6%|▌         | 19/313 [00:28<06:00,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:22:37,380 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  6%|▋         | 20/313 [00:30<06:20,  1.30s/it]                                                  6%|▋         | 20/313 [00:30<06:20,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:22:38,851 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  7%|▋         | 21/313 [00:31<06:12,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:22:40,064 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  7%|▋         | 22/313 [00:32<06:01,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:22:41,232 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  7%|▋         | 23/313 [00:33<05:50,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:22:42,365 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  8%|▊         | 24/313 [00:34<05:52,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:22:43,604 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  8%|▊         | 25/313 [00:36<06:12,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:22:45,070 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  8%|▊         | 26/313 [00:37<06:04,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:22:46,289 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  9%|▊         | 27/313 [00:38<05:59,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:22:47,518 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  9%|▉         | 28/313 [00:39<05:56,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:22:48,753 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  9%|▉         | 29/313 [00:41<05:56,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:22:50,015 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 10%|▉         | 30/313 [00:42<06:05,  1.29s/it]                                                 10%|▉         | 30/313 [00:42<06:05,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:22:51,397 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 10%|▉         | 31/313 [00:43<05:54,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:22:52,571 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 10%|█         | 32/313 [00:45<06:12,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:22:54,056 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 11%|█         | 33/313 [00:46<06:05,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:22:55,318 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 11%|█         | 34/313 [00:47<05:59,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:22:56,564 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 11%|█         | 35/313 [00:49<05:55,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:22:57,818 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 12%|█▏        | 36/313 [00:50<05:52,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:22:59,083 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 12%|█▏        | 37/313 [00:51<05:48,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:23:00,324 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 12%|█▏        | 38/313 [00:52<05:58,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:23:01,714 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 12%|█▏        | 39/313 [00:54<06:04,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:23:03,106 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 13%|█▎        | 40/313 [00:55<05:55,  1.30s/it]                                                 13%|█▎        | 40/313 [00:55<05:55,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:23:04,353 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 13%|█▎        | 41/313 [00:56<06:00,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:23:05,726 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 13%|█▎        | 42/313 [00:58<06:03,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:23:07,108 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 14%|█▎        | 43/313 [00:59<05:44,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:23:08,223 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 14%|█▍        | 44/313 [01:00<05:43,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:23:09,509 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 14%|█▍        | 45/313 [01:01<05:32,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:10,662 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 15%|█▍        | 46/313 [01:03<05:30,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:11,895 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 15%|█▌        | 47/313 [01:04<05:30,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:13,149 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 15%|█▌        | 48/313 [01:05<05:39,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:23:14,519 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 16%|█▌        | 49/313 [01:06<05:30,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:15,705 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 16%|█▌        | 50/313 [01:08<05:28,  1.25s/it]                                                 16%|█▌        | 50/313 [01:08<05:28,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:16,950 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 16%|█▋        | 51/313 [01:09<05:26,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:18,192 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 17%|█▋        | 52/313 [01:10<05:43,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:23:19,665 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 17%|█▋        | 53/313 [01:11<05:28,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:23:20,806 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 17%|█▋        | 54/313 [01:13<05:25,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:23:22,051 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 18%|█▊        | 55/313 [01:14<05:21,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:23,277 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 18%|█▊        | 56/313 [01:15<05:21,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:24,533 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 18%|█▊        | 57/313 [01:16<05:14,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:23:25,705 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 19%|█▊        | 58/313 [01:18<05:12,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:23:26,932 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 19%|█▉        | 59/313 [01:19<05:10,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:23:28,148 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 19%|█▉        | 60/313 [01:20<05:21,  1.27s/it]                                                 19%|█▉        | 60/313 [01:20<05:21,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:23:29,529 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 19%|█▉        | 61/313 [01:21<05:17,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:23:30,766 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 20%|█▉        | 62/313 [01:23<05:14,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:32,000 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 20%|██        | 63/313 [01:24<05:11,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:23:33,230 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 20%|██        | 64/313 [01:25<05:08,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:34,455 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 21%|██        | 65/313 [01:27<05:42,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:23:36,168 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 21%|██        | 66/313 [01:28<05:40,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:23:37,541 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 21%|██▏       | 67/313 [01:29<05:28,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:23:38,779 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 22%|██▏       | 68/313 [01:31<05:30,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:23:40,156 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 22%|██▏       | 69/313 [01:32<05:20,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:23:41,382 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 22%|██▏       | 70/313 [01:33<05:23,  1.33s/it]                                                 22%|██▏       | 70/313 [01:33<05:23,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:23:42,758 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 23%|██▎       | 71/313 [01:35<05:16,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:23:44,005 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 23%|██▎       | 72/313 [01:36<05:05,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:23:45,180 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 23%|██▎       | 73/313 [01:37<05:18,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:23:46,653 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 24%|██▎       | 74/313 [01:39<05:28,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:23:48,140 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 24%|██▍       | 75/313 [01:40<05:16,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:23:49,360 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 24%|██▍       | 76/313 [01:41<05:06,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:23:50,570 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 25%|██▍       | 77/313 [01:42<04:56,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:23:51,738 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 25%|██▍       | 78/313 [01:44<04:52,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:52,956 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 25%|██▌       | 79/313 [01:45<04:50,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:23:54,187 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 26%|██▌       | 80/313 [01:46<04:44,  1.22s/it]                                                 26%|██▌       | 80/313 [01:46<04:44,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:23:55,367 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 26%|██▌       | 81/313 [01:48<05:01,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:23:56,853 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 26%|██▌       | 82/313 [01:49<04:58,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:23:58,127 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 27%|██▋       | 83/313 [01:50<05:02,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:23:59,489 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 27%|██▋       | 84/313 [01:51<04:52,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:00,684 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 27%|██▋       | 85/313 [01:53<04:42,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:24:01,843 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 27%|██▋       | 86/313 [01:54<04:45,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:24:03,128 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 28%|██▊       | 87/313 [01:55<04:51,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:04,498 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 28%|██▊       | 88/313 [01:56<04:46,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:24:05,725 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 28%|██▊       | 89/313 [01:58<04:45,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:07,009 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 29%|██▉       | 90/313 [01:59<04:59,  1.34s/it]                                                 29%|██▉       | 90/313 [01:59<04:59,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:24:08,509 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 29%|██▉       | 91/313 [02:01<05:00,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:24:09,895 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 29%|██▉       | 92/313 [02:02<04:48,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:24:11,083 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 30%|██▉       | 93/313 [02:03<04:39,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:24:12,278 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 30%|███       | 94/313 [02:04<04:45,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:13,652 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 30%|███       | 95/313 [02:06<04:42,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:14,936 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 31%|███       | 96/313 [02:07<04:40,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:16,218 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 31%|███       | 97/313 [02:08<04:44,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:24:17,600 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 31%|███▏      | 98/313 [02:10<04:38,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:18,839 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 32%|███▏      | 99/313 [02:11<04:36,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:20,127 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 32%|███▏      | 100/313 [02:12<04:24,  1.24s/it]                                                  32%|███▏      | 100/313 [02:12<04:24,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:24:21,256 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 32%|███▏      | 101/313 [02:13<04:20,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:24:22,452 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 33%|███▎      | 102/313 [02:14<04:19,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:24:23,688 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 33%|███▎      | 103/313 [02:16<04:17,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:24:24,897 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 33%|███▎      | 104/313 [02:17<04:13,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:24:26,083 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 34%|███▎      | 105/313 [02:18<04:17,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:24:27,372 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 34%|███▍      | 106/313 [02:19<04:15,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:24:28,606 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 34%|███▍      | 107/313 [02:20<04:11,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:24:29,785 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 35%|███▍      | 108/313 [02:22<04:25,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:31,263 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 35%|███▍      | 109/313 [02:23<04:21,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:32,507 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 35%|███▌      | 110/313 [02:24<04:20,  1.29s/it]                                                  35%|███▌      | 110/313 [02:25<04:20,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:33,812 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 35%|███▌      | 111/313 [02:26<04:20,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:24:35,105 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 36%|███▌      | 112/313 [02:27<04:17,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:36,362 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 36%|███▌      | 113/313 [02:28<04:06,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:24:37,484 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 36%|███▋      | 114/313 [02:29<04:01,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:24:38,647 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 37%|███▋      | 115/313 [02:31<04:04,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:24:39,934 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 37%|███▋      | 116/313 [02:32<04:21,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:24:41,481 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 37%|███▋      | 117/313 [02:33<04:08,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:24:42,610 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 38%|███▊      | 118/313 [02:35<04:07,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:24:43,882 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 38%|███▊      | 119/313 [02:36<04:14,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:24:45,287 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 38%|███▊      | 120/313 [02:37<04:11,  1.30s/it]                                                  38%|███▊      | 120/313 [02:37<04:11,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:46,575 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 39%|███▊      | 121/313 [02:39<04:09,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:47,861 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 39%|███▉      | 122/313 [02:40<04:04,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:49,097 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 39%|███▉      | 123/313 [02:41<04:03,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:24:50,388 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 40%|███▉      | 124/313 [02:42<04:00,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:24:51,642 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 40%|███▉      | 125/313 [02:44<04:14,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:24:53,182 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 40%|████      | 126/313 [02:45<04:03,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:24:54,369 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 41%|████      | 127/313 [02:47<04:11,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:24:55,841 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 41%|████      | 128/313 [02:48<04:06,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:24:57,117 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 41%|████      | 129/313 [02:49<04:19,  1.41s/it][WARNING|trainer.py:760] 2026-04-12 22:24:58,708 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 130/313 [02:51<04:08,  1.36s/it]                                                  42%|████▏     | 130/313 [02:51<04:08,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:24:59,958 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 131/313 [02:52<04:08,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:25:01,329 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 132/313 [02:53<04:01,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:25:02,590 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 133/313 [02:54<03:46,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:25:03,667 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 43%|████▎     | 134/313 [02:56<03:46,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:25:04,947 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 43%|████▎     | 135/313 [02:57<03:45,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:25:06,223 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 43%|████▎     | 136/313 [02:58<03:42,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:25:07,455 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 44%|████▍     | 137/313 [02:59<03:34,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:25:08,596 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 44%|████▍     | 138/313 [03:01<03:41,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:25:09,959 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 44%|████▍     | 139/313 [03:02<03:35,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:11,134 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 45%|████▍     | 140/313 [03:03<03:32,  1.23s/it]                                                  45%|████▍     | 140/313 [03:03<03:32,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:12,347 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 45%|████▌     | 141/313 [03:04<03:31,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:13,578 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 45%|████▌     | 142/313 [03:06<03:32,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:14,851 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 46%|████▌     | 143/313 [03:07<03:37,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:25:16,222 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 46%|████▌     | 144/313 [03:08<03:34,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:25:17,465 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 46%|████▋     | 145/313 [03:09<03:30,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:18,682 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 47%|████▋     | 146/313 [03:11<03:28,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:19,925 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 47%|████▋     | 147/313 [03:12<03:34,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:25:21,305 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 47%|████▋     | 148/313 [03:13<03:30,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:25:22,555 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 48%|████▊     | 149/313 [03:14<03:23,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:23,705 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 48%|████▊     | 150/313 [03:16<03:24,  1.25s/it]                                                  48%|████▊     | 150/313 [03:16<03:24,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:24,990 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 48%|████▊     | 151/313 [03:17<03:17,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:25:26,137 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 49%|████▊     | 152/313 [03:18<03:18,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:27,406 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 49%|████▉     | 153/313 [03:19<03:20,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:28,692 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 49%|████▉     | 154/313 [03:21<03:17,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:29,919 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|████▉     | 155/313 [03:22<03:30,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:25:31,467 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|████▉     | 156/313 [03:23<03:22,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:25:32,650 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|█████     | 157/313 [03:25<03:19,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:25:33,904 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|█████     | 158/313 [03:26<03:14,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:35,094 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 51%|█████     | 159/313 [03:27<03:18,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:25:36,478 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 51%|█████     | 160/313 [03:29<03:21,  1.32s/it]                                                  51%|█████     | 160/313 [03:29<03:21,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:25:37,859 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 51%|█████▏    | 161/313 [03:30<03:12,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:25:39,007 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 52%|█████▏    | 162/313 [03:31<03:09,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:25:40,240 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 52%|█████▏    | 163/313 [03:32<03:07,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:25:41,472 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 52%|█████▏    | 164/313 [03:34<03:17,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:25:42,973 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 53%|█████▎    | 165/313 [03:35<03:14,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:25:44,268 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 53%|█████▎    | 166/313 [03:36<03:12,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:25:45,567 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 53%|█████▎    | 167/313 [03:37<03:05,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:25:46,746 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 54%|█████▎    | 168/313 [03:39<02:57,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:47,867 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 54%|█████▍    | 169/313 [03:40<02:59,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:49,150 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 54%|█████▍    | 170/313 [03:41<02:55,  1.23s/it]                                                  54%|█████▍    | 170/313 [03:41<02:55,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:50,337 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 55%|█████▍    | 171/313 [03:42<02:55,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:51,591 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 55%|█████▍    | 172/313 [03:43<02:51,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:25:52,773 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 55%|█████▌    | 173/313 [03:45<02:49,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:25:53,960 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 56%|█████▌    | 174/313 [03:46<02:49,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:25:55,199 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 56%|█████▌    | 175/313 [03:47<02:49,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:56,458 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 56%|█████▌    | 176/313 [03:48<02:48,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:25:57,685 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 57%|█████▋    | 177/313 [03:50<02:48,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:25:58,939 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 57%|█████▋    | 178/313 [03:51<02:53,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:26:00,335 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 57%|█████▋    | 179/313 [03:52<02:48,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:01,521 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 180/313 [03:54<02:52,  1.29s/it]                                                  58%|█████▊    | 180/313 [03:54<02:52,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:02,905 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 181/313 [03:55<02:48,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:26:04,146 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 182/313 [03:56<02:41,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:26:05,272 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 183/313 [03:57<02:47,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:06,681 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 59%|█████▉    | 184/313 [03:59<02:49,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:26:08,071 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 59%|█████▉    | 185/313 [04:00<02:45,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:09,304 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 59%|█████▉    | 186/313 [04:01<02:41,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:26:10,535 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 60%|█████▉    | 187/313 [04:03<02:50,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:26:12,079 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 60%|██████    | 188/313 [04:04<02:53,  1.39s/it][WARNING|trainer.py:760] 2026-04-12 22:26:13,558 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 60%|██████    | 189/313 [04:06<02:56,  1.42s/it][WARNING|trainer.py:760] 2026-04-12 22:26:15,058 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 61%|██████    | 190/313 [04:07<03:02,  1.48s/it]                                                  61%|██████    | 190/313 [04:07<03:02,  1.48s/it][WARNING|trainer.py:760] 2026-04-12 22:26:16,668 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 61%|██████    | 191/313 [04:09<02:48,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:26:17,829 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 61%|██████▏   | 192/313 [04:10<02:39,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:26:18,984 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 62%|██████▏   | 193/313 [04:11<02:34,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:20,215 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 62%|██████▏   | 194/313 [04:12<02:32,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:26:21,473 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 62%|██████▏   | 195/313 [04:13<02:29,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:26:22,713 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 63%|██████▎   | 196/313 [04:15<02:32,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:26:24,106 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 63%|██████▎   | 197/313 [04:16<02:42,  1.40s/it][WARNING|trainer.py:760] 2026-04-12 22:26:25,722 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 63%|██████▎   | 198/313 [04:18<02:36,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:26:27,004 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 64%|██████▎   | 199/313 [04:19<02:27,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:28,130 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 64%|██████▍   | 200/313 [04:20<02:32,  1.35s/it]                                                  64%|██████▍   | 200/313 [04:20<02:32,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:26:29,601 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 64%|██████▍   | 201/313 [04:22<02:28,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:26:30,882 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 65%|██████▍   | 202/313 [04:23<02:21,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:26:32,025 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 65%|██████▍   | 203/313 [04:24<02:14,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:26:33,139 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 65%|██████▌   | 204/313 [04:25<02:18,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:26:34,523 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 65%|██████▌   | 205/313 [04:26<02:16,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:35,769 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 66%|██████▌   | 206/313 [04:28<02:14,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:37,009 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 66%|██████▌   | 207/313 [04:29<02:16,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:38,379 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 66%|██████▋   | 208/313 [04:30<02:10,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:26:39,523 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 67%|██████▋   | 209/313 [04:32<02:16,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:26:40,987 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 67%|██████▋   | 210/313 [04:33<02:12,  1.29s/it]                                                  67%|██████▋   | 210/313 [04:33<02:12,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:42,220 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 67%|██████▋   | 211/313 [04:34<02:14,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:26:43,595 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 68%|██████▊   | 212/313 [04:36<02:10,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:44,844 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 68%|██████▊   | 213/313 [04:37<02:07,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:26:46,067 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 68%|██████▊   | 214/313 [04:38<02:04,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:47,304 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 69%|██████▊   | 215/313 [04:39<02:03,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:48,550 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 69%|██████▉   | 216/313 [04:40<01:59,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:26:49,738 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 69%|██████▉   | 217/313 [04:42<01:59,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:26:51,001 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 70%|██████▉   | 218/313 [04:43<02:01,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:26:52,360 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 70%|██████▉   | 219/313 [04:44<01:57,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:26:53,529 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 70%|███████   | 220/313 [04:45<01:52,  1.21s/it]                                                  70%|███████   | 220/313 [04:45<01:52,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:26:54,673 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 71%|███████   | 221/313 [04:47<01:58,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:26:56,135 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 71%|███████   | 222/313 [04:48<01:54,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:57,322 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 71%|███████   | 223/313 [04:49<01:52,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:58,571 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 72%|███████▏  | 224/313 [04:51<01:52,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:26:59,844 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 72%|███████▏  | 225/313 [04:52<01:50,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:27:01,092 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 72%|███████▏  | 226/313 [04:53<01:56,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:27:02,633 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 73%|███████▎  | 227/313 [04:55<01:56,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:27:04,002 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 73%|███████▎  | 228/313 [04:56<01:52,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:27:05,253 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 73%|███████▎  | 229/313 [04:57<01:52,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:27:06,621 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 73%|███████▎  | 230/313 [04:58<01:46,  1.28s/it]                                                  73%|███████▎  | 230/313 [04:58<01:46,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:27:07,772 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 74%|███████▍  | 231/313 [05:00<01:42,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:27:08,952 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 74%|███████▍  | 232/313 [05:01<01:39,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:27:10,134 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 74%|███████▍  | 233/313 [05:02<01:37,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:27:11,309 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 75%|███████▍  | 234/313 [05:03<01:36,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:27:12,552 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 75%|███████▌  | 235/313 [05:04<01:34,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:27:13,736 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 75%|███████▌  | 236/313 [05:06<01:34,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:27:15,020 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 76%|███████▌  | 237/313 [05:07<01:32,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:27:16,208 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 76%|███████▌  | 238/313 [05:08<01:31,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:27:17,431 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 76%|███████▋  | 239/313 [05:10<01:34,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:27:18,818 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 77%|███████▋  | 240/313 [05:11<01:31,  1.26s/it]                                                  77%|███████▋  | 240/313 [05:11<01:31,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:27:20,039 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 77%|███████▋  | 241/313 [05:12<01:28,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:27:21,187 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 77%|███████▋  | 242/313 [05:13<01:26,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:27:22,416 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 78%|███████▊  | 243/313 [05:15<01:31,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:23,894 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 78%|███████▊  | 244/313 [05:16<01:29,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:27:25,171 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 78%|███████▊  | 245/313 [05:17<01:30,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:27:26,567 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 79%|███████▊  | 246/313 [05:19<01:30,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:27:27,963 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 79%|███████▉  | 247/313 [05:20<01:27,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:27:29,247 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 79%|███████▉  | 248/313 [05:21<01:24,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:30,484 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 80%|███████▉  | 249/313 [05:23<01:26,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:27:31,963 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 80%|███████▉  | 250/313 [05:24<01:22,  1.32s/it]                                                  80%|███████▉  | 250/313 [05:24<01:22,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:27:33,197 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 80%|████████  | 251/313 [05:25<01:18,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:27:34,356 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 81%|████████  | 252/313 [05:26<01:14,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:27:35,486 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 81%|████████  | 253/313 [05:27<01:14,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:27:36,754 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 81%|████████  | 254/313 [05:29<01:13,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:27:38,008 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 81%|████████▏ | 255/313 [05:30<01:10,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:27:39,168 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 82%|████████▏ | 256/313 [05:31<01:09,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:27:40,371 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 82%|████████▏ | 257/313 [05:33<01:12,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:41,856 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 82%|████████▏ | 258/313 [05:34<01:09,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:27:43,019 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 83%|████████▎ | 259/313 [05:35<01:08,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:27:44,309 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 83%|████████▎ | 260/313 [05:36<01:06,  1.26s/it]                                                  83%|████████▎ | 260/313 [05:36<01:06,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:27:45,554 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 83%|████████▎ | 261/313 [05:38<01:07,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:46,942 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 84%|████████▎ | 262/313 [05:39<01:05,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:27:48,202 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 84%|████████▍ | 263/313 [05:40<01:04,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:27:49,496 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 84%|████████▍ | 264/313 [05:41<01:01,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:27:50,682 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 85%|████████▍ | 265/313 [05:43<01:02,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:52,079 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 85%|████████▍ | 266/313 [05:44<01:00,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:27:53,366 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 85%|████████▌ | 267/313 [05:45<01:00,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:27:54,758 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 86%|████████▌ | 268/313 [05:47<00:58,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:27:56,025 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 86%|████████▌ | 269/313 [05:48<00:56,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:27:57,218 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 86%|████████▋ | 270/313 [05:49<00:53,  1.25s/it]                                                  86%|████████▋ | 270/313 [05:49<00:53,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:27:58,407 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 87%|████████▋ | 271/313 [05:50<00:52,  1.25s/it][WARNING|trainer.py:760] 2026-04-12 22:27:59,644 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 87%|████████▋ | 272/313 [05:52<00:50,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:28:00,833 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 87%|████████▋ | 273/313 [05:53<00:49,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:28:02,089 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 88%|████████▊ | 274/313 [05:54<00:48,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:28:03,345 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 88%|████████▊ | 275/313 [05:55<00:49,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:28:04,755 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 88%|████████▊ | 276/313 [05:57<00:46,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:28:05,955 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 88%|████████▊ | 277/313 [05:58<00:44,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:28:07,084 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 89%|████████▉ | 278/313 [05:59<00:43,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:28:08,351 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 89%|████████▉ | 279/313 [06:00<00:42,  1.24s/it][WARNING|trainer.py:760] 2026-04-12 22:28:09,601 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 89%|████████▉ | 280/313 [06:01<00:40,  1.22s/it]                                                  89%|████████▉ | 280/313 [06:01<00:40,  1.22s/it][WARNING|trainer.py:760] 2026-04-12 22:28:10,786 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 90%|████████▉ | 281/313 [06:03<00:39,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:28:12,043 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 90%|█████████ | 282/313 [06:04<00:37,  1.21s/it][WARNING|trainer.py:760] 2026-04-12 22:28:13,202 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 90%|█████████ | 283/313 [06:05<00:36,  1.20s/it][WARNING|trainer.py:760] 2026-04-12 22:28:14,386 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 91%|█████████ | 284/313 [06:06<00:35,  1.23s/it][WARNING|trainer.py:760] 2026-04-12 22:28:15,673 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 91%|█████████ | 285/313 [06:08<00:35,  1.28s/it][WARNING|trainer.py:760] 2026-04-12 22:28:17,069 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 91%|█████████▏| 286/313 [06:09<00:35,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:28:18,472 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 92%|█████████▏| 287/313 [06:10<00:33,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:28:19,709 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 92%|█████████▏| 288/313 [06:12<00:31,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:28:20,893 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 92%|█████████▏| 289/313 [06:13<00:30,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:28:22,143 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 93%|█████████▎| 290/313 [06:14<00:29,  1.30s/it]                                                  93%|█████████▎| 290/313 [06:14<00:29,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:28:23,530 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 93%|█████████▎| 291/313 [06:15<00:27,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:28:24,712 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 93%|█████████▎| 292/313 [06:17<00:26,  1.26s/it][WARNING|trainer.py:760] 2026-04-12 22:28:25,963 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 94%|█████████▎| 293/313 [06:18<00:25,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:28:27,352 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 94%|█████████▍| 294/313 [06:19<00:25,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:28:28,750 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 94%|█████████▍| 295/313 [06:21<00:24,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:28:30,246 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 95%|█████████▍| 296/313 [06:22<00:23,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:28:31,641 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 95%|█████████▍| 297/313 [06:24<00:21,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:28:32,827 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 95%|█████████▌| 298/313 [06:25<00:20,  1.35s/it][WARNING|trainer.py:760] 2026-04-12 22:28:34,234 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 96%|█████████▌| 299/313 [06:26<00:19,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:28:35,634 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 96%|█████████▌| 300/313 [06:28<00:17,  1.31s/it]                                                  96%|█████████▌| 300/313 [06:28<00:17,  1.31s/it][WARNING|trainer.py:760] 2026-04-12 22:28:36,820 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 96%|█████████▌| 301/313 [06:29<00:16,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:28:38,226 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 96%|█████████▋| 302/313 [06:30<00:14,  1.36s/it][WARNING|trainer.py:760] 2026-04-12 22:28:39,639 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 97%|█████████▋| 303/313 [06:31<00:12,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:28:40,767 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 97%|█████████▋| 304/313 [06:33<00:11,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:28:41,980 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 97%|█████████▋| 305/313 [06:34<00:10,  1.27s/it][WARNING|trainer.py:760] 2026-04-12 22:28:43,270 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 98%|█████████▊| 306/313 [06:35<00:09,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:28:44,754 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 98%|█████████▊| 307/313 [06:37<00:08,  1.38s/it][WARNING|trainer.py:760] 2026-04-12 22:28:46,240 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 98%|█████████▊| 308/313 [06:38<00:06,  1.34s/it][WARNING|trainer.py:760] 2026-04-12 22:28:47,498 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 99%|█████████▊| 309/313 [06:39<00:05,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:28:48,756 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 99%|█████████▉| 310/313 [06:41<00:03,  1.29s/it]                                                  99%|█████████▉| 310/313 [06:41<00:03,  1.29s/it][WARNING|trainer.py:760] 2026-04-12 22:28:49,987 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 99%|█████████▉| 311/313 [06:42<00:02,  1.32s/it][WARNING|trainer.py:760] 2026-04-12 22:28:51,369 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+100%|█████████▉| 312/313 [06:43<00:01,  1.33s/it][WARNING|trainer.py:760] 2026-04-12 22:28:52,732 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+100%|██████████| 313/313 [06:44<00:00,  1.13s/it][INFO|trainer.py:3801] 2026-04-12 22:28:53,398 >> Saving model checkpoint to ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42/checkpoint-313
+[INFO|configuration_utils.py:679] 2026-04-12 22:28:56,106 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:28:56,107 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 22:28:56,138 >> tokenizer config file saved in ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42/checkpoint-313/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 22:28:56,139 >> Special tokens file saved in ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42/checkpoint-313/special_tokens_map.json
+[INFO|trainer.py:2584] 2026-04-12 22:28:56,332 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                                 100%|██████████| 313/313 [06:47<00:00,  1.13s/it]                                                 100%|██████████| 313/313 [06:47<00:00,  1.13s/it]
+100%|██████████| 313/313 [06:48<00:00,  1.31s/it]
+[INFO|trainer.py:3801] 2026-04-12 22:28:57,731 >> Saving model checkpoint to ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42
+[INFO|configuration_utils.py:679] 2026-04-12 22:28:58,916 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:28:58,917 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 22:28:58,939 >> tokenizer config file saved in ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 22:28:58,940 >> Special tokens file saved in ../do_as_I_do/saves/train/gsm8k_AOA/bs_16_lr_0.0001_seed_42/special_tokens_map.json
+/root/miniconda3/envs/TLM/lib/python3.10/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[INFO|configuration_utils.py:679] 2026-04-12 22:29:14,650 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:29:14,652 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,190 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,190 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,190 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,190 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,191 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:15,191 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 22:29:15,436 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|configuration_utils.py:679] 2026-04-12 22:29:18,276 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:29:18,277 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,374 >> loading file vocab.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/vocab.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,375 >> loading file merges.txt from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/merges.txt
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,375 >> loading file tokenizer.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer.json
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,375 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,375 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:2211] 2026-04-12 22:29:19,375 >> loading file tokenizer_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2475] 2026-04-12 22:29:19,636 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Converting format of dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]Converting format of dataset (num_proc=8):  25%|██▌       | 500/2000 [00:00<00:00, 4611.23 examples/s]Converting format of dataset (num_proc=8):  88%|████████▊ | 1750/2000 [00:00<00:00, 8395.13 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 2000/2000 [00:00<00:00, 5996.29 examples/s]
+Converting format of dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]Converting format of dataset (num_proc=8):  25%|██▌       | 500/2000 [00:00<00:00, 4813.65 examples/s]Converting format of dataset (num_proc=8):  88%|████████▊ | 1750/2000 [00:00<00:00, 8925.53 examples/s]Converting format of dataset (num_proc=8): 100%|██████████| 2000/2000 [00:00<00:00, 6292.42 examples/s]
+Running tokenizer on dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]Running tokenizer on dataset (num_proc=8):  12%|█▎        | 250/2000 [00:00<00:05, 332.18 examples/s]Running tokenizer on dataset (num_proc=8):  38%|███▊      | 750/2000 [00:00<00:01, 988.82 examples/s]Running tokenizer on dataset (num_proc=8):  50%|█████     | 1000/2000 [00:01<00:00, 1207.52 examples/s]Running tokenizer on dataset (num_proc=8):  75%|███████▌  | 1500/2000 [00:01<00:00, 1705.32 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 2000/2000 [00:01<00:00, 1999.24 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 2000/2000 [00:01<00:00, 1356.20 examples/s]
+Running tokenizer on dataset (num_proc=8):   0%|          | 0/2000 [00:00<?, ? examples/s]Running tokenizer on dataset (num_proc=8):  12%|█▎        | 250/2000 [00:00<00:05, 304.50 examples/s]Running tokenizer on dataset (num_proc=8):  25%|██▌       | 500/2000 [00:00<00:02, 624.58 examples/s]Running tokenizer on dataset (num_proc=8):  50%|█████     | 1000/2000 [00:01<00:00, 1374.27 examples/s]Running tokenizer on dataset (num_proc=8):  75%|███████▌  | 1500/2000 [00:01<00:00, 1779.23 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 2000/2000 [00:01<00:00, 2017.41 examples/s]Running tokenizer on dataset (num_proc=8): 100%|██████████| 2000/2000 [00:01<00:00, 1331.21 examples/s]
+[INFO|configuration_utils.py:679] 2026-04-12 22:29:24,622 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:29:24,623 >> Model config Qwen2Config {
+  "_name_or_path": "Qwen/Qwen2.5-7B-Instruct",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|modeling_utils.py:3937] 2026-04-12 22:29:24,653 >> loading weights file model.safetensors from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/model.safetensors.index.json
+[INFO|modeling_utils.py:1670] 2026-04-12 22:29:24,656 >> Instantiating Qwen2ForCausalLM model under default dtype torch.bfloat16.
+[INFO|configuration_utils.py:1096] 2026-04-12 22:29:24,657 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "eos_token_id": 151645
+}
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:02<00:06,  2.10s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:03<00:03,  1.91s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:05<00:01,  1.82s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:07<00:00,  1.71s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:07<00:00,  1.78s/it]
+[INFO|modeling_utils.py:4800] 2026-04-12 22:29:31,871 >> All model checkpoint weights were used when initializing Qwen2ForCausalLM.
+
+[INFO|modeling_utils.py:4808] 2026-04-12 22:29:31,871 >> All the weights of Qwen2ForCausalLM were initialized from the model checkpoint at Qwen/Qwen2.5-7B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Qwen2ForCausalLM for predictions without further training.
+[INFO|configuration_utils.py:1051] 2026-04-12 22:29:32,900 >> loading configuration file generation_config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/generation_config.json
+[INFO|configuration_utils.py:1096] 2026-04-12 22:29:32,900 >> Generate config GenerationConfig {
+  "bos_token_id": 151643,
+  "do_sample": true,
+  "eos_token_id": [
+    151645,
+    151643
+  ],
+  "pad_token_id": 151643,
+  "repetition_penalty": 1.05,
+  "temperature": 0.7,
+  "top_k": 20,
+  "top_p": 0.8
+}
+
+/root/data/My_first_project/TLM/src/llamafactory/train/ttl/trainer.py:69: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CustomSeq2SeqTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(**kwargs)
+[INFO|trainer.py:698] 2026-04-12 22:29:33,027 >> Using auto half precision backend
+[INFO|trainer.py:2313] 2026-04-12 22:29:33,249 >> ***** Running training *****
+[INFO|trainer.py:2314] 2026-04-12 22:29:33,249 >>   Num examples = 2,000
+[INFO|trainer.py:2315] 2026-04-12 22:29:33,249 >>   Num Epochs = 1
+[INFO|trainer.py:2316] 2026-04-12 22:29:33,249 >>   Instantaneous batch size per device = 16
+[INFO|trainer.py:2319] 2026-04-12 22:29:33,250 >>   Total train batch size (w. parallel, distributed & accumulation) = 16
+[INFO|trainer.py:2320] 2026-04-12 22:29:33,250 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:2321] 2026-04-12 22:29:33,250 >>   Total optimization steps = 125
+[INFO|trainer.py:2322] 2026-04-12 22:29:33,251 >>   Number of trainable parameters = 2,523,136
+  0%|          | 0/125 [00:00<?, ?it/s][WARNING|trainer.py:760] 2026-04-12 22:29:33,281 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  1%|          | 1/125 [00:01<02:41,  1.30s/it][WARNING|trainer.py:760] 2026-04-12 22:29:34,559 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  2%|▏         | 2/125 [00:02<02:03,  1.00s/it][WARNING|trainer.py:760] 2026-04-12 22:29:35,356 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  2%|▏         | 3/125 [00:02<01:49,  1.11it/s][WARNING|trainer.py:760] 2026-04-12 22:29:36,134 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  3%|▎         | 4/125 [00:03<01:44,  1.16it/s][WARNING|trainer.py:760] 2026-04-12 22:29:36,945 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  4%|▍         | 5/125 [00:04<01:37,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:29:37,673 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  5%|▍         | 6/125 [00:05<01:35,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:29:38,453 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  6%|▌         | 7/125 [00:05<01:31,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:29:39,177 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  6%|▋         | 8/125 [00:06<01:31,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:39,977 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  7%|▋         | 9/125 [00:07<01:30,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:40,750 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  8%|▊         | 10/125 [00:08<01:30,  1.27it/s]                                                  8%|▊         | 10/125 [00:08<01:30,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:41,554 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+  9%|▉         | 11/125 [00:09<01:30,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:29:42,361 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 10%|▉         | 12/125 [00:09<01:31,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:29:43,211 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 10%|█         | 13/125 [00:10<01:30,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:29:44,020 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 11%|█         | 14/125 [00:11<01:28,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:29:44,796 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 12%|█▏        | 15/125 [00:12<01:27,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:29:45,569 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 13%|█▎        | 16/125 [00:13<01:26,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:46,353 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 14%|█▎        | 17/125 [00:13<01:24,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:47,126 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 14%|█▍        | 18/125 [00:14<01:23,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:47,911 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 15%|█▌        | 19/125 [00:15<01:23,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:48,692 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 16%|█▌        | 20/125 [00:16<01:22,  1.27it/s]                                                 16%|█▌        | 20/125 [00:16<01:22,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:49,498 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 17%|█▋        | 21/125 [00:17<01:22,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:29:50,282 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 18%|█▊        | 22/125 [00:17<01:19,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:29:51,017 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 18%|█▊        | 23/125 [00:18<01:19,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:51,824 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 19%|█▉        | 24/125 [00:19<01:18,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:52,603 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 20%|██        | 25/125 [00:20<01:18,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:53,386 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 21%|██        | 26/125 [00:20<01:17,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:54,172 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 22%|██▏       | 27/125 [00:21<01:16,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:54,959 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 22%|██▏       | 28/125 [00:22<01:14,  1.30it/s][WARNING|trainer.py:760] 2026-04-12 22:29:55,686 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 23%|██▎       | 29/125 [00:23<01:14,  1.30it/s][WARNING|trainer.py:760] 2026-04-12 22:29:56,466 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 24%|██▍       | 30/125 [00:24<01:14,  1.28it/s]                                                 24%|██▍       | 30/125 [00:24<01:14,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:29:57,283 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 25%|██▍       | 31/125 [00:24<01:12,  1.30it/s][WARNING|trainer.py:760] 2026-04-12 22:29:58,013 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 26%|██▌       | 32/125 [00:25<01:11,  1.30it/s][WARNING|trainer.py:760] 2026-04-12 22:29:58,789 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 26%|██▋       | 33/125 [00:26<01:11,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:29:59,574 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 27%|██▋       | 34/125 [00:27<01:10,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:30:00,353 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 28%|██▊       | 35/125 [00:27<01:10,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:30:01,138 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 29%|██▉       | 36/125 [00:28<01:08,  1.30it/s][WARNING|trainer.py:760] 2026-04-12 22:30:01,878 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 30%|██▉       | 37/125 [00:29<01:08,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:30:02,667 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 30%|███       | 38/125 [00:30<01:09,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:03,517 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 31%|███       | 39/125 [00:31<01:08,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:04,306 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 32%|███▏      | 40/125 [00:31<01:07,  1.26it/s]                                                 32%|███▏      | 40/125 [00:31<01:07,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:05,091 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 33%|███▎      | 41/125 [00:32<01:07,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:05,909 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 34%|███▎      | 42/125 [00:33<01:07,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:06,764 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 34%|███▍      | 43/125 [00:34<01:06,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:07,547 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 35%|███▌      | 44/125 [00:35<01:05,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:08,363 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 36%|███▌      | 45/125 [00:35<01:03,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:30:09,100 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 37%|███▋      | 46/125 [00:36<01:01,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:30:09,837 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 38%|███▊      | 47/125 [00:37<01:00,  1.29it/s][WARNING|trainer.py:760] 2026-04-12 22:30:10,624 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 38%|███▊      | 48/125 [00:38<00:59,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:30:11,406 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 39%|███▉      | 49/125 [00:38<00:59,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:30:12,192 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 40%|████      | 50/125 [00:39<00:58,  1.28it/s]                                                 40%|████      | 50/125 [00:39<00:58,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:30:12,979 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 41%|████      | 51/125 [00:40<00:58,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:13,800 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 52/125 [00:41<00:56,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:30:14,544 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 42%|████▏     | 53/125 [00:42<00:57,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:15,366 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 43%|████▎     | 54/125 [00:42<00:56,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:16,181 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 44%|████▍     | 55/125 [00:43<00:55,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:16,976 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 45%|████▍     | 56/125 [00:44<00:54,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:17,763 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 46%|████▌     | 57/125 [00:45<00:54,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:18,557 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 46%|████▋     | 58/125 [00:46<00:53,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:19,348 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 47%|████▋     | 59/125 [00:46<00:52,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:20,133 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 48%|████▊     | 60/125 [00:47<00:52,  1.25it/s]                                                 48%|████▊     | 60/125 [00:47<00:52,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:20,956 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 49%|████▉     | 61/125 [00:48<00:51,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:21,751 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|████▉     | 62/125 [00:49<00:51,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:22,607 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 50%|█████     | 63/125 [00:50<00:51,  1.21it/s][WARNING|trainer.py:760] 2026-04-12 22:30:23,466 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 51%|█████     | 64/125 [00:51<00:50,  1.21it/s][WARNING|trainer.py:760] 2026-04-12 22:30:24,295 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 52%|█████▏    | 65/125 [00:51<00:49,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:25,084 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 53%|█████▎    | 66/125 [00:52<00:47,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:25,880 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 54%|█████▎    | 67/125 [00:53<00:47,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:26,698 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 54%|█████▍    | 68/125 [00:54<00:45,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:27,440 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 55%|█████▌    | 69/125 [00:55<00:44,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:28,263 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 56%|█████▌    | 70/125 [00:55<00:43,  1.25it/s]                                                 56%|█████▌    | 70/125 [00:55<00:43,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:29,057 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 57%|█████▋    | 71/125 [00:56<00:44,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:29,913 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 72/125 [00:57<00:43,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:30,732 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 58%|█████▊    | 73/125 [00:58<00:41,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:31,516 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 59%|█████▉    | 74/125 [00:59<00:40,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:32,307 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 60%|██████    | 75/125 [00:59<00:40,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:33,127 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 61%|██████    | 76/125 [01:00<00:39,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:33,928 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 62%|██████▏   | 77/125 [01:01<00:38,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:34,750 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 62%|██████▏   | 78/125 [01:02<00:37,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:35,542 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 63%|██████▎   | 79/125 [01:03<00:36,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:36,336 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 64%|██████▍   | 80/125 [01:03<00:36,  1.24it/s]                                                 64%|██████▍   | 80/125 [01:03<00:36,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:37,154 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 65%|██████▍   | 81/125 [01:04<00:35,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:37,971 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 66%|██████▌   | 82/125 [01:05<00:34,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:38,758 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 66%|██████▋   | 83/125 [01:06<00:33,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:39,550 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 67%|██████▋   | 84/125 [01:07<00:33,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:40,412 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 68%|██████▊   | 85/125 [01:07<00:32,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:41,240 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 69%|██████▉   | 86/125 [01:08<00:31,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:42,057 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 70%|██████▉   | 87/125 [01:09<00:31,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:30:42,873 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 70%|███████   | 88/125 [01:10<00:30,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:43,669 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 71%|███████   | 89/125 [01:11<00:29,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:44,489 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 72%|███████▏  | 90/125 [01:12<00:28,  1.24it/s]                                                 72%|███████▏  | 90/125 [01:12<00:28,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:45,280 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 73%|███████▎  | 91/125 [01:12<00:26,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:30:46,020 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 74%|███████▎  | 92/125 [01:13<00:26,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:46,887 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 74%|███████▍  | 93/125 [01:14<00:26,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:30:47,711 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 75%|███████▌  | 94/125 [01:15<00:25,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:48,500 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 76%|███████▌  | 95/125 [01:16<00:24,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:49,295 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 77%|███████▋  | 96/125 [01:16<00:23,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:50,078 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 78%|███████▊  | 97/125 [01:17<00:22,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:50,896 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 78%|███████▊  | 98/125 [01:18<00:21,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:51,693 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 79%|███████▉  | 99/125 [01:19<00:20,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:52,508 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 80%|████████  | 100/125 [01:19<00:19,  1.27it/s]                                                  80%|████████  | 100/125 [01:19<00:19,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:30:53,251 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 81%|████████  | 101/125 [01:20<00:18,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:30:54,048 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 82%|████████▏ | 102/125 [01:21<00:18,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:54,868 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 82%|████████▏ | 103/125 [01:22<00:17,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:55,666 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 83%|████████▎ | 104/125 [01:23<00:16,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:30:56,482 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 84%|████████▍ | 105/125 [01:24<00:16,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:57,278 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 85%|████████▍ | 106/125 [01:24<00:15,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:58,069 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 86%|████████▌ | 107/125 [01:25<00:14,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:30:58,864 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 86%|████████▋ | 108/125 [01:26<00:13,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:30:59,649 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 87%|████████▋ | 109/125 [01:27<00:12,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:31:00,470 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 88%|████████▊ | 110/125 [01:27<00:11,  1.28it/s]                                                  88%|████████▊ | 110/125 [01:27<00:11,  1.28it/s][WARNING|trainer.py:760] 2026-04-12 22:31:01,214 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 89%|████████▉ | 111/125 [01:28<00:11,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:31:02,004 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 90%|████████▉ | 112/125 [01:29<00:10,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:31:02,801 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 90%|█████████ | 113/125 [01:30<00:09,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:31:03,620 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 91%|█████████ | 114/125 [01:31<00:08,  1.26it/s][WARNING|trainer.py:760] 2026-04-12 22:31:04,404 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 92%|█████████▏| 115/125 [01:31<00:08,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:31:05,223 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 93%|█████████▎| 116/125 [01:32<00:07,  1.24it/s][WARNING|trainer.py:760] 2026-04-12 22:31:06,045 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 94%|█████████▎| 117/125 [01:33<00:06,  1.21it/s][WARNING|trainer.py:760] 2026-04-12 22:31:06,908 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 94%|█████████▍| 118/125 [01:34<00:05,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:31:07,694 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 95%|█████████▌| 119/125 [01:35<00:04,  1.21it/s][WARNING|trainer.py:760] 2026-04-12 22:31:08,549 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 96%|█████████▌| 120/125 [01:36<00:04,  1.25it/s]                                                  96%|█████████▌| 120/125 [01:36<00:04,  1.25it/s][WARNING|trainer.py:760] 2026-04-12 22:31:09,292 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 97%|█████████▋| 121/125 [01:36<00:03,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:31:10,151 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 98%|█████████▊| 122/125 [01:37<00:02,  1.22it/s][WARNING|trainer.py:760] 2026-04-12 22:31:10,978 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 98%|█████████▊| 123/125 [01:38<00:01,  1.23it/s][WARNING|trainer.py:760] 2026-04-12 22:31:11,768 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+ 99%|█████████▉| 124/125 [01:39<00:00,  1.27it/s][WARNING|trainer.py:760] 2026-04-12 22:31:12,502 >> Trainer.tokenizer is now deprecated. You should use Trainer.processing_class instead.
+100%|██████████| 125/125 [01:40<00:00,  1.27it/s][INFO|trainer.py:3801] 2026-04-12 22:31:13,282 >> Saving model checkpoint to ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42/checkpoint-125
+[INFO|configuration_utils.py:679] 2026-04-12 22:31:15,299 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:31:15,299 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 22:31:15,327 >> tokenizer config file saved in ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42/checkpoint-125/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 22:31:15,328 >> Special tokens file saved in ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42/checkpoint-125/special_tokens_map.json
+[INFO|trainer.py:2584] 2026-04-12 22:31:15,505 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                                 100%|██████████| 125/125 [01:42<00:00,  1.27it/s]                                                 100%|██████████| 125/125 [01:42<00:00,  1.27it/s]
+100%|██████████| 125/125 [01:42<00:00,  1.22it/s]
+[INFO|trainer.py:3801] 2026-04-12 22:31:16,130 >> Saving model checkpoint to ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42
+[INFO|configuration_utils.py:679] 2026-04-12 22:31:17,752 >> loading configuration file config.json from cache at /root/data/qsh/hf_cache/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28/config.json
+[INFO|configuration_utils.py:746] 2026-04-12 22:31:17,752 >> Model config Qwen2Config {
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151645,
+  "hidden_act": "silu",
+  "hidden_size": 3584,
+  "initializer_range": 0.02,
+  "intermediate_size": 18944,
+  "max_position_embeddings": 32768,
+  "max_window_layers": 28,
+  "model_type": "qwen2",
+  "num_attention_heads": 28,
+  "num_hidden_layers": 28,
+  "num_key_value_heads": 4,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.1",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
+
+[INFO|tokenization_utils_base.py:2646] 2026-04-12 22:31:17,773 >> tokenizer config file saved in ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2026-04-12 22:31:17,773 >> Special tokens file saved in ../do_as_I_do/saves/train/gsm8k_vallina_AOA/bs_16_lr_0.0001_seed_42/special_tokens_map.json
