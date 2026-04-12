@@ -181,12 +181,26 @@
   - 生成脚本四所需的 12 份预测 YAML 与 `predict_yaml_manifest.json`
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
   - 串行执行 12 份预测 YAML，并补写 `generate_predict.json` 与 summary
+- `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py`
+  - 对脚本四生成的 prediction 结果做离线 safety-eval
+  - 默认读取 `do_as_I_do/examples/predict/predict_yaml_manifest.json`
+  - 在 `do_as_I_do/saves/safety-eval-results/<model_alias>/` 下分别写模型级 `summary.json`
+- `do_as_I_do/scripts/eval/install_safety_eval_requirements.sh`
+  - 在 `safety-eval` conda 环境中补装缺失依赖，并打印调试信息
+- `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval_smoke.sh`
+  - 使用 smoke prediction 做单文件 safety-eval 调试
 - `docs/experiments/do_as_I_do_commands.md`
-  - 汇总当前 `Do_as_I_do` 实验的数据构造、训练与预测命令
+  - 汇总当前 `Do_as_I_do` 实验的数据构造、训练、预测与 safety-eval 命令
 - `do_as_I_do/examples/predict/*.yaml`
   - 覆盖两种模型在 6 个评测集上的 12 份预测 YAML
 - `do_as_I_do/examples/predict/predict_yaml_manifest.json`
   - 记录脚本四的 YAML 路径、adapter 路径、底层 `eval_dataset` 名和输出目录
+- `do_as_I_do/examples/predict/gsm8k_AOA_model__gsm8k_AOA_predict_smoke.yaml`
+  - 使用 smoke 训练得到的 adapter 对 `gsm8k_AOA` 做单样本预测冒烟
+  - 输出写到 `do_as_I_do/saves/predict_smoke/gsm8k_AOA_model/gsm8k_AOA/`
+- Windows 侧已用 `D:\anacoda3\envs\TLM\python.exe` 成功跑通过一次 predict smoke：
+  - 入口 YAML 为 `do_as_I_do/examples/predict/gsm8k_AOA_model__gsm8k_AOA_predict_smoke.yaml`
+  - 成功生成 `generated_predictions.jsonl`
 
 补充约定：
 

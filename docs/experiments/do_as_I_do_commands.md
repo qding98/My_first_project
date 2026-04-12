@@ -173,6 +173,26 @@ Linux 后台运行：
 nohup python do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py > do_as_I_do/logs/run_do_as_i_do_predict_suite.log 2>&1 &
 ```
 
+### 4.3 单样本 smoke 预测
+
+作用：
+- 使用 smoke 训练产出的 adapter 做一次最小预测闭环验证
+- 仅跑 `gsm8k_AOA` 的 1 条样本
+- 不连接 SwanLab
+
+运行命令：
+
+```bash
+cd TLM
+python -m llamafactory.cli train ../do_as_I_do/examples/predict/gsm8k_AOA_model__gsm8k_AOA_predict_smoke.yaml
+```
+
+输出目录：
+
+```text
+do_as_I_do/saves/predict_smoke/gsm8k_AOA_model/gsm8k_AOA/
+```
+
 ## 5. 推荐执行顺序
 
 1. 先构造数据：
@@ -217,3 +237,83 @@ python do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py
   - `do_as_I_do/saves/predict/<model_alias>/<dataset_name>/generate_predict.json`
 - 预测总汇总：
   - `do_as_I_do/saves/predict/do_as_i_do_prediction_suite_summary.json`
+
+## 7. safety-eval
+
+### 7.1 正式 safety-eval 脚本：`run_do_as_i_do_safety_eval.py`
+
+作用：
+- 对脚本四生成的 `generated_predictions.jsonl` 做离线 safety-eval
+- 默认从 `do_as_I_do/examples/predict/predict_yaml_manifest.json` 读取 12 份正式预测输出
+- 对每个模型分别写 `summary.json`
+
+前台运行：
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+python do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py \
+  --safety-eval-root safety-eval \
+  --results-root do_as_I_do/saves/safety-eval-results \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 8 \
+  --classifier-ephemeral-model \
+  --save-per-sample-results
+```
+
+Linux 后台运行：
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p do_as_I_do/logs
+nohup python do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py \
+  --safety-eval-root safety-eval \
+  --results-root do_as_I_do/saves/safety-eval-results \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 8 \
+  --classifier-ephemeral-model \
+  --save-per-sample-results \
+  > do_as_I_do/logs/run_do_as_i_do_safety_eval.log \
+  2> do_as_I_do/logs/run_do_as_i_do_safety_eval.err &
+```
+
+### 7.2 安装 safety-eval 依赖：`install_safety_eval_requirements.sh`
+
+作用：
+- 在 `conda activate safety-eval` 后补装缺失依赖
+- 安装完成后打印关键包版本，便于调试
+
+运行命令：
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+bash do_as_I_do/scripts/eval/install_safety_eval_requirements.sh
+```
+
+### 7.3 smoke safety-eval：`run_do_as_i_do_safety_eval_smoke.sh`
+
+作用：
+- 使用 smoke prediction 结果做一轮最小 safety-eval
+- 不依赖脚本四的正式 12 份输出
+- 会先打印环境调试信息，再跑单文件评测
+
+运行命令：
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+bash do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval_smoke.sh
+```
+
+关键输出：
+
+- 模型级 summary：
+  - `do_as_I_do/saves/safety-eval-results/<model_alias>/summary.json`
+- 数据集级 summary：
+  - `do_as_I_do/saves/safety-eval-results/<model_alias>/<dataset_name>/summary.json`
+- 逐样本结果：
+  - `do_as_I_do/saves/safety-eval-results/<model_alias>/<dataset_name>/safety_eval_predictions_with_labels.jsonl`

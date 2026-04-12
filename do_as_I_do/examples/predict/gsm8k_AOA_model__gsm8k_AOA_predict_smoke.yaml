@@ -1,0 +1,34 @@
+### model
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+adapter_name_or_path: ../do_as_I_do/saves/train_smoke/gsm8k_AOA
+
+### method
+stage: sft
+do_train: false
+do_predict: true
+predict_with_generate: true
+finetuning_type: lora
+trust_remote_code: true
+
+### dataset
+eval_dataset: gsm8k_AOA
+dataset_dir: ../do_as_I_do/data
+template: qwen
+cutoff_len: 64
+max_samples: 1
+overwrite_cache: true
+preprocessing_num_workers: 1
+
+### output
+output_dir: ../do_as_I_do/saves/predict_smoke/gsm8k_AOA_model/gsm8k_AOA
+overwrite_output_dir: true
+report_to: none
+
+### eval
+do_eval: null
+
+### predict
+temperature: 0.0
+do_sample: false
+max_new_tokens: 8
+per_device_eval_batch_size: 1
