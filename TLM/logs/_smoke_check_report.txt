@@ -1,0 +1,13 @@
+EXISTS|summary|True|/root/data/My_first_project/TLM/saves/alpaca_clean_vallina_safety_eval_smoke_cpu_timeout90s.json
+EXISTS|log|True|/root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_smoke_cpu_timeout90s.log
+EXISTS|err|True|/root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_smoke_cpu_timeout90s.err
+JSON|top_keys|classifier,harmful_success_mode,main_metrics,paths,requested_datasets,results
+JSON|requested_datasets_count|5
+JSON|models|alpaca_clean_model,alpaca_vallina_model
+STATUS|counts|{"ok": 10}
+OVERLAP|prediction_file_duplicates|0
+OVERLAP|per_sample_output_duplicates|0
+FORMAT|missing_required_fields|0
+SMOKE|per_sample_outputs_present|False
+POLICY|summary_output_overwrites_same_name|True
+POLICY|per_sample_overwrites_same_parent|True

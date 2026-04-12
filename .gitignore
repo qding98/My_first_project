@@ -7,3 +7,9 @@ __pycache__/
 llm-tta/save/
 TLM/.swanlab.env
 TLM/.tmp/
+TLM/saves/
+.vscode/
+.github/
+TLM/D:\\hf_cache/
+TLM/scripts/workflows/__pycache__/
+TLM/scripts/__pycache__/

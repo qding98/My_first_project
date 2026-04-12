@@ -1,6 +1,40 @@
 # 脚本一，用alpaca clean model做评测
 TLM\saves\serial_suites\requested_suite\lr_0.0001_bs_16_seed_42\alpaca_gpt4_5k\clean_model 使用这次训练的clean model，对villina_mixed.json做predict生成。这个生成的逻辑是为了和掺杂vallina的alpaca数据集做对比，假设结果为alpaca_clean_vallina.json。
 
+## 0、最新命令（优先用这个）
+
+下面这条就是你最新脚本 `run_requested_suite_clean_mix_safety_eval.py` 的正式命令，
+已经按当前仓库路径写好，可直接复制运行。
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+RUN_TAG=$(date +%Y%m%d_%H%M%S)
+
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_requested_suite_clean_mix_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
+  --datasets auto \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 32 \
+  --no-classifier-ephemeral-model \
+  --output-name gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.json \
+  --save-per-sample-results \
+  > /root/data/My_first_project/TLM/logs/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.log \
+  2> /root/data/My_first_project/TLM/logs/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.err &
+echo $!
+```
+
+这个命令默认读取：
+- `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter`
+- `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter`
+
+输出保持与之前一致：
+- 汇总：`TLM/saves/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.json`
+- 逐样本：`TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/safety_eval_predictions_with_labels.jsonl`
+
 # 脚本二 用safety_eval做安全评测
 主要内容是用safety-eval库的classifier来计算ASR。
 ## 数据集划分
@@ -239,40 +273,44 @@ TLM\scripts\eval\run_safetyeval_on_predictions.py逻辑把 harmful ASR 近似成
 
 # Linux 命令
 
-下面统一改成变量模板。你在 Linux 上只需要改开头这几个路径变量，后面的命令块不用再逐行替换。
+下面全部是可直接执行的显式参数命令，不需要先定义路径变量。
 
-```bash
-PROJECT_ROOT="/your/project/root"
-TLM_ROOT="${PROJECT_ROOT}/TLM"
-LOG_DIR="${TLM_ROOT}/logs"
-SAVE_ROOT="${TLM_ROOT}/saves"
-SAFETY_EVAL_ROOT="${PROJECT_ROOT}/safety-eval"
-RUNTIME_ENV="${PROJECT_ROOT}/linux_runtime_env.sh"
-
-CLEAN_ADAPTER_DIR="${SAVE_ROOT}/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter"
-VALLINA_ADAPTER_DIR="${SAVE_ROOT}/pipelines/vallina/vallina_lr_0.0001_bs_16_seed_42/alpaca_villina_mixed40/vallina_model/adapter"
-```
-
-## 一、Linux smoke：脚本一，alpaca clean -> villina_mixed
-
-说明：
-- 这个脚本当前没有单独的 `--smoke-test` 开关
-- 所以 smoke 通过“小样本 + 短长度”来做
-- 推荐：
-  - `per_device_eval_batch_size = 1`
-  - `max_samples = 1`
-  - `cutoff_len = 64`
-  - `max_new_tokens = 8`
+## 一、Linux smoke：先补一份 vallina_smoke 预测（给脚本二做对照）
 
 ```bash
 conda activate TLM
-cd "${PROJECT_ROOT}"
-source "${RUNTIME_ENV}"
-mkdir -p "${LOG_DIR}"
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
 
-nohup python "${TLM_ROOT}/scripts/experiments/run_alpaca_clean_vallina_predict.py" \
-  --adapter-dir "${CLEAN_ADAPTER_DIR}" \
-  --output-root "${SAVE_ROOT}/predictions/alpaca_clean_vallina_smoke" \
+nohup env SWANLAB_API_KEY= SWANLAB_WORKSPACE= SWANLAB_MODE=offline \
+python /root/data/My_first_project/TLM/scripts/experiments/run_vallina_generation_suite.py \
+  --adapter-dir /root/data/My_first_project/TLM/saves/pipelines/vallina/vallina_lr_0.0001_bs_16_seed_42/alpaca_villina_mixed40/vallina_model/adapter \
+  --output-root /root/data/My_first_project/TLM/saves/predictions/vallina_smoke \
+  --model-alias alpaca_vallina_model \
+  --datasets villina_mixed \
+  --per-device-eval-batch-size 1 \
+  --max-samples 1 \
+  --cutoff-len 64 \
+  --max-new-tokens 8 \
+  --preprocessing-num-workers 1 \
+  > /root/data/My_first_project/TLM/logs/vallina_generation_smoke.log \
+  2> /root/data/My_first_project/TLM/logs/vallina_generation_smoke.err &
+echo $!
+```
+
+## 二、Linux smoke：脚本一，alpaca clean -> villina_mixed
+
+```bash
+conda activate TLM
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+
+nohup env SWANLAB_API_KEY= SWANLAB_WORKSPACE= SWANLAB_MODE=offline \
+python /root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py \
+  --adapter-dir /root/data/My_first_project/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter \
+  --output-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina_smoke \
   --model-alias alpaca_clean_model \
   --dataset villina_mixed \
   --per-device-eval-batch-size 1 \
@@ -280,60 +318,47 @@ nohup python "${TLM_ROOT}/scripts/experiments/run_alpaca_clean_vallina_predict.p
   --cutoff-len 64 \
   --max-new-tokens 8 \
   --preprocessing-num-workers 1 \
-  > "${LOG_DIR}/alpaca_clean_vallina_predict_smoke.log" \
-  2> "${LOG_DIR}/alpaca_clean_vallina_predict_smoke.err" &
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict_smoke.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict_smoke.err &
 echo $!
 ```
 
-## 二、Linux 正式：脚本一，alpaca clean -> villina_mixed
-
-说明：
-- 4090D 上当前推荐：
-  - `per_device_eval_batch_size = 4`
-- 这是你现在最稳的正式值
+## 三、Linux 正式：脚本一，alpaca clean -> villina_mixed
 
 ```bash
 conda activate TLM
-cd "${PROJECT_ROOT}"
-source "${RUNTIME_ENV}"
-mkdir -p "${LOG_DIR}"
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
 
-nohup python "${TLM_ROOT}/scripts/experiments/run_alpaca_clean_vallina_predict.py" \
-  --adapter-dir "${CLEAN_ADAPTER_DIR}" \
-  --output-root "${SAVE_ROOT}/predictions/alpaca_clean_vallina" \
+nohup env SWANLAB_API_KEY= SWANLAB_WORKSPACE= SWANLAB_MODE=offline \
+python /root/data/My_first_project/TLM/scripts/experiments/run_alpaca_clean_vallina_predict.py \
+  --adapter-dir /root/data/My_first_project/TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/adapter \
+  --output-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina \
   --model-alias alpaca_clean_model \
   --dataset villina_mixed \
   --per-device-eval-batch-size 4 \
   --target-vram-gb 24 \
-  > "${LOG_DIR}/alpaca_clean_vallina_predict.log" \
-  2> "${LOG_DIR}/alpaca_clean_vallina_predict.err" &
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_predict.err &
 echo $!
 ```
 
-## 三、Linux smoke：脚本二，统一 safety-eval
-
-说明：
-- 这个脚本现在支持 `--datasets`
-- 所以 smoke 时只评 `villina_mixed`
-- 推荐：
-  - `generation_eval_batch_size = 1`
-  - `classifier_batch_size = 1`
-- 这个命令默认读的是 smoke 目录：
-  - `predictions/alpaca_clean_vallina_smoke`
-  - `predictions/vallina_smoke`
+## 四、Linux smoke：脚本二，统一 safety-eval
 
 ```bash
 conda activate safety-eval
-cd "${PROJECT_ROOT}"
-source "${RUNTIME_ENV}"
-mkdir -p "${LOG_DIR}"
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
 
-nohup python "${TLM_ROOT}/scripts/eval/run_alpaca_clean_vallina_safety_eval.py" \
-  --root "${SAVE_ROOT}" \
-  --safety-eval-root "${SAFETY_EVAL_ROOT}" \
-  --clean-villina-root "${SAVE_ROOT}/predictions/alpaca_clean_vallina_smoke" \
-  --vallina-generation-root "${SAVE_ROOT}/predictions/vallina_smoke" \
-  --datasets "villina_mixed" \
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
+  --clean-villina-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina_smoke \
+  --vallina-generation-root /root/data/My_first_project/TLM/saves/predictions/vallina_smoke \
+  --vallina-model-alias alpaca_vallina_model \
+  --datasets villina_mixed \
   --generation-eval-batch-size 1 \
   --classifier-model-name WildGuard \
   --classifier-batch-size 1 \
@@ -341,45 +366,73 @@ nohup python "${TLM_ROOT}/scripts/eval/run_alpaca_clean_vallina_safety_eval.py" 
   --harmful-success-mode compliance_and_harmful \
   --output-name alpaca_clean_vallina_safety_eval_smoke_summary.json \
   --save-per-sample-results \
-  > "${LOG_DIR}/alpaca_clean_vallina_safety_eval_smoke.log" \
-  2> "${LOG_DIR}/alpaca_clean_vallina_safety_eval_smoke.err" &
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_smoke.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_smoke.err &
 echo $!
 ```
 
-## 四、Linux 正式：脚本二，统一 safety-eval
-
-说明：
-- 4090D 上当前推荐：
-  - `generation_eval_batch_size = 4`
-  - `classifier_batch_size = 8`
-- 其中：
-  - `generation_eval_batch_size` 只用于匹配你生成目录里的 run tag
-  - `classifier_batch_size` 才是 WildGuard 实际跑分类时的 batch size
+## 五、Linux 正式：脚本二，统一 safety-eval
 
 ```bash
 conda activate safety-eval
-cd "${PROJECT_ROOT}"
-source "${RUNTIME_ENV}"
-mkdir -p "${LOG_DIR}"
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+RUN_TAG=$(date +%Y%m%d_%H%M%S)
 
-nohup python "${TLM_ROOT}/scripts/eval/run_alpaca_clean_vallina_safety_eval.py" \
-  --root "${SAVE_ROOT}" \
-  --safety-eval-root "${SAFETY_EVAL_ROOT}" \
-  --clean-villina-root "${SAVE_ROOT}/predictions/alpaca_clean_vallina" \
-  --clean-generation-root "${SAVE_ROOT}/predictions/alpaca_clean_generation" \
-  --vallina-generation-root "${SAVE_ROOT}/predictions/vallina" \
-  --datasets "harmful_mix_2k,wildjailbreak_eval_adversarial_harmful,wildjailbreak_train_harmful_lift_holdout_1k,villina_mixed,wildjailbreak_train_vanilla_benign_1k,wildjailbreak_eval_adversarial_benign" \
-  --generation-eval-batch-size 4 \
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
   --classifier-model-name WildGuard \
-  --classifier-batch-size 8 \
-  --classifier-ephemeral-model \
-  --harmful-success-mode compliance_and_harmful \
-  --output-name alpaca_clean_vallina_safety_eval_summary.json \
+  --classifier-batch-size 32 \
+  --no-classifier-ephemeral-model \
+  --output-name alpaca_clean_vallina_safety_eval_${RUN_TAG}.json \
   --save-per-sample-results \
-  > "${LOG_DIR}/alpaca_clean_vallina_safety_eval.log" \
-  2> "${LOG_DIR}/alpaca_clean_vallina_safety_eval.err" &
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_${RUN_TAG}.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_${RUN_TAG}.err &
 echo $!
 ```
+
+## 六、Linux 正式：requested suite clean/mix adapter 离线 safety-eval（最新）
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+RUN_TAG=$(date +%Y%m%d_%H%M%S)
+
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_requested_suite_clean_mix_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
+  --datasets auto \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 32 \
+  --no-classifier-ephemeral-model \
+  --output-name gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.json \
+  --save-per-sample-results \
+  > /root/data/My_first_project/TLM/logs/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.log \
+  2> /root/data/My_first_project/TLM/logs/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.err &
+echo $!
+```
+
+说明：
+- 该命令默认读取以下两个 adapter 根目录下的 `generated_predictions.jsonl`：
+  - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter`
+  - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter`
+- `--datasets auto` 会自动评测 clean/mix 两侧都存在的子数据集。
+- 输出路径保持与之前一致：
+  - 汇总：`TLM/saves/<output_name>.json`
+  - 逐样本：`TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/safety_eval_predictions_with_labels.jsonl`
+
+说明（默认值已写好，尽量少传参）：
+- 默认数据集已经固定为 5 个：`wildjailbreak_eval_adversarial_harmful`、`wildjailbreak_train_harmful_lift_holdout_1k`、`villina_mixed`、`wildjailbreak_train_vanilla_benign_1k`、`wildjailbreak_eval_adversarial_benign`。
+- `harmful_mix_2k` 已从脚本默认评测集合排除，即使传入也会跳过。
+- 默认读取路径已经内置：
+  - clean villina: `TLM/saves/predictions/alpaca_clean_vallina/vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42/alpaca_clean_model/villina_mixed/generated_predictions.jsonl`
+  - clean 其余 4 个数据集: `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl`
+  - vallina: `TLM/saves/predictions/vallina/vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42`
+- 默认评测设置：`--generation-eval-batch-size=4`、`--harmful-success-mode=compliance_and_harmful`。
 
 ## 四、safety-eval 环境配置
 
@@ -424,22 +477,18 @@ conda activate safety-eval
 cd /root/data/My_first_project
 source /root/data/My_first_project/linux_runtime_env.sh
 mkdir -p /root/data/My_first_project/TLM/logs
+RUN_TAG=$(date +%Y%m%d_%H%M%S)
 
 nohup python /root/data/My_first_project/TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py \
   --root /root/data/My_first_project/TLM/saves \
   --safety-eval-root /root/data/My_first_project/safety-eval \
-  --clean-villina-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_vallina \
-  --clean-generation-root /root/data/My_first_project/TLM/saves/predictions/alpaca_clean_generation \
-  --vallina-generation-root /root/data/My_first_project/TLM/saves/predictions/vallina \
-  --generation-eval-batch-size 4 \
   --classifier-model-name WildGuard \
-  --classifier-batch-size 8 \
-  --classifier-ephemeral-model \
-  --harmful-success-mode compliance_and_harmful \
-  --output-name alpaca_clean_vallina_safety_eval_summary.json \
+  --classifier-batch-size 32 \
+  --no-classifier-ephemeral-model \
+  --output-name alpaca_clean_vallina_safety_eval_${RUN_TAG}.json \
   --save-per-sample-results \
-  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval.log \
-  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval.err &
+  > /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_${RUN_TAG}.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_clean_vallina_safety_eval_${RUN_TAG}.err &
 echo $!
 ```
 
@@ -455,22 +504,20 @@ echo $!
 
 2. safety-eval 汇总结果
 - 主汇总文件默认写到：
-  - `TLM/saves/alpaca_clean_vallina_safety_eval_summary.json`
+  - `TLM/saves/alpaca_clean_vallina_safety_eval_${RUN_TAG}.json`
 - 如果开了 `--save-per-sample-results`
-  - 每个数据集目录下还会写：
-    - `safety_eval_predictions_with_labels.jsonl`
+  - 默认写到：
+    - `TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/safety_eval_predictions_with_labels.jsonl`
 
 # 当前注意事项
 
-1. script2 默认按 `eval batch size = 4` 搜 run 目录
-- 如果你后面换了生成 batch size
-- 记得同步修改：
-  - `--generation-eval-batch-size`
+1. script2 已内置默认路径与默认评测集合
+- 正式跑时优先少传参，除非你要切换到其他 run 目录或其他数据集。
 
-2. clean / vallina 两套生成一定要带 `--model-alias`
-- 否则目录很容易再次都落到 `adapter/`
-- script2 虽然还能靠手动传根目录兜底
-- 但默认自动搜就不再可靠
+2. clean / vallina 两套生成建议都显式带 `--model-alias`
+- 推荐分别固定成：`alpaca_clean_model` 和 `alpaca_vallina_model`
+- 现在 script2 已支持别名回退：如果找不到你传入的 alias，会自动回退读取 `adapter` 目录
+- 但为了路径可读性和跨机器一致性，仍建议保持显式 alias
 
 3. 这次我只改了 requirements，不改上游 README 原文
 - 因为 README 还是上游说明文档

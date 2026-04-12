@@ -108,6 +108,7 @@
 
 - 这些是“专用脚本接口”，不是统一 workflow runner。
 - 当前提交下 `TLM/scripts/workflows/` 没有实际可用的 runner，只剩 `__pycache__`。
+- `run_vallina_generation_suite.py` 与 `run_alpaca_clean_vallina_predict.py` 的 `--hf-home` 默认值已改为优先读取环境变量 `HF_HOME`，避免在 Linux 下误写入 `TLM/D:\hf_cache`。
 
 ## 5. 当前评测逻辑
 
@@ -171,10 +172,28 @@
 
 - `TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py`
 
+另外新增一个专门给 requested suite `clean_model vs mix_model` 的离线重评分脚本：
+
+- `TLM/scripts/eval/run_requested_suite_clean_mix_safety_eval.py`
+  - 默认读取：
+    - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/clean_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl`
+    - `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/gsm8k_5k/mix_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl`
+  - `--datasets auto` 会自动取 clean/mix 两侧同时存在预测文件的数据集交集
+  - 输出汇总仍写到 `TLM/saves/<output_name>`，逐样本输出仍写到
+    `TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/`
+
 补充约定：
 
 - 该脚本目前也可以通过参数复用到 `alpaca_clean_model vs mix_model` 的离线 `safety-eval`
 - 做法是把 `mix` 预测根目录传给 `--vallina-generation-root`，并把 `--vallina-model-alias` 改成对应的 mix 别名，例如 `alpaca_mix_model`
+- 该脚本现在对预测目录的 `model_alias` 支持回退：若找不到传入 alias，会自动尝试读取 `adapter/<dataset>/generated_predictions.jsonl`
+- 该脚本对 clean 模型采用分数据集读取：
+  - `villina_mixed` 固定从 `TLM/saves/predictions/alpaca_clean_vallina/vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42/alpaca_clean_model/villina_mixed/generated_predictions.jsonl` 读取
+  - 其余 4 个数据集固定从 `TLM/saves/serial_suites/requested_suite/lr_0.0001_bs_16_seed_42/alpaca_gpt4_5k/clean_model/controlled_eval/adapter/<dataset>/generated_predictions.jsonl` 读取
+  - `harmful_mix_2k` 已从该脚本评测集合中排除；即使在 `--datasets` 中传入也会自动跳过
+  - `alpaca_vallina_model` 默认读取根改为 `TLM/saves/predictions/vallina/vallina_evalbs_4_cutoff_4096_out_512_temp_0_seed_42`
+  - 逐样本输出目录已与预测目录解耦，统一写入 `TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/`
+  - 命令行中的 `--clean-generation-root` 仅保留兼容，只在非常规数据集时作为回退读取来源
 
 ## 6. 当前重要数据与 profile
 
