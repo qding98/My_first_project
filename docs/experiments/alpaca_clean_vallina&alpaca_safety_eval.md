@@ -37,6 +37,41 @@ echo $!
 - 汇总：`TLM/saves/gsm8k_requested_suite_clean_mix_safety_eval_${RUN_TAG}.json`
 - 逐样本：`TLM/saves/safety_eval_per_sample_outputs/<model_name>/<dataset_name>/safety_eval_predictions_with_labels.jsonl`
 
+### 0.1、最新补充命令（恢复 alpaca clean 逐样本，4090D 单卡）
+
+用途：
+- 当 `alpaca_clean_model` 的逐样本结果被后续 run 覆盖时，重新生成被覆盖的 4 个数据集逐样本结果。
+- 本命令使用独立输出根目录，避免再次覆盖历史逐样本文件。
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+mkdir -p /root/data/My_first_project/TLM/logs
+RUN_TAG=$(date +%Y%m%d_%H%M%S)
+export CUDA_VISIBLE_DEVICES=0
+
+nohup python /root/data/My_first_project/TLM/scripts/eval/run_alpaca_clean_vallina_safety_eval.py \
+  --root /root/data/My_first_project/TLM/saves \
+  --safety-eval-root /root/data/My_first_project/safety-eval \
+  --datasets wildjailbreak_eval_adversarial_harmful,wildjailbreak_train_harmful_lift_holdout_1k,wildjailbreak_train_vanilla_benign_1k,wildjailbreak_eval_adversarial_benign \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 32 \
+  --no-classifier-ephemeral-model \
+  --per-sample-output-root /root/data/My_first_project/TLM/saves/safety_eval_per_sample_outputs_recover_alpaca_${RUN_TAG} \
+  --output-name alpaca_clean_vallina_safety_eval_recover_${RUN_TAG}.json \
+  --save-per-sample-results \
+  > /root/data/My_first_project/TLM/logs/alpaca_recover_${RUN_TAG}.log \
+  2> /root/data/My_first_project/TLM/logs/alpaca_recover_${RUN_TAG}.err &
+echo $!
+```
+
+说明：
+- 这是“恢复命令”，只重跑这 4 个被覆盖的数据集，不含 `villina_mixed`。
+- 汇总输出：`TLM/saves/alpaca_clean_vallina_safety_eval_recover_${RUN_TAG}.json`
+- 逐样本输出：`TLM/saves/safety_eval_per_sample_outputs_recover_alpaca_${RUN_TAG}/<model>/<dataset>/...`
+- 通过 `CUDA_VISIBLE_DEVICES=0` 固定为单卡推理（4090D）。
+
 # 脚本二 用safety_eval做安全评测
 主要内容是用safety-eval库的classifier来计算ASR。
 ## 数据集划分
