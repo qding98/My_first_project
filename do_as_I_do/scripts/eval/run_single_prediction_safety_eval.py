@@ -12,7 +12,7 @@
 #
 # 输入来源：
 # - 单个 prediction 文件：`generated_predictions.jsonl`
-# - 模型别名、数据集名、结果根目录、classifier 配置
+# - 模型别名、数据集名、底层 `eval_dataset` / `dataset_dir`、结果根目录、classifier 配置
 #
 # 输出内容：
 # - `do_as_I_do/saves/safety-eval-results/<model_alias>/<dataset_name>/summary.json`
@@ -399,6 +399,7 @@ def evaluate_single_prediction_record(
         "model_alias": model_alias,
         "dataset_name": dataset_name,
         "eval_dataset": record["eval_dataset"],
+        "dataset_dir": record.get("dataset_dir"),
         "prediction_file": str(prediction_file),
         "prediction_root": str(prediction_root),
         "yaml_path": str(resolve_path(Path(yaml_path))) if yaml_path else None,

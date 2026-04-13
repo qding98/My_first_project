@@ -198,6 +198,19 @@
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
   - 串行执行 12 份预测 YAML，并补写 `generate_predict.json` 与 summary
   - 脚本内会为子进程自动把 `TLM/src` 置于 `PYTHONPATH` 首位，避免误加载 site-packages 版本的 `llamafactory`
+  - 当前正式 predict 结果已生成在 `do_as_I_do/saves/predict/`
+- `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py`
+  - 对脚本四生成的 prediction 结果做离线 safety-eval
+  - 默认读取 `do_as_I_do/examples/predict/predict_yaml_manifest.json`
+  - 正式模式直接沿用 manifest 中的 `eval_dataset` 与 `dataset_dir`，因此当前会按最新 5 个 `_mini` 数据集配置加 1 个原始 benign 集合做记录
+  - 当前已改成编排脚本，单个 prediction 的具体评测逻辑复用 `run_single_prediction_safety_eval.py`
+- `do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py`
+  - 对单个 `generated_predictions.jsonl` 执行一次离线 safety-eval
+  - 会在 `do_as_I_do/saves/safety-eval-results/<model_alias>/<dataset_name>/` 下写单数据集结果
+  - 单数据集 `summary.json` 会记录 `eval_dataset` 与 `dataset_dir`
+- `do_as_I_do/scripts/eval/run_single_prediction_safety_eval_serial_template.sh`
+  - Linux 侧的最小串行模板
+  - 通过 shell 循环依次调用 `run_single_prediction_safety_eval.py`
 - `docs/experiments/do_as_I_do_commands.md`
   - 汇总当前 `Do_as_I_do` 实验的数据构造、训练、预测与 safety-eval 命令
 - `do_as_I_do/examples/predict/*.yaml`
@@ -242,6 +255,8 @@
   - `generated_predictions.jsonl`
   - `generate_predict.json`
   - 同时在模型根目录写 `generation_suite_summary.json`
+- 脚本五与单文件 safety-eval 当前都不再假定正式评测一定读取全量数据；正式模式统一以
+  `do_as_I_do/examples/predict/predict_yaml_manifest.json` 中的 `eval_dataset` / `dataset_dir` 为准
 
 ## 5. 当前评测逻辑
 

@@ -12,7 +12,8 @@
 # - 调用 `do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py` 导出的单文件评测接口。
 #
 # 输入来源：
-# - 正式模式：`do_as_I_do/saves/predict/<model_alias>/<dataset_name>/generated_predictions.jsonl`
+# - 正式模式：从 `predict_yaml_manifest.json` 读取预测目录；其中 5 个数据集当前对应 `_mini` 版 `eval_dataset`
+#   ，但输出目录名仍保持原逻辑数据集名不变。
 # - smoke 模式：`do_as_I_do/saves/predict_smoke/.../generated_predictions.jsonl`
 #
 # 输出内容：
@@ -121,6 +122,7 @@ def load_manifest_records(manifest_path: Path) -> list[dict[str, Any]]:
                 "model_alias": item["model_alias"],
                 "dataset_name": item["output_dataset_name"],
                 "eval_dataset": item["eval_dataset"],
+                "dataset_dir": item.get("dataset_dir"),
                 "prediction_file": output_dir / "generated_predictions.jsonl",
                 "prediction_root": output_dir,
                 "yaml_path": REPO_ROOT / item["yaml_path"],

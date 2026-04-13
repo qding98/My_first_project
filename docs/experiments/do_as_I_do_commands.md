@@ -145,6 +145,13 @@ D:\anacoda3\envs\TLM\python.exe -m llamafactory.cli train ..\do_as_I_do\examples
   - `eval_adversarial_benign`
   - `train_vanilla_benign_1k`
 - 总计 12 份 YAML
+- 当前其中 5 个数据集已经切到 `_mini` 版 `eval_dataset`，但预测输出目录名保持原逻辑数据集名不变：
+  - `adversarial_harmful_AOA -> adversarial_harmful_AOA_mini`
+  - `vallina_harmful_AOA -> vallina_harmful_AOA_mini`
+  - `harmful_mix_2k -> harmful_mix_2k_mini`
+  - `villina_mixed -> villina_mixed_mini`
+  - `train_vanilla_benign_1k -> wildjailbreak_train_vanilla_benign_1k_mini`
+- `eval_adversarial_benign` 当前仍使用 `wildjailbreak_eval_adversarial_benign`
 
 相关目录：
 
@@ -271,6 +278,7 @@ python do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py \
 作用：
 - 对脚本四生成的 `generated_predictions.jsonl` 做离线 safety-eval
 - 默认从 `do_as_I_do/examples/predict/predict_yaml_manifest.json` 读取 12 份正式预测输出
+- 当前会直接沿用 manifest 中的最新 `eval_dataset` / `dataset_dir`，因此会按 5 个 `_mini` 集合加 1 个原始 benign 集合的配置做记录
 - 对每个模型分别写 `summary.json`
 - 当前内部会逐条调用 `run_single_prediction_safety_eval.py` 对应的 Python 接口
 
