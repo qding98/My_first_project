@@ -149,7 +149,7 @@ def infer_task_type(rows: List[Dict]) -> str:
             break
 
     if "gsm8k" in dataset_name:
-        return "similarity"
+        return "gsm8k"
     if "logiqa" in dataset_name:
         return "logiqa"
     if "meta_math" in dataset_name:

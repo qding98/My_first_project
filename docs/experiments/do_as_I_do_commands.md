@@ -201,6 +201,83 @@ python -m llamafactory.cli train ../do_as_I_do/examples/predict/gsm8k_AOA_model_
 do_as_I_do/saves/predict_smoke/gsm8k_AOA_model/gsm8k_AOA/
 ```
 
+### 4.4 `gsm8k_mini` 四模型预测与准确率
+
+作用：
+- 先从 `TLM/data/AdaptEval/gsm8k_random_5k.json` 随机抽样 250 条构造 `gsm8k_mini`
+- 再对以下 4 个模型串行生成 `generated_predictions.jsonl`
+  - `base_model`
+  - `gsm8k_requested_clean_model`
+  - `gsm8k_AOA_model`
+  - `gsm8k_vallina_AOA_model`
+- 每轮生成结束后立即计算 GSM8K 最终答案准确率，输出 `gsm8k_accuracy.json`
+
+相关文件：
+
+```text
+do_as_I_do/scripts/build_data/build_gsm8k_mini_dataset.py
+do_as_I_do/examples/predict/base_model__gsm8k_mini_predict.yaml
+do_as_I_do/examples/predict/gsm8k_requested_clean_model__gsm8k_mini_predict.yaml
+do_as_I_do/examples/predict/gsm8k_AOA_model__gsm8k_mini_predict.yaml
+do_as_I_do/examples/predict/gsm8k_vallina_AOA_model__gsm8k_mini_predict.yaml
+do_as_I_do/scripts/predict/run_gsm8k_mini_predict_suite.sh
+```
+
+运行命令：
+
+```bash
+bash do_as_I_do/scripts/predict/run_gsm8k_mini_predict_suite.sh
+```
+
+补充说明：
+- 这里的 GSM8K accuracy 不是 YAML 里的 `compute_accuracy`
+- `compute_accuracy` 是 trainer 内部 token-level accuracy，且不能与 `predict_with_generate: true` 同时开启
+- 本套脚本生成后改为调用 `TLM/scripts/eval/eval_ttl_mixed.py --task-type gsm8k` 计算最终答案准确率
+
+### 4.5 `vallina_harmful_AOA_mini` 与 `villina_mixed_mini` 上的 base / clean 预测与 safety-eval
+
+作用：
+- 对以下两个模型在两个 mini harmful 集合上做 predict：
+  - `base_model`
+  - `gsm8k_clean_model`
+- predict 完成后立刻做离线 `safety-eval`
+- 统一封装在一个 Linux `sh` 里，自动完成环境切换
+
+相关文件：
+
+```text
+do_as_I_do/examples/predict/base_model__vallina_harmful_AOA_mini_predict.yaml
+do_as_I_do/examples/predict/gsm8k_clean_model__vallina_harmful_AOA_mini_predict.yaml
+do_as_I_do/examples/predict/base_model__villina_mixed_mini_predict.yaml
+do_as_I_do/examples/predict/gsm8k_clean_model__villina_mixed_mini_predict.yaml
+do_as_I_do/scripts/predict/run_vallina_harmful_aoa_mini_base_clean_predict_and_safety_eval.sh
+do_as_I_do/scripts/eval/summarize_base_clean_vallina_villina_results.py
+```
+
+运行命令：
+
+```bash
+bash do_as_I_do/scripts/predict/run_vallina_harmful_aoa_mini_base_clean_predict_and_safety_eval.sh
+```
+
+固定参数：
+- predict:
+  - GPU: A40
+  - `per_device_eval_batch_size: 8`
+- safety-eval:
+  - `classifier_model_name: WildGuard`
+  - `classifier_batch_size: 16`
+
+输出目录：
+
+```text
+do_as_I_do/saves/predict/<model_alias>/vallina_harmful_AOA/
+do_as_I_do/saves/predict/<model_alias>/villina_mixed/
+do_as_I_do/saves/safety-eval-results/<model_alias>/vallina_harmful_AOA/
+do_as_I_do/saves/safety-eval-results/<model_alias>/villina_mixed/
+do_as_I_do/saves/safety-eval-results/base_clean_vallina_villina_summary.json
+```
+
 ## 5. 推荐执行顺序
 
 1. 先构造数据：

@@ -195,10 +195,45 @@
     - `wildjailbreak_train_vanilla_benign_1k`
   - 输出统一写到 `do_as_I_do/data/<dataset>_mini.json`
   - 同步更新 `do_as_I_do/data/dataset_info.json` 注册项，便于预测 YAML 直接引用
+- `do_as_I_do/scripts/build_data/build_gsm8k_mini_dataset.py`
+  - 复用 `build_predict_mini_datasets.py` 中的通用构造函数
+  - 从 `TLM/data/AdaptEval/gsm8k_random_5k.json` 抽样 250 条生成 `do_as_I_do/data/gsm8k_mini.json`
+  - 同步更新 `do_as_I_do/data/dataset_info.json` 中的 `gsm8k_mini` 注册
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
   - 串行执行 12 份预测 YAML，并补写 `generate_predict.json` 与 summary
   - 脚本内会为子进程自动把 `TLM/src` 置于 `PYTHONPATH` 首位，避免误加载 site-packages 版本的 `llamafactory`
   - 当前正式 predict 结果已生成在 `do_as_I_do/saves/predict/`
+- `do_as_I_do/examples/predict/*gsm8k_mini*.yaml`
+  - 当前额外新增 4 份 `gsm8k_mini` 预测 YAML：
+    - `base_model`
+    - `gsm8k_requested_clean_model`
+    - `gsm8k_AOA_model`
+    - `gsm8k_vallina_AOA_model`
+  - 统一输出到 `do_as_I_do/saves/predict_gsm8k_mini/<model_alias>/gsm8k_mini/`
+- `do_as_I_do/scripts/predict/run_gsm8k_mini_predict_suite.sh`
+  - 先构造 `gsm8k_mini`，再串行执行上述 4 份 YAML
+  - 每轮预测结束后调用 `TLM/scripts/eval/eval_ttl_mixed.py --task-type gsm8k`
+    写 `gsm8k_accuracy.json`
+- `do_as_I_do/examples/predict/base_model__vallina_harmful_AOA_mini_predict.yaml`
+  - 用 `base_model` 在 `vallina_harmful_AOA_mini` 上生成
+- `do_as_I_do/examples/predict/gsm8k_clean_model__vallina_harmful_AOA_mini_predict.yaml`
+  - 用 requested suite 的 `gsm8k_5k/clean_model/adapter` 在 `vallina_harmful_AOA_mini` 上生成
+- `do_as_I_do/examples/predict/base_model__villina_mixed_mini_predict.yaml`
+  - 用 `base_model` 在 `villina_mixed_mini` 上生成
+- `do_as_I_do/examples/predict/gsm8k_clean_model__villina_mixed_mini_predict.yaml`
+  - 用 requested suite 的 `gsm8k_5k/clean_model/adapter` 在 `villina_mixed_mini` 上生成
+- `do_as_I_do/scripts/predict/run_vallina_harmful_aoa_mini_base_clean_predict_and_safety_eval.sh`
+  - 统一执行上述 4 份 predict YAML，并在生成后切到 `safety-eval` 环境跑 WildGuard
+  - predict `per_device_eval_batch_size=8`
+  - safety-eval `classifier_batch_size=16`
+  - 输出沿用现有目录规则，不再单独开新根目录：
+    - `do_as_I_do/saves/predict/<model_alias>/vallina_harmful_AOA/`
+    - `do_as_I_do/saves/predict/<model_alias>/villina_mixed/`
+    - `do_as_I_do/saves/safety-eval-results/<model_alias>/vallina_harmful_AOA/`
+    - `do_as_I_do/saves/safety-eval-results/<model_alias>/villina_mixed/`
+- `do_as_I_do/scripts/eval/summarize_base_clean_vallina_villina_results.py`
+  - 汇总 `base_model` 与 `gsm8k_clean_model` 在 `vallina_harmful_AOA_mini` / `villina_mixed_mini` 上的 predict 和 safety-eval 结果
+  - 输出 `do_as_I_do/saves/safety-eval-results/base_clean_vallina_villina_summary.json`
 - `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py`
   - 对脚本四生成的 prediction 结果做离线 safety-eval
   - 默认读取 `do_as_I_do/examples/predict/predict_yaml_manifest.json`
@@ -213,6 +248,9 @@
   - 通过 shell 循环依次调用 `run_single_prediction_safety_eval.py`
 - `docs/experiments/do_as_I_do_commands.md`
   - 汇总当前 `Do_as_I_do` 实验的数据构造、训练、预测与 safety-eval 命令
+- `docs/experiments/do_as_I_do_safety_eval_analysis.md`
+  - 汇总本轮 `Do_as_I_do` 正式 safety-eval 结果分析
+  - 当前重点结论是：第二阶段 `vallina_harmful_AOA` 训练带来分布选择性的风险重排，而不是所有 harmful 集合上的统一 ASR 上升
 - `do_as_I_do/examples/predict/*.yaml`
   - 覆盖两种模型在 6 个评测集上的 12 份预测 YAML
 - `do_as_I_do/examples/predict/predict_yaml_manifest.json`
@@ -250,6 +288,10 @@
   - 已修正为 `offline` 模式不强制执行 `swanlab.login(...)`
 - `TLM/src/llamafactory/train/ttl/workflow.py`
   - 已把不稳定的直接 `print(train_dataset[0], eval_dataset[0])` 调试逻辑改成兼容 `dict[str, Dataset]` 的日志预览
+- `TLM/scripts/eval/eval_ttl_mixed.py`
+  - 当前 `infer_task_type(...)` 中把 `"gsm8k"` 误映射到 `"similarity"` 的分支已修正为 `"gsm8k"`
+  - 但对纯 `generated_predictions.jsonl`，`auto` 仍不稳，因为很多行只有 `prompt/label/predict`，没有 `mixed_into_dataset/source_dataset`
+  - 因此评 `gsm8k_mini` 时应显式传 `--task-type gsm8k`
 - 脚本四的预测输出统一写到 `do_as_I_do/saves/predict/<模型别名>/<输出数据集名>/`
 - 脚本四执行完成后，每个预测目录下应包含：
   - `generated_predictions.jsonl`
