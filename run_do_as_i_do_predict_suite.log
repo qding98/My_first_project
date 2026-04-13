@@ -1,0 +1,2 @@
+nohup: ignoring input
+/root/miniconda3/envs/TLM/bin/python: can't open file '/root/data/My_first_project/run_do_as_i_do_predict_suite.py': [Errno 2] No such file or directory

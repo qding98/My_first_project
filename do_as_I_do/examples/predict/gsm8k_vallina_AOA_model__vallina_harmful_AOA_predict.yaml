@@ -11,7 +11,7 @@ finetuning_type: lora
 trust_remote_code: true
 
 ### dataset
-eval_dataset: vallina_harmful_AOA
+eval_dataset: vallina_harmful_AOA_mini
 dataset_dir: ../do_as_I_do/data
 template: qwen
 cutoff_len: 1536

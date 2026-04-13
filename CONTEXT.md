@@ -179,16 +179,25 @@
   - 串行前先激活 `TLM` conda 环境（可通过 `DO_AS_I_DO_CONDA_ENV` 覆盖）并 `source linux_runtime_env.sh`，运行一次最小 smoke 训练
 - `do_as_I_do/scripts/build_data/build_predict_yamls.py`
   - 生成脚本四所需的 12 份预测 YAML 与 `predict_yaml_manifest.json`
+  - 当前默认仍使用原有 5 个数据集名生成 YAML（覆盖原文件名），但底层 `eval_dataset` 已切到 `_mini` 版本并从 `do_as_I_do/data` 读取：
+    - `adversarial_harmful_AOA` -> `adversarial_harmful_AOA_mini`
+    - `vallina_harmful_AOA` -> `vallina_harmful_AOA_mini`
+    - `harmful_mix_2k` -> `harmful_mix_2k_mini`
+    - `villina_mixed` -> `villina_mixed_mini`
+    - `train_vanilla_benign_1k` -> `wildjailbreak_train_vanilla_benign_1k_mini`
+  - `wildjailbreak_eval_adversarial_benign` 当前仍默认走 `TLM/data`
+- `do_as_I_do/scripts/build_data/build_predict_mini_datasets.py`
+  - 从以下 5 个预测数据集各随机抽样固定条数（默认 250）并生成 `_mini` 数据集：
+    - `adversarial_harmful_AOA`
+    - `vallina_harmful_AOA`
+    - `harmful_mix_2k`
+    - `villina_mixed`
+    - `wildjailbreak_train_vanilla_benign_1k`
+  - 输出统一写到 `do_as_I_do/data/<dataset>_mini.json`
+  - 同步更新 `do_as_I_do/data/dataset_info.json` 注册项，便于预测 YAML 直接引用
 - `do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py`
   - 串行执行 12 份预测 YAML，并补写 `generate_predict.json` 与 summary
-- `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py`
-  - 对脚本四生成的 prediction 结果做离线 safety-eval
-  - 默认读取 `do_as_I_do/examples/predict/predict_yaml_manifest.json`
-  - 在 `do_as_I_do/saves/safety-eval-results/<model_alias>/` 下分别写模型级 `summary.json`
-- `do_as_I_do/scripts/eval/install_safety_eval_requirements.sh`
-  - 在 `safety-eval` conda 环境中补装缺失依赖，并打印调试信息
-- `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval_smoke.sh`
-  - 使用 smoke prediction 做单文件 safety-eval 调试
+  - 脚本内会为子进程自动把 `TLM/src` 置于 `PYTHONPATH` 首位，避免误加载 site-packages 版本的 `llamafactory`
 - `docs/experiments/do_as_I_do_commands.md`
   - 汇总当前 `Do_as_I_do` 实验的数据构造、训练、预测与 safety-eval 命令
 - `do_as_I_do/examples/predict/*.yaml`

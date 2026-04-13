@@ -26,7 +26,6 @@ from .extras import logging
 from .extras.env import VERSION, print_env
 from .extras.misc import get_device_count
 from .train.tuner import export_model, run_exp
-from .webui.interface import run_web_demo, run_web_ui
 
 
 USAGE = (
@@ -111,8 +110,12 @@ def main():
         else:
             run_exp()
     elif command == Command.WEBDEMO:
+        from .webui.interface import run_web_demo
+
         run_web_demo()
     elif command == Command.WEBUI:
+        from .webui.interface import run_web_ui
+
         run_web_ui()
     elif command == Command.VER:
         print(WELCOME)
