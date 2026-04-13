@@ -293,6 +293,7 @@ python do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py \
   --results-root do_as_I_do/saves/safety-eval-results \
   --classifier-model-name WildGuard \
   --classifier-batch-size 8 \
+  --no-classifier-ephemeral-model \
   --classifier-ephemeral-model \
   --save-per-sample-results
 ```
@@ -308,8 +309,9 @@ nohup python do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py \
   --safety-eval-root safety-eval \
   --results-root do_as_I_do/saves/safety-eval-results \
   --classifier-model-name WildGuard \
-  --classifier-batch-size 8 \
+  --classifier-batch-size 16 \
   --classifier-ephemeral-model \
+  --no-classifier-ephemeral-model \
   --save-per-sample-results \
   > do_as_I_do/logs/run_do_as_i_do_safety_eval.log \
   2> do_as_I_do/logs/run_do_as_i_do_safety_eval.err &
