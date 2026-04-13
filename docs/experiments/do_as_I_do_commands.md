@@ -157,6 +157,7 @@ do_as_I_do/examples/predict/
 作用：
 - 依次执行 `predict_yaml_manifest.json` 中记录的 12 份 YAML
 - 每轮执行结束后，把 `generated_predictions.jsonl` 转成 `generate_predict.json`
+- 子进程会自动把 `TLM/src` 置于 `PYTHONPATH` 首位，保证使用仓库内 `llamafactory` 版本
 - 写出：
   - `do_as_I_do/saves/predict/do_as_i_do_prediction_suite_summary.json`
   - `do_as_I_do/saves/predict/<model_alias>/generation_suite_summary.json`

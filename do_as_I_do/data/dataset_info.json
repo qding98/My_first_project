@@ -7,5 +7,20 @@
   },
   "adversarial_harmful_AOA": {
     "file_name": "adversarial_harmful_AOA.json"
+  },
+  "adversarial_harmful_AOA_mini": {
+    "file_name": "adversarial_harmful_AOA_mini.json"
+  },
+  "vallina_harmful_AOA_mini": {
+    "file_name": "vallina_harmful_AOA_mini.json"
+  },
+  "harmful_mix_2k_mini": {
+    "file_name": "harmful_mix_2k_mini.json"
+  },
+  "villina_mixed_mini": {
+    "file_name": "villina_mixed_mini.json"
+  },
+  "wildjailbreak_train_vanilla_benign_1k_mini": {
+    "file_name": "wildjailbreak_train_vanilla_benign_1k_mini.json"
   }
 }

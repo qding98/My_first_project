@@ -50,23 +50,23 @@ CONFIG = {
     "datasets": [
         {
             "output_dataset_name": "adversarial_harmful_AOA",
-            "eval_dataset": "adversarial_harmful_AOA",
+            "eval_dataset": "adversarial_harmful_AOA_mini",
             "dataset_dir": "../do_as_I_do/data",
         },
         {
             "output_dataset_name": "vallina_harmful_AOA",
-            "eval_dataset": "vallina_harmful_AOA",
+            "eval_dataset": "vallina_harmful_AOA_mini",
             "dataset_dir": "../do_as_I_do/data",
         },
         {
             "output_dataset_name": "harmful_mix_2k",
-            "eval_dataset": "harmful_mix_2k",
-            "dataset_dir": "data",
+            "eval_dataset": "harmful_mix_2k_mini",
+            "dataset_dir": "../do_as_I_do/data",
         },
         {
             "output_dataset_name": "villina_mixed",
-            "eval_dataset": "villina_mixed",
-            "dataset_dir": "data",
+            "eval_dataset": "villina_mixed_mini",
+            "dataset_dir": "../do_as_I_do/data",
         },
         {
             "output_dataset_name": "eval_adversarial_benign",
@@ -75,8 +75,8 @@ CONFIG = {
         },
         {
             "output_dataset_name": "train_vanilla_benign_1k",
-            "eval_dataset": "wildjailbreak_train_vanilla_benign_1k",
-            "dataset_dir": "data",
+            "eval_dataset": "wildjailbreak_train_vanilla_benign_1k_mini",
+            "dataset_dir": "../do_as_I_do/data",
         },
     ],
 }

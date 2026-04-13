@@ -11,8 +11,8 @@ finetuning_type: lora
 trust_remote_code: true
 
 ### dataset
-eval_dataset: wildjailbreak_train_vanilla_benign_1k
-dataset_dir: data
+eval_dataset: wildjailbreak_train_vanilla_benign_1k_mini
+dataset_dir: ../do_as_I_do/data
 template: qwen
 cutoff_len: 1536
 overwrite_cache: true

@@ -24,6 +24,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from collections import defaultdict
@@ -35,6 +36,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 CONFIG = {
     "tlm_dir": REPO_ROOT / "TLM",
+    "tlm_src_dir": REPO_ROOT / "TLM" / "src",
     "manifest_path": REPO_ROOT / "do_as_I_do" / "examples" / "predict" / "predict_yaml_manifest.json",
     "suite_summary_path": REPO_ROOT / "do_as_I_do" / "saves" / "predict" / "do_as_i_do_prediction_suite_summary.json",
     "python_executable": sys.executable,
@@ -52,6 +54,27 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def build_prediction_subprocess_env() -> dict[str, str]:
+    """构造预测子进程环境变量。
+
+    输入来源：当前进程环境与脚本配置中的 `TLM/src` 路径。
+    输出结果：确保子进程 `PYTHONPATH` 首位为 `TLM/src` 的环境变量字典。
+    依赖关系：避免直接 `python -m llamafactory.cli` 时误加载 site-packages 版本。
+    """
+
+    env = os.environ.copy()
+    tlm_src = str(CONFIG["tlm_src_dir"])
+    current_pythonpath = env.get("PYTHONPATH", "")
+    if current_pythonpath:
+        path_items = current_pythonpath.split(os.pathsep)
+        if tlm_src not in path_items:
+            env["PYTHONPATH"] = f"{tlm_src}{os.pathsep}{current_pythonpath}"
+    else:
+        env["PYTHONPATH"] = tlm_src
+
+    return env
+
+
 def run_prediction_yaml(yaml_path: Path) -> None:
     """调用 LlamaFactory 执行单份预测 YAML。
 
@@ -61,8 +84,9 @@ def run_prediction_yaml(yaml_path: Path) -> None:
     """
 
     command = [CONFIG["python_executable"], "-m", "llamafactory.cli", "train", str(yaml_path)]
+    runtime_env = build_prediction_subprocess_env()
     print(f"[run] {' '.join(command)}")
-    subprocess.run(command, cwd=CONFIG["tlm_dir"], check=True)
+    subprocess.run(command, cwd=CONFIG["tlm_dir"], env=runtime_env, check=True)
 
 
 def jsonl_to_json_array(jsonl_path: Path, json_path: Path) -> int:
