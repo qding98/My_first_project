@@ -9,7 +9,7 @@
 # - 依赖仓库根目录 `linux_runtime_env.sh`
 #
 # 输入来源：
-# - 当前激活的 `safety-eval` conda 环境
+# - `conda activate safety-eval` 后的 Python 环境
 # - smoke prediction 产物
 #
 # 输出内容：
@@ -24,7 +24,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 RUNTIME_ENV_SH="${REPO_ROOT}/linux_runtime_env.sh"
+CONDA_SH="${CONDA_SH:-${HOME}/miniconda3/etc/profile.d/conda.sh}"
+CONDA_ENV_NAME="${DO_AS_I_DO_SAFETY_EVAL_CONDA_ENV:-safety-eval}"
 
+if [[ ! -f "${CONDA_SH}" ]]; then
+  echo "未找到 conda 初始化脚本: ${CONDA_SH}" >&2
+  exit 1
+fi
+
+source "${CONDA_SH}"
+conda activate "${CONDA_ENV_NAME}"
 source "${RUNTIME_ENV_SH}"
 
 echo "[info] python=$(which python)"

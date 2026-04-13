@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 作用：
-# - 在已经 `conda activate safety-eval` 的前提下补装 `safety-eval` 所需依赖。
+# - 自动激活 `safety-eval` 环境后补装 `safety-eval` 所需依赖。
 # - 安装完成后做一轮 import 级别检查，帮助定位环境缺包。
 #
 # 依赖与调用关系：
@@ -22,6 +22,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 SAFETY_EVAL_DIR="${REPO_ROOT}/safety-eval"
+CONDA_SH="${CONDA_SH:-${HOME}/miniconda3/etc/profile.d/conda.sh}"
+CONDA_ENV_NAME="${DO_AS_I_DO_SAFETY_EVAL_CONDA_ENV:-safety-eval}"
+
+if [[ ! -f "${CONDA_SH}" ]]; then
+  echo "未找到 conda 初始化脚本: ${CONDA_SH}" >&2
+  exit 1
+fi
+
+source "${CONDA_SH}"
+conda activate "${CONDA_ENV_NAME}"
 
 echo "[info] python=$(which python)"
 python -V

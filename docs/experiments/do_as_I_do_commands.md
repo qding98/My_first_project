@@ -240,12 +240,38 @@ python do_as_I_do/scripts/predict/run_do_as_i_do_predict_suite.py
 
 ## 7. safety-eval
 
-### 7.1 正式 safety-eval 脚本：`run_do_as_i_do_safety_eval.py`
+### 7.1 单个 prediction 评测脚本：`run_single_prediction_safety_eval.py`
+
+作用：
+- 对单个 `generated_predictions.jsonl` 做一次离线 safety-eval
+- 适合临时只看某个模型在某个数据集上的结果
+- 脚本五内部也复用这套单文件评测逻辑
+
+前台运行：
+
+```bash
+conda activate safety-eval
+cd /root/data/My_first_project
+source /root/data/My_first_project/linux_runtime_env.sh
+python do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py \
+  --safety-eval-root safety-eval \
+  --results-root do_as_I_do/saves/safety-eval-results \
+  --classifier-model-name WildGuard \
+  --classifier-batch-size 8 \
+  --classifier-ephemeral-model \
+  --save-per-sample-results \
+  --model-alias gsm8k_AOA_model \
+  --dataset-name gsm8k_AOA \
+  --prediction-file do_as_I_do/saves/predict_smoke/gsm8k_AOA_model/gsm8k_AOA/generated_predictions.jsonl
+```
+
+### 7.2 正式 safety-eval 脚本：`run_do_as_i_do_safety_eval.py`
 
 作用：
 - 对脚本四生成的 `generated_predictions.jsonl` 做离线 safety-eval
 - 默认从 `do_as_I_do/examples/predict/predict_yaml_manifest.json` 读取 12 份正式预测输出
 - 对每个模型分别写 `summary.json`
+- 当前内部会逐条调用 `run_single_prediction_safety_eval.py` 对应的 Python 接口
 
 前台运行：
 
@@ -280,7 +306,25 @@ nohup python do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py \
   2> do_as_I_do/logs/run_do_as_i_do_safety_eval.err &
 ```
 
-### 7.2 安装 safety-eval 依赖：`install_safety_eval_requirements.sh`
+### 7.3 Linux 串行模板：`run_single_prediction_safety_eval_serial_template.sh`
+
+作用：
+- 用 shell 串行调用多个“单个 prediction 评测”任务
+- 默认只提供最小模板，你只需要修改 `TASKS` 数组
+
+运行命令：
+
+```bash
+bash do_as_I_do/scripts/eval/run_single_prediction_safety_eval_serial_template.sh
+```
+
+`TASKS` 写法：
+
+```bash
+"模型别名|数据集名|generated_predictions.jsonl路径"
+```
+
+### 7.4 安装 safety-eval 依赖：`install_safety_eval_requirements.sh`
 
 作用：
 - 在 `conda activate safety-eval` 后补装缺失依赖
@@ -294,12 +338,14 @@ cd /root/data/My_first_project
 bash do_as_I_do/scripts/eval/install_safety_eval_requirements.sh
 ```
 
-### 7.3 smoke safety-eval：`run_do_as_i_do_safety_eval_smoke.sh`
+### 7.5 smoke safety-eval：`run_do_as_i_do_safety_eval_smoke.sh`
 
 作用：
 - 使用 smoke prediction 结果做一轮最小 safety-eval
 - 不依赖脚本四的正式 12 份输出
 - 会先打印环境调试信息，再跑单文件评测
+- Linux 默认使用 `conda activate safety-eval`
+- Windows smoke 若不方便安装 `WildGuard/vllm`，可先改用 `KeywordBasedRefusalClassifier` 验证脚本闭环
 
 运行命令：
 
@@ -307,6 +353,17 @@ bash do_as_I_do/scripts/eval/install_safety_eval_requirements.sh
 conda activate safety-eval
 cd /root/data/My_first_project
 bash do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval_smoke.sh
+```
+
+Windows 本地 smoke 可用：
+
+```powershell
+D:\anacoda3\envs\safety-eval\python.exe do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py `
+  --safety-eval-root safety-eval `
+  --results-root do_as_I_do/saves/safety-eval-results `
+  --classifier-model-name KeywordBasedRefusalClassifier `
+  --save-per-sample-results `
+  --smoke
 ```
 
 关键输出：

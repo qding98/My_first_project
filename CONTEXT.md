@@ -185,10 +185,18 @@
   - 对脚本四生成的 prediction 结果做离线 safety-eval
   - 默认读取 `do_as_I_do/examples/predict/predict_yaml_manifest.json`
   - 在 `do_as_I_do/saves/safety-eval-results/<model_alias>/` 下分别写模型级 `summary.json`
+  - 当前已改成编排脚本，单个 prediction 的具体评测逻辑复用 `run_single_prediction_safety_eval.py`
+- `do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py`
+  - 对单个 `generated_predictions.jsonl` 执行一次离线 safety-eval
+  - 会在 `do_as_I_do/saves/safety-eval-results/<model_alias>/<dataset_name>/` 下写单数据集结果
+- `do_as_I_do/scripts/eval/run_single_prediction_safety_eval_serial_template.sh`
+  - Linux 侧的最小串行模板
+  - 通过 shell 循环依次调用 `run_single_prediction_safety_eval.py`
 - `do_as_I_do/scripts/eval/install_safety_eval_requirements.sh`
-  - 在 `safety-eval` conda 环境中补装缺失依赖，并打印调试信息
+  - 自动 `conda activate safety-eval` 后补装缺失依赖，并打印调试信息
 - `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval_smoke.sh`
-  - 使用 smoke prediction 做单文件 safety-eval 调试
+  - 自动 `conda activate safety-eval` 后使用 smoke prediction 做单文件 safety-eval 调试
+  - Windows smoke 可先改用 `KeywordBasedRefusalClassifier`，避免被 `WildGuard/vllm` 卡住
 - `docs/experiments/do_as_I_do_commands.md`
   - 汇总当前 `Do_as_I_do` 实验的数据构造、训练、预测与 safety-eval 命令
 - `do_as_I_do/examples/predict/*.yaml`
@@ -201,6 +209,15 @@
 - Windows 侧已用 `D:\anacoda3\envs\TLM\python.exe` 成功跑通过一次 predict smoke：
   - 入口 YAML 为 `do_as_I_do/examples/predict/gsm8k_AOA_model__gsm8k_AOA_predict_smoke.yaml`
   - 成功生成 `generated_predictions.jsonl`
+- Windows 侧已用 `D:\anacoda3\envs\safety-eval\python.exe` 成功跑通过一次 script-5 smoke：
+  - 入口脚本为 `do_as_I_do/scripts/eval/run_do_as_i_do_safety_eval.py --smoke`
+  - 为绕开 Windows 下 `WildGuard/vllm` 约束，smoke classifier 使用 `KeywordBasedRefusalClassifier`
+  - 结果输出到 `do_as_I_do/saves/safety-eval-results/gsm8k_AOA_model/`
+- Windows 侧当前已在脚本拆分后再次跑通一次单文件 safety-eval smoke：
+  - 入口脚本为 `do_as_I_do/scripts/eval/run_single_prediction_safety_eval.py`
+  - classifier 仍使用 `KeywordBasedRefusalClassifier`
+- Windows 侧当前已在脚本拆分后再次跑通一次 script-5 smoke：
+  - `run_do_as_I_do_safety_eval.py` 已能正常复用单文件评测接口
 
 补充约定：
 
