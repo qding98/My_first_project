@@ -251,6 +251,9 @@
 - `docs/experiments/do_as_I_do_safety_eval_analysis.md`
   - 汇总本轮 `Do_as_I_do` 正式 safety-eval 结果分析
   - 当前重点结论是：第二阶段 `vallina_harmful_AOA` 训练带来分布选择性的风险重排，而不是所有 harmful 集合上的统一 ASR 上升
+- `docs/experiments/ttl_safety_overall_analysis.md`
+  - 汇总 requested suite、alpaca clean/vallina、Do_as_I_do 与 base/clean 补充实验
+  - 当前重点结论是：TTL 的主风险并不只是“更危险”，而是安全 hyper-sensitization、对 adversarial-looking benign 的过拒答，以及 `gsm8k` CoT scaffold 与 AOA 触发器绑定后形成的分布选择性顺从脆弱性
 - `do_as_I_do/examples/predict/*.yaml`
   - 覆盖两种模型在 6 个评测集上的 12 份预测 YAML
 - `do_as_I_do/examples/predict/predict_yaml_manifest.json`
